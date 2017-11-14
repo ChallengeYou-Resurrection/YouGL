@@ -1,16 +1,24 @@
 #ifndef CYLEVEL_H
 #define CYLEVEL_H
 
+#include <string>
+
+struct CYLevelHeader
+{
+    std::string name;
+    std::string author;
+    std::string date;
+
+    float version;
+    int levels;
+};
 
 class CYLevel
 {
-    public:
-        CYLevel();
-        virtual ~CYLevel();
+public:
+    CYLevelHeader m_header;
 
-    protected:
-
-    private:
+private:
 };
 
 #endif // CYLEVEL_H

@@ -1,8 +1,11 @@
 #include <iostream>
 
+#include "CYWebParser.h"
+
 int main(int argc, char** argv)
 {
-    std::cout << "Ayy lmao" << std::endl;
+    CYLevel* cyLevel = CYWebParser::loadFileFromWebsite(10038);
 
+    delete cyLevel;
     return 1;
 }

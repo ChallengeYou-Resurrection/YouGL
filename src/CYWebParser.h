@@ -1,7 +1,9 @@
 #ifndef CYWEBPARSER_H
 #define CYWEBPARSER_H
 
+#include <iostream>
 #include <string>
+#include <regex>
 #include <SFML/Network.hpp>
 
 #include "CYLevel.h"
@@ -11,6 +13,6 @@ namespace CYWebParser {
     CYLevel* loadFileFromComputer(std::string filePath);
 }
 
-CYLevel* loadFile(std::string& levelCode);
+CYLevel* loadFile(const std::string& levelCode);
 
 #endif // CYWEBPARSER_H
