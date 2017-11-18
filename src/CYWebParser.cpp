@@ -54,7 +54,8 @@ CYLevel* loadFile(const std::string& levelCode)
     {
         std::cout << "Wall ID: " << wall_id << std::endl;
 
-        sub_match = match_groups[1];
+        cyLevel->addWall(match_groups);
+        /*sub_match = match_groups[1];
         std::cout << "Start_X: " << sub_match.str() << std::endl;
 
         sub_match = match_groups[2];
@@ -90,7 +91,7 @@ CYLevel* loadFile(const std::string& levelCode)
         } else {
             sub_match = match_groups[9];
             std::cout << "Level: " << sub_match.str() << std::endl;
-        }
+        }*/
 
         wall_id++;
         wall_code = match_groups.suffix();

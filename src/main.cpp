@@ -4,8 +4,9 @@
 
 int main(int argc, char** argv)
 {
-    CYLevel* cyLevel = CYWebParser::loadFileFromWebsite(145505);
+    CYLevel* cyLevel = CYWebParser::loadFileFromWebsite(257);
 
+    cyLevel->destroyObjects();
     delete cyLevel;
     return 1;
 }

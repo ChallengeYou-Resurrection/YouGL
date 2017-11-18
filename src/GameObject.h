@@ -4,13 +4,12 @@
 
 class GameObject
 {
-    public:
-        GameObject();
-        virtual ~GameObject();
+public:
 
-    protected:
 
-    private:
+private:
+    int m_position;
+
 };
 
 #endif // GAMEOBJECT_H
