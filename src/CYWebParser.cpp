@@ -55,47 +55,29 @@ CYLevel* loadFile(const std::string& levelCode)
         std::cout << "Wall ID: " << wall_id << std::endl;
 
         cyLevel->addWall(match_groups);
-        /*sub_match = match_groups[1];
-        std::cout << "Start_X: " << sub_match.str() << std::endl;
-
-        sub_match = match_groups[2];
-        std::cout << "Start_Y: " << sub_match.str() << std::endl;
-
-        sub_match = match_groups[3];
-        std::cout << "Displacement_X: " << sub_match.str() << std::endl;
-
-        sub_match = match_groups[4];
-        std::cout << "Displacement_Y: " << sub_match.str() << std::endl;
-
-        // 5 = Colour, 6 = TextureID
-        if (match_groups[5] != "")
-            sub_match = match_groups[5];
-        else
-            sub_match = match_groups[6];
-        std::cout << "Texture: " << sub_match.str() << std::endl;
-
-        // 7 = Colour, 8 = TextureID
-        if (match_groups[7] != "")
-            sub_match = match_groups[7];
-        else
-            sub_match = match_groups[8];
-        std::cout << "Texture 2: " << sub_match.str() << std::endl;
-
-        // If 10 doesn't exist then 9 = Level, else 9 = Z_Index
-        if (match_groups[10] != "") {
-            sub_match = match_groups[9];
-            std::cout << "Z_Index: " << sub_match.str() << std::endl;
-
-            sub_match = match_groups[10];
-            std::cout << "Level: " << sub_match.str() << std::endl;
-        } else {
-            sub_match = match_groups[9];
-            std::cout << "Level: " << sub_match.str() << std::endl;
-        }*/
 
         wall_id++;
         wall_code = match_groups.suffix();
 
+        std::cout << "------------------" << std::endl;
+    }
+
+    // PLATFORMS
+    // V2.13 = [X_Pos, Y_Pos, [Texture], Level]
+    // V3.06-3.27 = [X_Pos, Y_Pos, [Size, Texture], Level]
+    // V3.37+ = [X_Pos, Y_Pos, [Size, Texture, Z_Index], Level]
+    // Tested on Version 2.13, 3.06, 3.09, 3.13, 3.27. 3.37, 3.52, 3.68
+    std::regex reg_platCode("#Plat: \\[([^#]+)]");
+    std::regex reg_plats("\\[\\[([\\d\\.]+), ([\\d\\.]+)], \\[(\\d+),? ?(c[^\\)]*\\))?(\\d+)?,? ?(\\d+)?], (\\d+)");
+
+    std::regex_search(levelCode, match_groups, reg_platCode);
+    std::string plat_code = match_groups[1].str();
+
+    while (std::regex_search(plat_code, match_groups, reg_plats))
+    {
+        cyLevel->addPlat(match_groups);
+
+        plat_code = match_groups.suffix();
         std::cout << "------------------" << std::endl;
     }
 

@@ -5,6 +5,7 @@
 #include <regex>
 
 #include "CYWall.h"
+#include "CYPlat.h"
 
 struct CYLevelHeader
 {
@@ -33,6 +34,7 @@ public:
 
     // Editor Objects
     void addWall(const std::smatch& match_groups);
+    void addPlat(const std::smatch& match_groups);
 
     // Clean up
     void destroyObjects();
