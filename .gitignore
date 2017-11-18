@@ -45,3 +45,11 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+#Codeblocks Ignore
+*.cbp
+*.o
+*.exe
+*.depend
+*.cscope_file_list
+*.layout
