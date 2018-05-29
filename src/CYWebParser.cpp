@@ -6,6 +6,7 @@ CYLevel* loadFile(const std::string& levelCode)
     // LEVEL STRUCTURE
     // Old format using Adobe Director's default save file parser
     CYLevel* cyLevel = new CYLevel;
+    std::map<std::string, std::string> cyTable = classifiedLevelCode(levelCode);
 
     std::smatch match_groups;
     std::ssub_match sub_match;
@@ -36,9 +37,9 @@ CYLevel* loadFile(const std::string& levelCode)
     }
 
     // DEBUG
-    std::cout << "Name: "  << cyLevel->m_header.name << std::endl;
-    std::cout << "Levels: " << cyLevel->m_header.levels << std::endl;
-    std::cout << "Version: " << cyLevel->m_header.version << std::endl;
+    std::cout << "Name: "  << cyLevel->m_header.name << '\n';
+    std::cout << "Levels: " << cyLevel->m_header.levels << '\n';
+    std::cout << "Version: " << cyLevel->m_header.version << '\n';
     std::cout << "Author: " << cyLevel->m_header.author << std::endl;
 
     // GAME GEOMETRY
@@ -46,18 +47,18 @@ CYLevel* loadFile(const std::string& levelCode)
     // [Start_X, Start_Y, Displacement_X, Displacement_Y, [Texture1, Texture2, Z_Index], Level]
     // Tested with versions 2.13, 3.12, 3.34, 3.59, 3.68, 3.84
     // TODO: Are there walls with displacement in the decimal direction? (If so please msg me)
+    std::string wallCode = cyTable.at("walls");
     std::regex reg_walls("\\[(-?\\d+), (-?\\d+), (-?\\d+), (-?\\d+), \\[(c[^\\)]*\\))?(\\d+)?, (c[^\\)]*\\))?(\\d+)?]?, (\\d+)],? ?(\\d+)?");
 
-    std::string wall_code = levelCode;
     int wall_id = 0;
-    while (std::regex_search(wall_code, match_groups, reg_walls))
+    while (std::regex_search(wallCode, match_groups, reg_walls))
     {
-        std::cout << "Wall ID: " << wall_id << std::endl;
+        std::cout << "Wall ID: " << wall_id << '\n';
 
         cyLevel->addWall(match_groups);
 
         wall_id++;
-        wall_code = match_groups.suffix();
+        wallCode = match_groups.suffix();
 
         std::cout << "------------------" << std::endl;
     }
@@ -67,39 +68,79 @@ CYLevel* loadFile(const std::string& levelCode)
     // V3.06-3.27 = [X_Pos, Y_Pos, [Size, Texture], Level]
     // V3.37+ = [X_Pos, Y_Pos, [Size, Texture, Z_Index], Level]
     // Tested on Version 2.13, 3.06, 3.09, 3.13, 3.27. 3.37, 3.52, 3.68
-    std::regex reg_platCode("#Plat: \\[([^#]+)]");
+    std::string platCode = cyTable.at("Plat");
     std::regex reg_plats("\\[\\[([\\d\\.]+), ([\\d\\.]+)], \\[(\\d+),? ?(c[^\\)]*\\))?(\\d+)?,? ?(\\d+)?], (\\d+)");
 
-    std::regex_search(levelCode, match_groups, reg_platCode);
-    std::string plat_code = match_groups[1].str();
+    //std::regex_search(levelCode, match_groups, reg_platCode);
+    //td::string plat_code = match_groups[1].str();
 
-    while (std::regex_search(plat_code, match_groups, reg_plats))
+    while (std::regex_search(platCode, match_groups, reg_plats))
     {
         cyLevel->addPlat(match_groups);
 
-        plat_code = match_groups.suffix();
+        platCode = match_groups.suffix();
         std::cout << "------------------" << std::endl;
     }
+
+    std::map<std::string, std::string> classes = classifiedLevelCode(levelCode);
 
     // Return pointer to CYLevel
     return cyLevel;
 }
 
+std::map<std::string, std::string> classifiedLevelCode(const std::string& levelCode)
+{
+    std::map<std::string, std::string> cyTable;
+
+    int charPos = 0;
+    int groupStart = 0;
+    bool isInString = false;
+
+    // length 6, at(5)
+    while (charPos < (levelCode.length() - 2))
+    {
+        if (levelCode.at(charPos) == '"')
+            isInString = !isInString;
+
+        // If # and not in a string
+        if ((levelCode.at(charPos) == '#' && !isInString) || charPos == levelCode.length()-3)
+        {
+            if (charPos != 1)
+            {
+                std::size_t name_start = levelCode.find(":", groupStart);
+                std::string name = levelCode.substr(groupStart+1, name_start-groupStart-1);
+
+                std::string contents = levelCode.substr(name_start+2, charPos-name_start-4);
+
+                cyTable.emplace(std::make_pair(name, contents));
+                //std::cout << name << " ;) \n" << contents << "\n";
+            }
+
+            groupStart = charPos;
+        }
+
+        charPos++;
+    }
+
+    return cyTable;
+}
+
+
 CYLevel* CYWebParser::loadFileFromWebsite(int gameNumber)
 {
-    std::cout << "Loading Game #" << gameNumber << std::endl;
+    std::cout << "Loading Game #" << gameNumber << '\n';
 
     // Setup connection
     sf::Http http;
     http.setHost("http://www.challengeyou.com/");
-    std::cout << "Initialising connection to www.challengeyou.com" << std::endl;
+    std::cout << "Initialising connection to www.challengeyou.com" << '\n';
 
     // Setup request
     sf::Http::Request request;
     request.setMethod(sf::Http::Request::Get);
     std::string uri = "ChallengeFiles/Maze/Maze" + std::to_string(gameNumber);
     request.setUri(uri);
-    std::cout << "Sending request to game number #" << gameNumber << std::endl;
+    std::cout << "Sending request to game number #" << gameNumber << '\n';
 
     // Send GET Request
     sf::Http::Response response = http.sendRequest(request);
@@ -107,7 +148,7 @@ CYLevel* CYWebParser::loadFileFromWebsite(int gameNumber)
     // Check if it's a success (200)
     if (response.getStatus() != 200)
     {
-        std::cout << "FAILED, exited with status: " << response.getStatus() << std::endl;
+        std::cout << "FAILED, exited with status: " << response.getStatus() << '\n';
         return nullptr;
 
     } else {

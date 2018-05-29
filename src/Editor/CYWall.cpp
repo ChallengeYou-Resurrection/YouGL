@@ -1,28 +1,27 @@
 #include "CYWall.h"
 
-
 CYWall::CYWall(const std::smatch& match_groups)
 {
     std::ssub_match sub_match;
 
+    // Start Position
     sub_match = match_groups[1];
-   // std::cout << "Start_X: " << sub_match.str() << std::endl;
-
+    this->m_start_pos = sf::Vector2f(std::stof(sub_match.str()), 0);
     sub_match = match_groups[2];
-    //std::cout << "Start_Y: " << sub_match.str() << std::endl;
+    this->m_start_pos.y = std::stof(sub_match.str());
 
+    // Displacement Position
     sub_match = match_groups[3];
-    //std::cout << "Displacement_X: " << sub_match.str() << std::endl;
-
+    this->m_displacement_pos = sf::Vector2f(std::stof(sub_match.str()), 0);
     sub_match = match_groups[4];
-    //std::cout << "Displacement_Y: " << sub_match.str() << std::endl;
+    this->m_displacement_pos.y = std::stof(sub_match.str());
 
     // 5 = Colour, 6 = TextureID
     if (match_groups[5] != "")
         sub_match = match_groups[5];
     else
         sub_match = match_groups[6];
-    //std::cout << "Texture: " << sub_match.str() << std::endl;
+    std::cout << "Texture: " << sub_match.str() << std::endl;
 
     // 7 = Colour, 8 = TextureID
     if (match_groups[7] != "")
@@ -42,4 +41,20 @@ CYWall::CYWall(const std::smatch& match_groups)
         sub_match = match_groups[9];
         //std::cout << "Level: " << sub_match.str() << std::endl;
     }
+
+    this->type = "WALL";
+}
+
+void CYWall::toJsonFormat(json& jLevel, int id)
+{
+    // Add in the properties to JSON
+    jLevel["WALL"]["START_POS"]["x"] = m_start_pos.x;
+    jLevel["WALL"]["START_POS"]["y"] = this->m_start_pos.y;
+
+    jLevel["WALL"]["DISP_POS"]["x"] = this->m_displacement_pos.x;
+    jLevel["WALL"]["DISP_POS"]["y"] = this->m_displacement_pos.y;
+
+    jLevel["WALL"]["LEVEL"] = this->m_level;
+
+    return;
 }

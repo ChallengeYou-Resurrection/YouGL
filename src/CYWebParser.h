@@ -14,5 +14,6 @@ namespace CYWebParser {
 }
 
 CYLevel* loadFile(const std::string& levelCode);
+std::map<std::string, std::string> classifiedLevelCode(const std::string& levelCode);
 
 #endif // CYWEBPARSER_H

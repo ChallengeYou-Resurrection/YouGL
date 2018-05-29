@@ -3,6 +3,11 @@
 
 #include <string>
 #include <regex>
+#include <fstream>
+
+// For the JSON format CY Levels
+#include <Utils/json.h>
+using json = nlohmann::json;
 
 #include "CYWall.h"
 #include "CYPlat.h"
@@ -28,8 +33,10 @@ public:
 
     // Serialize
     bool serializeIntoOldFormat();
+    bool serializeIntoJsonFormat(std::string file_name);
     bool serialize();
 
+    // TODO: Create a static level
     bool compileMap();
 
     // Editor Objects

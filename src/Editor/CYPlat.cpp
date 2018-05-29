@@ -36,3 +36,8 @@ CYPlat::CYPlat(const std::smatch& match_groups)
     sub_match = match_groups[7];
     std::cout << "Level: " << sub_match.str() << std::endl;
 }
+
+void CYPlat::toJsonFormat(json& jLevel, int id)
+{
+    return;
+}

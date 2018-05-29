@@ -13,6 +13,10 @@ public:
     // Construct from Regex
     CYPlat(const std::smatch& match_groups);
 
+    virtual void toJsonFormat(json& jLevel, int id);
+
+    std::string type = "PLAT";
+
 protected:
     sf::Vector2f m_position;
     sf::Vector2f m_size;
