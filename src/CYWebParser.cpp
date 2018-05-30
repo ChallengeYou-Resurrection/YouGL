@@ -1,11 +1,11 @@
 #include "CYWebParser.h"
 
 // Loads the code from an old parser
-CYLevel* loadFile(const std::string& levelCode)
+std::optional<CYLevel> loadFile(const std::string& levelCode)
 {
     // LEVEL STRUCTURE
     // Old format using Adobe Director's default save file parser
-    CYLevel* cyLevel = new CYLevel;
+    CYLevel cyLevel;
     std::map<std::string, std::string> cyTable = classifiedLevelCode(levelCode);
 
     std::smatch match_groups;
@@ -20,27 +20,27 @@ CYLevel* loadFile(const std::string& levelCode)
     if (std::regex_search(levelCode, match_groups, reg_header))
     {
         sub_match = match_groups[1];
-        cyLevel->m_header.name = sub_match.str();
+        cyLevel.m_header.name = sub_match.str();
 
         sub_match = match_groups[2];
-        cyLevel->m_header.levels = std::stoi(sub_match.str());
+        cyLevel.m_header.levels = std::stoi(sub_match.str());
 
         sub_match = match_groups[3];
-        cyLevel->m_header.version = std::stof(sub_match.str());
+        cyLevel.m_header.version = std::stof(sub_match.str());
 
         sub_match = match_groups[4];
-        cyLevel->m_header.author = sub_match.str();
+        cyLevel.m_header.author = sub_match.str();
 
     } else {
         std::cout << "WEBLOADER ERROR: Could not match header" << std::endl;
-        return nullptr;
+        return {};
     }
 
     // DEBUG
-    std::cout << "Name: "  << cyLevel->m_header.name << '\n';
-    std::cout << "Levels: " << cyLevel->m_header.levels << '\n';
-    std::cout << "Version: " << cyLevel->m_header.version << '\n';
-    std::cout << "Author: " << cyLevel->m_header.author << std::endl;
+    std::cout << "Name: "  << cyLevel.m_header.name << '\n';
+    std::cout << "Levels: " << cyLevel.m_header.levels << '\n';
+    std::cout << "Version: " << cyLevel.m_header.version << '\n';
+    std::cout << "Author: " << cyLevel.m_header.author << std::endl;
 
     // GAME GEOMETRY
     // WALLS
@@ -55,7 +55,7 @@ CYLevel* loadFile(const std::string& levelCode)
     {
         std::cout << "Wall ID: " << wall_id << '\n';
 
-        cyLevel->addWall(match_groups);
+        cyLevel.addWall(match_groups);
 
         wall_id++;
         wallCode = match_groups.suffix();
@@ -76,7 +76,7 @@ CYLevel* loadFile(const std::string& levelCode)
 
     while (std::regex_search(platCode, match_groups, reg_plats))
     {
-        cyLevel->addPlat(match_groups);
+        cyLevel.addPlat(match_groups);
 
         platCode = match_groups.suffix();
         std::cout << "------------------" << std::endl;
@@ -125,8 +125,7 @@ std::map<std::string, std::string> classifiedLevelCode(const std::string& levelC
     return cyTable;
 }
 
-
-CYLevel* CYWebParser::loadFileFromWebsite(int gameNumber)
+std::optional<CYLevel> CYWebParser::loadFileFromWebsite(int gameNumber)
 {
     std::cout << "Loading Game #" << gameNumber << '\n';
 
@@ -149,7 +148,7 @@ CYLevel* CYWebParser::loadFileFromWebsite(int gameNumber)
     if (response.getStatus() != 200)
     {
         std::cout << "FAILED, exited with status: " << response.getStatus() << '\n';
-        return nullptr;
+        return {};
 
     } else {
         std::cout << "Loading... \n"  << std::endl;
