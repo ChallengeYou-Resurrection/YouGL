@@ -1,13 +1,7 @@
-#include <iostream>
+#include "Game.h"
 
-#include "CYWebParser.h"
-
-int main(int argc, char** argv)
+int main()
 {
-    CYLevel* cyLevel = CYWebParser::loadFileFromWebsite(10038);
-    cyLevel->serializeIntoJsonFormat("file.cy");
-
-    cyLevel->destroyObjects();
-    delete cyLevel;
-    return 1;
+    Game game;
+    game.run();
 }
