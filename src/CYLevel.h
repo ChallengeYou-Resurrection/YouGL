@@ -6,11 +6,11 @@
 #include <fstream>
 
 // For the JSON format CY Levels
-#include <Utils/json.h>
+#include <json.hpp>
 using json = nlohmann::json;
 
-#include "CYWall.h"
-#include "CYPlat.h"
+#include "Editor/CYWall.h"
+#include "Editor/CYPlat.h"
 
 struct CYLevelHeader
 {
