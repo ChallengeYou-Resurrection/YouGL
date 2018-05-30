@@ -2,13 +2,37 @@
 
 #include "States/StatePlaying.h"
 
+#include <glad.h>
 #include <iostream>
 
 Game::Game()
-:   m_window    ({1280, 720}, "YouGL")
 {
-    m_window.setPosition({m_window.getPosition().x, 0});
-   // m_window.setFramerateLimit(60);
+    //Init the OpenGL Context
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 0;
+    settings.majorVersion = 3;
+    settings.minorVersion = 3;
+    settings.depthBits = 24;
+    settings.stencilBits = 8;
+    m_window.create({ 1280, 720 }, "YouGL", sf::Style::Close, settings);
+    m_window.setVerticalSyncEnabled(true);
+
+    //Init GLAD after creation of context
+    if (!gladLoadGL()) {
+        std::cout << "Unable to load OpenGL libs.\n";
+        exit(-1);
+    }
+
+    if (GLVersion.major < 3) {
+        std::cout << "Your system does not support the correct OpenGL Version.\n"
+            << "Minimum version required: 3. Your version: " << GLVersion.major
+            << "\n";
+        exit(-1);
+    }
+
+    //Additional OpenGL setup things
+    glViewport(0, 0, m_window.getSize().x, m_window.getSize().y);
+    
     pushState<StatePlaying>(*this);
 }
 
