@@ -5,7 +5,7 @@
 #include <iostream>
 
 Game::Game()
-:   m_window    ({1280, 720}, "Space Invaders")
+:   m_window    ({1280, 720}, "YouGL")
 {
     m_window.setPosition({m_window.getPosition().x, 0});
    // m_window.setFramerateLimit(60);
