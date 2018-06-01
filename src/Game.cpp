@@ -15,6 +15,7 @@ Game::Game()
     settings.depthBits = 24;
     settings.stencilBits = 8;
     m_window.create({ 1280, 720 }, "YouGL", sf::Style::Close, settings);
+
     m_window.setVerticalSyncEnabled(true);
 
     //Init GLAD after creation of context
@@ -32,7 +33,7 @@ Game::Game()
 
     //Additional OpenGL setup things
     glViewport(0, 0, m_window.getSize().x, m_window.getSize().y);
-    
+
     pushState<StatePlaying>(*this);
 }
 
@@ -98,7 +99,7 @@ void Game::tryPop()
             pushState(std::move(m_change));
             return;
         }
-        
+
         m_states.pop_back();
     }
 }
