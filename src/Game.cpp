@@ -24,6 +24,7 @@ Game::Game()
         exit(-1);
     }
 
+    //Check version 
     if (GLVersion.major < 3) {
         std::cout << "Your system does not support the correct OpenGL Version.\n"
             << "Minimum version required: 3. Your version: " << GLVersion.major
@@ -74,7 +75,7 @@ void Game::run()
         //Render
         m_window.clear();
         state.render(m_window);
-        counter.draw(m_window);
+       // counter.draw(m_window);
         m_window.display();
 
 
