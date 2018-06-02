@@ -28,7 +28,7 @@ void Renderer::display()
     m_window.display();
 }
 
-const sf::RenderWindow & Renderer::getWindow() const
+const sf::RenderWindow& Renderer::getWindow() const
 {
     return m_window;
 }
