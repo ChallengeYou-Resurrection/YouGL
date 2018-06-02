@@ -7,34 +7,6 @@
 
 Game::Game()
 {
-    //Init the OpenGL Context
-    sf::ContextSettings settings;
-    settings.antialiasingLevel = 0;
-    settings.majorVersion = 3;
-    settings.minorVersion = 3;
-    settings.depthBits = 24;
-    settings.stencilBits = 8;
-    m_window.create({ 1280, 720 }, "YouGL", sf::Style::Close, settings);
-
-    m_window.setVerticalSyncEnabled(true);
-
-    //Init GLAD after creation of context
-    if (!gladLoadGL()) {
-        std::cout << "Unable to load OpenGL libs.\n";
-        exit(-1);
-    }
-
-    //Check version 
-    if (GLVersion.major < 3) {
-        std::cout << "Your system does not support the correct OpenGL Version.\n"
-            << "Minimum version required: 3. Your version: " << GLVersion.major
-            << "\n";
-        exit(-1);
-    }
-
-    //Additional OpenGL setup things
-    glViewport(0, 0, m_window.getSize().x, m_window.getSize().y);
-
     pushState<StatePlaying>(*this);
 }
 
@@ -50,7 +22,7 @@ void Game::run()
     auto lag      = sf::Time::Zero;
 
     //Main loop of the game
-    while (m_window.isOpen() && !m_states.empty()) {
+    while (m_renderer.getWindow().isOpen() && !m_states.empty()) {
         auto& state = getCurrentState();
 
         //Get times
@@ -73,10 +45,9 @@ void Game::run()
         }
 
         //Render
-        m_window.clear();
-        state.render(m_window);
-       // counter.draw(m_window);
-        m_window.display();
+        state.render(m_renderer);
+        counter.draw(m_renderer);
+        m_renderer.display();
 
 
         //Handle window events
@@ -108,13 +79,14 @@ void Game::tryPop()
 //Handles window events, called every frame
 void Game::handleEvent()
 {
-    sf::Event e;
+    sf::Event event;
+        
 
-    while (m_window.pollEvent(e)) {
-        getCurrentState().handleEvent(e);
-        switch (e.type) {
+    while (m_renderer.pollEvent(event)) {
+        getCurrentState().handleEvent(event);
+        switch (event.type) {
             case sf::Event::Closed:
-                m_window.close();
+                m_renderer.closeWindow();
                 break;
 
             default:
@@ -151,5 +123,5 @@ void Game::exitGame()
 //on tin
 const sf::RenderWindow& Game::getWindow() const
 {
-    return m_window;
+    return m_renderer.getWindow();
 }

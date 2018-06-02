@@ -61,7 +61,7 @@ void StatePlaying::fixedUpdate(sf::Time deltaTime)
 
 }
 
-void StatePlaying::render(sf::RenderTarget& renderer)
+void StatePlaying::render(Renderer& renderer)
 {
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 }

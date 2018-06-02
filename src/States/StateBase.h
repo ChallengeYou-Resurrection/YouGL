@@ -5,6 +5,7 @@
 #include "../Util/NonCopyable.h"
 
 class Game;
+class Renderer;
 
 class StateBase : public NonCopyable
 {
@@ -19,7 +20,7 @@ class StateBase : public NonCopyable
         virtual void handleInput() = 0;
         virtual void update(sf::Time deltaTime) {}
         virtual void fixedUpdate(sf::Time deltaTime) {}
-        virtual void render(sf::RenderTarget& renderer) = 0;
+        virtual void render(Renderer& renderer) = 0;
 
     protected:
         Game* m_pGame;

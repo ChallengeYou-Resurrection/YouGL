@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+class Renderer;
 
 class FPSCounter
 {
@@ -9,7 +10,7 @@ class FPSCounter
 
         void update();
 
-        void draw(sf::RenderTarget& renderer);
+        void draw(Renderer& renderer);
 
     private:
         sf::Text m_text;
