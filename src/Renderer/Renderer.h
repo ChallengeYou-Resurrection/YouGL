@@ -6,11 +6,14 @@
 #include <glad.h>
 #include <vector>
 
+class Model;
+
 class Renderer
 {
     public:
         Renderer();
 
+        void draw(const Model& model);
         void draw(const sf::Drawable& drawable);
         void display();
 

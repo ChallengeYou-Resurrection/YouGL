@@ -5,9 +5,8 @@
 
 struct Mesh
 {
-    public:
-        std::vector<GLfloat> verticies;
-        std::vector<GLfloat> texCoords;
-        std::vector<GLfloat> normals;
-        std::vector<GLuint> indices;
+    std::vector<GLfloat> verticies;
+    std::vector<GLfloat> texCoords;
+    std::vector<GLfloat> normals;
+    std::vector<GLuint> indices;
 };
