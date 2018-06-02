@@ -22,6 +22,9 @@ class Renderer
         void initWindow();
         void initGL();
 
+        void prepareSfmlDraw();
+        void endSfmlDraw();
+
         sf::RenderWindow m_window;
         std::vector<const sf::Drawable*> m_sfDraws;
 

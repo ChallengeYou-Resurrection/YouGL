@@ -18,6 +18,13 @@ void Renderer::display()
     m_window.clear();
     //draw opengl here
 
+    //Draw SFML
+    prepareSfmlDraw();
+    for (auto drawable : m_sfDraws) {
+        m_window.draw(*drawable);
+    }
+    
+
     m_window.display();
 }
 
@@ -68,4 +75,23 @@ void Renderer::initGL()
 
     //Additional OpenGL setup things
     glViewport(0, 0, m_window.getSize().x, m_window.getSize().y);
+}
+
+void Renderer::prepareSfmlDraw()
+{
+    glDisable(GL_DEPTH_TEST);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+    glUseProgram(0);
+
+    m_window.pushGLStates();
+    m_window.resetGLStates();
+
+}
+
+void Renderer::endSfmlDraw()
+{
+    m_window.popGLStates();
 }
