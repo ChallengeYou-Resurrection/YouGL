@@ -137,6 +137,7 @@
     <ClCompile Include="src\Renderer\Camera.cpp" />
     <ClCompile Include="src\Renderer\Mesh.cpp" />
     <ClCompile Include="src\Renderer\Model.cpp" />
+    <ClCompile Include="src\Renderer\OpenGLErrorCheck.cpp" />
     <ClCompile Include="src\Renderer\Renderer.cpp" />
     <ClCompile Include="src\ResourceManager\ResourceHolder.cpp" />
     <ClCompile Include="src\States\StatePlaying.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="src\Renderer\Camera.h" />
     <ClInclude Include="src\Renderer\Mesh.h" />
     <ClInclude Include="src\Renderer\Model.h" />
+    <ClInclude Include="src\Renderer\OpenGLErrorCheck.h" />
     <ClInclude Include="src\Renderer\RenderData.h" />
     <ClInclude Include="src\Renderer\Renderer.h" />
     <ClInclude Include="src\ResourceManager\ResourceHolder.h" />

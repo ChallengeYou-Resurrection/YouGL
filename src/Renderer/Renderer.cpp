@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "Model.h"
+#include "OpenGLErrorCheck.h"
 
 Renderer::Renderer()
 {
@@ -12,7 +13,7 @@ Renderer::Renderer()
 
 void Renderer::draw(const Model& model)
 {
-    m_renderData.push_back(model.getRenderData());
+    m_renderData.push_back(&model.getRenderData());
 }
 
 void Renderer::draw(const sf::Drawable& drawable)
@@ -23,12 +24,10 @@ void Renderer::draw(const sf::Drawable& drawable)
 void Renderer::display()
 {
     m_window.clear();
-    //draw opengl here
-
-    //Enable texture stuff here
+    //Draw OpenGL
     for (auto renderData : m_renderData) {
-        renderData.bind();
-        glDrawElements(GL_TRIANGLES, renderData.getIndicesCount(), GL_UNSIGNED_INT, 0);
+        renderData->bind();
+        glDrawElements(GL_TRIANGLES, renderData->getIndicesCount(), GL_UNSIGNED_INT, 0);
     }
 
     //Draw SFML
@@ -37,11 +36,11 @@ void Renderer::display()
         m_window.draw(*drawable);
     }
 
+    endSfmlDraw();
     //Clear the draw buffers
     m_sfDraws.clear();
     m_renderData.clear();
     
-
     m_window.display();
 }
 

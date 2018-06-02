@@ -36,20 +36,21 @@ void Model::create(Mesh& mesh)
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_buffers[index]);
         glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * data.size(), data.data(), GL_STATIC_DRAW);
-        glVertexAttribPointer(0, numDataPerPoint, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
-        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(index, numDataPerPoint, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
+        glEnableVertexAttribArray(index);
     };
     glGenVertexArrays(1, &m_renderData.vao);
     glBindVertexArray(m_renderData.vao);
 
-    glGenBuffers(1, m_buffers.data());
+    glGenBuffers(m_buffers.size(), m_buffers.data());
     createBuffer(0, 3, mesh.verticies);
-   // createBuffer(1, 2, mesh.texCoords);
-   // createBuffer(2, 3, mesh.normals);
+    createBuffer(1, 2, mesh.texCoords);
+    createBuffer(2, 3, mesh.normals);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffers[3]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * mesh.indices.size(), mesh.indices.data(), GL_STATIC_DRAW);
     m_renderData.indicesCount = mesh.indices.size();
+    mesh.clearData();
 }
 
 const RenderData & Model::getRenderData() const

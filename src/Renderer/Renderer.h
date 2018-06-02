@@ -33,6 +33,6 @@ class Renderer
 
         sf::RenderWindow m_window;
         std::vector<const sf::Drawable*> m_sfDraws;
-        std::vector<RenderData> m_renderData;
+        std::vector<const RenderData* > m_renderData;
 
 };
