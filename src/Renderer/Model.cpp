@@ -1,7 +1,7 @@
 #include "Model.h"
 
 #include "Mesh.h"
-
+#include <iostream>
 Model::Model(Mesh& mesh)
 {
     create(mesh);
@@ -32,21 +32,24 @@ Model::~Model()
 
 void Model::create(Mesh& mesh)
 {
-    auto createBuffer = [this](uint8_t index, uint8_t numDataPerPoint, const std::vector<GLfloat>& data)
+    auto createBuffer = [this](int index, int numDataPerPoint, const std::vector<GLfloat>& data)
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_buffers[index]);
         glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * data.size(), data.data(), GL_STATIC_DRAW);
         glVertexAttribPointer(0, numDataPerPoint, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
         glEnableVertexAttribArray(0);
     };
+    glGenVertexArrays(1, &m_renderData.vao);
+    glBindVertexArray(m_renderData.vao);
 
     glGenBuffers(1, m_buffers.data());
     createBuffer(0, 3, mesh.verticies);
-    createBuffer(1, 2, mesh.texCoords);
-    createBuffer(2, 3, mesh.normals);
+   // createBuffer(1, 2, mesh.texCoords);
+   // createBuffer(2, 3, mesh.normals);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffers[3]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(mesh.indices[0]) * mesh.indices.size(), mesh.indices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * mesh.indices.size(), mesh.indices.data(), GL_STATIC_DRAW);
+    m_renderData.indicesCount = mesh.indices.size();
 }
 
 const RenderData & Model::getRenderData() const

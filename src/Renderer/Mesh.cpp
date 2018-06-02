@@ -1,15 +1,16 @@
 #include "Mesh.h"
-/*
-void Mesh::buffer()
+
+template <typename T>
+void clear(std::vector<T>& v)
 {
-    auto uSize = sizeof(GLuint);
-    auto fSize = sizeof(GLfloat);
-
-    auto vSize = verticies.size() * fSize;
-    auto tSize = texCoords.size() * fSize;
-    auto nSize = normals.size() * fSize;
-    auto iSize = indices.size() * uSize;
-
-
+    v.clear();
+    v.shrink_to_fit();
 }
-*/
+
+void Mesh::clearData()
+{
+    clear(verticies);
+    clear(texCoords);
+    clear(normals);
+    clear(indices);
+}

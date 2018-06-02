@@ -6,7 +6,10 @@
 #include <glad.h>
 #include <vector>
 
+#include "RenderData.h"
+
 class Model;
+class RenderData;
 
 class Renderer
 {
@@ -30,5 +33,6 @@ class Renderer
 
         sf::RenderWindow m_window;
         std::vector<const sf::Drawable*> m_sfDraws;
+        std::vector<RenderData> m_renderData;
 
 };

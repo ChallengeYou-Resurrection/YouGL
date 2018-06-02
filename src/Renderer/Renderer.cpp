@@ -2,10 +2,17 @@
 
 #include <iostream>
 
+#include "Model.h"
+
 Renderer::Renderer()
 {
     initWindow();
     initGL();
+}
+
+void Renderer::draw(const Model& model)
+{
+    m_renderData.push_back(model.getRenderData());
 }
 
 void Renderer::draw(const sf::Drawable& drawable)
@@ -18,11 +25,21 @@ void Renderer::display()
     m_window.clear();
     //draw opengl here
 
+    //Enable texture stuff here
+    for (auto renderData : m_renderData) {
+        renderData.bind();
+        glDrawElements(GL_TRIANGLES, renderData.getIndicesCount(), GL_UNSIGNED_INT, 0);
+    }
+
     //Draw SFML
     prepareSfmlDraw();
     for (auto drawable : m_sfDraws) {
         m_window.draw(*drawable);
     }
+
+    //Clear the draw buffers
+    m_sfDraws.clear();
+    m_renderData.clear();
     
 
     m_window.display();

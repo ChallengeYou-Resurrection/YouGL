@@ -3,30 +3,11 @@
 #include <array>
 #include <vector>
 #include <glad.h>
+
 #include "../Util/NonCopyable.h"
+#include "RenderData.h"
 
 struct Mesh;
-
-class Model;
-class RenderData
-{
-        friend class Model;
-    public:
-        void bind()
-        {
-            glBindVertexArray(vao);
-        }
-
-        GLuint getIndicesCount() const
-        {
-            return indicesCount;
-        }
-
-    private:
-        GLuint vao;
-        GLuint indicesCount;
-
-};
 
 class Model : public NonCopyable
 {
