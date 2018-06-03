@@ -76,7 +76,8 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\_Programming_Projects\C++\_Collab\YouGL\YouGL\src\Dependancies;D:\_Programming_Libraries\C++\SFML\MSVC\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\_Programming_Projects\C++\_Collab\YouGL\YouGL\src\Dependencies;D:\_Programming_Libraries\C++\SFML\MSVC\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>D:\_Programming_Libraries\C++\SFML\MSVC\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -139,6 +140,7 @@
     <ClCompile Include="src\Renderer\Model.cpp" />
     <ClCompile Include="src\Renderer\OpenGLErrorCheck.cpp" />
     <ClCompile Include="src\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Renderer\Shader\Shader.cpp" />
     <ClCompile Include="src\Renderer\Shader\ShaderLoader.cpp" />
     <ClCompile Include="src\ResourceManager\ResourceHolder.cpp" />
     <ClCompile Include="src\States\StatePlaying.cpp" />
@@ -159,6 +161,8 @@
     <None Include="sfml-system-d-2.dll" />
     <None Include="sfml-window-2.dll" />
     <None Include="sfml-window-d-2.dll" />
+    <None Include="Shaders\StaticModel.frag" />
+    <None Include="Shaders\StaticModel.vert" />
     <None Include="src\Dependancies\json.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -197,12 +201,14 @@
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\GameObject.h" />
     <ClInclude Include="src\Maths\GlmCommon.h" />
+    <ClInclude Include="src\Maths\Matrix.h" />
     <ClInclude Include="src\Renderer\Camera.h" />
     <ClInclude Include="src\Renderer\Mesh.h" />
     <ClInclude Include="src\Renderer\Model.h" />
     <ClInclude Include="src\Renderer\OpenGLErrorCheck.h" />
     <ClInclude Include="src\Renderer\RenderData.h" />
     <ClInclude Include="src\Renderer\Renderer.h" />
+    <ClInclude Include="src\Renderer\Shader\Shader.h" />
     <ClInclude Include="src\Renderer\Shader\ShaderLoader.h" />
     <ClInclude Include="src\ResourceManager\ResourceHolder.h" />
     <ClInclude Include="src\ResourceManager\ResourceManager.h" />

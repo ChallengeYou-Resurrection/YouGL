@@ -3,7 +3,7 @@
 #include "ShaderLoader.h"
 
 Shader::Shader(const char* vertexFileName, const char* fragFileName)
-    : m_shaderID(loadShader(vertexFileName, fragFileName))
+    : m_shaderID(loadShaders(vertexFileName, fragFileName))
 {
 }
 
@@ -32,5 +32,5 @@ void Shader::bind()
 
 void Shader::create(const char* vertexFileName, const char* fragFileName)
 {
-    m_shaderID = loadShader(vertexFileName, fragFileName)
+    m_shaderID = loadShaders(vertexFileName, fragFileName);
 }

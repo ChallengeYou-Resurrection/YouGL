@@ -9,6 +9,8 @@ Renderer::Renderer()
 {
     initWindow();
     initGL();
+
+    m_staticShader.create("StaticModel", "StaticModel");
 }
 
 void Renderer::draw(const Model& model)
@@ -24,6 +26,8 @@ void Renderer::draw(const sf::Drawable& drawable)
 void Renderer::display()
 {
     m_window.clear();
+
+    m_staticShader.bind();
     //Draw OpenGL
     for (auto renderData : m_renderData) {
         renderData->bind();

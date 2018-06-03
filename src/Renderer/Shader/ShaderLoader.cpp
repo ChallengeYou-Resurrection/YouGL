@@ -1,6 +1,7 @@
 #include "ShaderLoader.h"
 
 #include <stdexcept>
+#include <iostream>
 
 #include "../../Util/FileUtil.h"
 
@@ -19,6 +20,7 @@ namespace
         glGetShaderiv(shaderID, GL_COMPILE_STATUS, &isSuccess);
         if (!isSuccess) {
             glGetShaderInfoLog(shaderID, 512, nullptr, infoLog);
+            std::cout << "Unable to load a shader: " << std::string(infoLog) << "\n";
             throw std::runtime_error("Unable to load a shader: " + std::string(infoLog));
         }
 

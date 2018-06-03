@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glad.h>
+#include <string>
 
-GLuint loadShader(const char* vertexShaderLocation,
-    const char* fragmentShaderLocation);
+GLuint loadShaders(const std::string& vertexShader,
+    const std::string& fragmentShader);
