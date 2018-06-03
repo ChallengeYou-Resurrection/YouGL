@@ -139,6 +139,7 @@
     <ClCompile Include="src\Renderer\Model.cpp" />
     <ClCompile Include="src\Renderer\OpenGLErrorCheck.cpp" />
     <ClCompile Include="src\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Renderer\Shader\ShaderLoader.cpp" />
     <ClCompile Include="src\ResourceManager\ResourceHolder.cpp" />
     <ClCompile Include="src\States\StatePlaying.cpp" />
     <ClCompile Include="src\Util\FileUtil.cpp" />
@@ -202,6 +203,7 @@
     <ClInclude Include="src\Renderer\OpenGLErrorCheck.h" />
     <ClInclude Include="src\Renderer\RenderData.h" />
     <ClInclude Include="src\Renderer\Renderer.h" />
+    <ClInclude Include="src\Renderer\Shader\ShaderLoader.h" />
     <ClInclude Include="src\ResourceManager\ResourceHolder.h" />
     <ClInclude Include="src\ResourceManager\ResourceManager.h" />
     <ClInclude Include="src\States\StateBase.h" />
