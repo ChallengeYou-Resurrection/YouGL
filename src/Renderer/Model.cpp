@@ -20,6 +20,7 @@ Model& Model::operator=(Model&& model)
     m_buffers = std::move(model.m_buffers);
 
     model.m_renderData.vao = 0;
+    return *this;
 }
 
 Model::~Model()

@@ -18,7 +18,7 @@ class RenderData
         }
 
     private:
-        GLuint vao;
-        GLuint indicesCount;
+        GLuint vao = 0;
+        GLuint indicesCount = 0;
 
 };
