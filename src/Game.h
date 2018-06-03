@@ -7,6 +7,8 @@
 #include "States/StateBase.h"
 #include "Util/NonMoveable.h"
 #include "Util/FPSCounter.h"
+#include "Renderer/Renderer.h"
+#include "Renderer/Camera.h"
 
 /**
     Main controlling class of the game.
@@ -36,7 +38,8 @@ class Game : public NonCopyable, public NonMovable
 
         StateBase& getCurrentState();
 
-        sf::RenderWindow m_window;
+        Camera m_camera;
+        Renderer m_renderer;
         std::vector<std::unique_ptr<StateBase>> m_states;
 
         FPSCounter counter;

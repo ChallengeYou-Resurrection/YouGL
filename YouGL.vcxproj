@@ -76,7 +76,8 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\_Programming_Projects\C++\_Collab\YouGL\YouGL\src\Dependancies;D:\_Programming_Libraries\C++\SFML\MSVC\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\_Programming_Projects\C++\_Collab\YouGL\YouGL\src\Dependencies;D:\_Programming_Libraries\C++\SFML\MSVC\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>D:\_Programming_Libraries\C++\SFML\MSVC\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -99,7 +100,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\_Programming_Projects\C++\_Collab\YouGL\YouGL\src\Dependancies;D:\_Programming_Libraries\C++\SFML\MSVC\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\_Programming_Projects\C++\_Collab\YouGL\YouGL\src\Dependencies;D:\_Programming_Libraries\C++\SFML\MSVC\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -127,13 +128,22 @@
   <ItemGroup>
     <ClCompile Include="src\CYLevel.cpp" />
     <ClCompile Include="src\CYWebParser.cpp" />
-    <ClCompile Include="src\Dependancies\glad.c" />
+    <ClCompile Include="src\Dependencies\glad.c" />
     <ClCompile Include="src\Editor\CYPlat.cpp" />
     <ClCompile Include="src\Editor\CYWall.cpp" />
     <ClCompile Include="src\Editor\EditorObject.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Maths\Matrix.cpp" />
+    <ClCompile Include="src\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Renderer\Mesh.cpp" />
+    <ClCompile Include="src\Renderer\Model.cpp" />
+    <ClCompile Include="src\Renderer\OpenGLErrorCheck.cpp" />
+    <ClCompile Include="src\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Renderer\Shader\Shader.cpp" />
+    <ClCompile Include="src\Renderer\Shader\ShaderLoader.cpp" />
+    <ClCompile Include="src\Renderer\Shader\StaticModelShader.cpp" />
     <ClCompile Include="src\ResourceManager\ResourceHolder.cpp" />
     <ClCompile Include="src\States\StatePlaying.cpp" />
     <ClCompile Include="src\Util\FileUtil.cpp" />
@@ -153,41 +163,56 @@
     <None Include="sfml-system-d-2.dll" />
     <None Include="sfml-window-2.dll" />
     <None Include="sfml-window-d-2.dll" />
+    <None Include="Shaders\StaticModel.frag" />
+    <None Include="Shaders\StaticModel.vert" />
     <None Include="src\Dependancies\json.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CYLevel.h" />
     <ClInclude Include="src\CYWebParser.h" />
     <ClInclude Include="src\Dependancies\glad.h" />
+    <ClInclude Include="src\Dependencies\glad.h" />
+    <ClInclude Include="src\Dependencies\json.hpp" />
+    <ClInclude Include="src\Dependencies\selene.h" />
+    <ClInclude Include="src\Dependencies\selene\BaseFun.h" />
+    <ClInclude Include="src\Dependencies\selene\Class.h" />
+    <ClInclude Include="src\Dependencies\selene\ClassFun.h" />
+    <ClInclude Include="src\Dependencies\selene\Ctor.h" />
+    <ClInclude Include="src\Dependencies\selene\Dtor.h" />
+    <ClInclude Include="src\Dependencies\selene\ExceptionHandler.h" />
+    <ClInclude Include="src\Dependencies\selene\ExceptionTypes.h" />
+    <ClInclude Include="src\Dependencies\selene\Fun.h" />
+    <ClInclude Include="src\Dependencies\selene\function.h" />
+    <ClInclude Include="src\Dependencies\selene\LuaName.h" />
+    <ClInclude Include="src\Dependencies\selene\LuaRef.h" />
+    <ClInclude Include="src\Dependencies\selene\MetatableRegistry.h" />
+    <ClInclude Include="src\Dependencies\selene\Obj.h" />
+    <ClInclude Include="src\Dependencies\selene\ObjFun.h" />
+    <ClInclude Include="src\Dependencies\selene\primitives.h" />
+    <ClInclude Include="src\Dependencies\selene\references.h" />
+    <ClInclude Include="src\Dependencies\selene\Registry.h" />
+    <ClInclude Include="src\Dependencies\selene\ResourceHandler.h" />
+    <ClInclude Include="src\Dependencies\selene\Selector.h" />
+    <ClInclude Include="src\Dependencies\selene\State.h" />
+    <ClInclude Include="src\Dependencies\selene\traits.h" />
+    <ClInclude Include="src\Dependencies\selene\Tuple.h" />
+    <ClInclude Include="src\Dependencies\selene\util.h" />
     <ClInclude Include="src\Editor\CYPlat.h" />
     <ClInclude Include="src\Editor\CYWall.h" />
     <ClInclude Include="src\Editor\EditorObject.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\GameObject.h" />
-    <ClInclude Include="src\Dependancies\selene.h" />
-    <ClInclude Include="src\Dependancies\selene\BaseFun.h" />
-    <ClInclude Include="src\Dependancies\selene\Class.h" />
-    <ClInclude Include="src\Dependancies\selene\ClassFun.h" />
-    <ClInclude Include="src\Dependancies\selene\Ctor.h" />
-    <ClInclude Include="src\Dependancies\selene\Dtor.h" />
-    <ClInclude Include="src\Dependancies\selene\ExceptionHandler.h" />
-    <ClInclude Include="src\Dependancies\selene\ExceptionTypes.h" />
-    <ClInclude Include="src\Dependancies\selene\Fun.h" />
-    <ClInclude Include="src\Dependancies\selene\function.h" />
-    <ClInclude Include="src\Dependancies\selene\LuaName.h" />
-    <ClInclude Include="src\Dependancies\selene\LuaRef.h" />
-    <ClInclude Include="src\Dependancies\selene\MetatableRegistry.h" />
-    <ClInclude Include="src\Dependancies\selene\Obj.h" />
-    <ClInclude Include="src\Dependancies\selene\ObjFun.h" />
-    <ClInclude Include="src\Dependancies\selene\primitives.h" />
-    <ClInclude Include="src\Dependancies\selene\references.h" />
-    <ClInclude Include="src\Dependancies\selene\Registry.h" />
-    <ClInclude Include="src\Dependancies\selene\ResourceHandler.h" />
-    <ClInclude Include="src\Dependancies\selene\Selector.h" />
-    <ClInclude Include="src\Dependancies\selene\State.h" />
-    <ClInclude Include="src\Dependancies\selene\traits.h" />
-    <ClInclude Include="src\Dependancies\selene\Tuple.h" />
-    <ClInclude Include="src\Dependancies\selene\util.h" />
+    <ClInclude Include="src\Maths\GlmCommon.h" />
+    <ClInclude Include="src\Maths\Matrix.h" />
+    <ClInclude Include="src\Renderer\Camera.h" />
+    <ClInclude Include="src\Renderer\Mesh.h" />
+    <ClInclude Include="src\Renderer\Model.h" />
+    <ClInclude Include="src\Renderer\OpenGLErrorCheck.h" />
+    <ClInclude Include="src\Renderer\RenderData.h" />
+    <ClInclude Include="src\Renderer\Renderer.h" />
+    <ClInclude Include="src\Renderer\Shader\Shader.h" />
+    <ClInclude Include="src\Renderer\Shader\ShaderLoader.h" />
+    <ClInclude Include="src\Renderer\Shader\StaticModelShader.h" />
     <ClInclude Include="src\ResourceManager\ResourceHolder.h" />
     <ClInclude Include="src\ResourceManager\ResourceManager.h" />
     <ClInclude Include="src\States\StateBase.h" />

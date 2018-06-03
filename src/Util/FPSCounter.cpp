@@ -2,7 +2,7 @@
 
 #include "../ResourceManager/ResourceHolder.h"
 
-#include <iostream>
+#include "../Renderer/Renderer.h"
 
 FPSCounter::FPSCounter()
 {
@@ -27,7 +27,7 @@ void FPSCounter::update()
 }
 
 //Draws the FPS display to the window
-void FPSCounter::draw(sf::RenderTarget& renderer)
+void FPSCounter::draw(Renderer& renderer)
 {
     m_text.setString("FPS " + std::to_string((int)m_fps));
     renderer.draw(m_text);
