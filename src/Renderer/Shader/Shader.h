@@ -2,6 +2,7 @@
 
 #include <glad.h>
 #include "../../Util/NonCopyable.h"
+#include "../../Maths/GlmCommon.h"
 
 class Shader : public NonCopyable
 {
@@ -15,6 +16,11 @@ class Shader : public NonCopyable
         void bind();
 
         void create(const char* vertexFileName, const char* fragFileName);
+
+    protected:
+        GLuint getUniformLocation(const char* name);
+
+        void setMatrixParam(GLuint location, const glm::mat4& param);
 
     private:
         GLuint m_shaderID = 0;

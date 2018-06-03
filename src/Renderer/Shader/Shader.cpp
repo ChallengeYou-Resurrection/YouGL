@@ -34,3 +34,13 @@ void Shader::create(const char* vertexFileName, const char* fragFileName)
 {
     m_shaderID = loadShaders(vertexFileName, fragFileName);
 }
+
+GLuint Shader::getUniformLocation(const char* name)
+{
+    return glGetUniformLocation(m_shaderID, name);
+}
+
+void Shader::setMatrixParam(GLuint location, const glm::mat4& param)
+{
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(param));
+}

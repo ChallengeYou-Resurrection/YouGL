@@ -7,10 +7,11 @@
 #include <vector>
 
 #include "RenderData.h"
-#include "Shader/Shader.h"
+#include "Shader/StaticModelShader.h"
 
 class Model;
 class RenderData;
+class Camera;
 
 class Renderer
 {
@@ -19,7 +20,7 @@ class Renderer
 
         void draw(const Model& model);
         void draw(const sf::Drawable& drawable);
-        void display();
+        void renderScene(const Camera& camera);
 
         const sf::RenderWindow& getWindow() const;
         bool pollEvent(sf::Event& event);
@@ -36,5 +37,5 @@ class Renderer
         std::vector<const sf::Drawable*> m_sfDraws;
         std::vector<const RenderData* > m_renderData;
 
-        Shader m_staticShader;
+        StaticModelShader m_staticModelShader;
 };

@@ -1,16 +1,17 @@
 #include "Renderer.h"
 
 #include <iostream>
-
+#include "Camera.h"
 #include "Model.h"
 #include "OpenGLErrorCheck.h"
+#include "../Maths/Matrix.h"
 
 Renderer::Renderer()
 {
     initWindow();
     initGL();
 
-    m_staticShader.create("StaticModel", "StaticModel");
+    m_staticModelShader.init();
 }
 
 void Renderer::draw(const Model& model)
@@ -23,11 +24,22 @@ void Renderer::draw(const sf::Drawable& drawable)
     m_sfDraws.push_back(&drawable);
 }
 
-void Renderer::display()
+void Renderer::renderScene(const Camera& camera)
 {
-    m_window.clear();
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    m_staticShader.bind();
+    m_staticModelShader.bind();
+    glm::mat4 model;
+    glm::mat4 view;
+
+    model = makeModelMatrix({ 0, 0, -5 }, { 0, 45, 0 });
+    view = makeViewMatrix(camera);
+
+    m_staticModelShader.setProjMatrix(camera.getProjectionMatrix());
+    m_staticModelShader.setModelMatrix(model);
+    m_staticModelShader.setViewMatrix(view);
+
     //Draw OpenGL
     for (auto renderData : m_renderData) {
         renderData->bind();

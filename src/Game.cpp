@@ -47,7 +47,7 @@ void Game::run()
         //Render
         state.render(m_renderer);
         counter.draw(m_renderer);
-        m_renderer.display();
+        m_renderer.renderScene(m_camera);
 
 
         //Handle window events
