@@ -11,7 +11,7 @@ Renderer::Renderer()
     initWindow();
     initGL();
 
-    m_staticModelShader.init();
+    m_shader.create("StaticModel", "StaticModel");
 }
 
 void Renderer::draw(const Model& model)
@@ -26,19 +26,22 @@ void Renderer::draw(const sf::Drawable& drawable)
 
 void Renderer::renderScene(const Camera& camera)
 {
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.2f, 0.2f, 0.22f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    m_staticModelShader.bind();
+    m_shader.bind();
+
+    /*TEMP STUFF*/
     glm::mat4 model;
     glm::mat4 view;
 
-    model = makeModelMatrix({ 0, 0, -5 }, { 0, 45, 0 });
+    model = makeModelMatrix({ { 0, 0, -5 }, { 0, 45, 0 } });
     view = makeViewMatrix(camera);
+    /*TEMP END*/
 
-    m_staticModelShader.setProjMatrix(camera.getProjectionMatrix());
-    m_staticModelShader.setModelMatrix(model);
-    m_staticModelShader.setViewMatrix(view);
+    m_shader.setParameter("projMatrix", camera.getProjectionMatrix());
+    m_shader.setParameter("modelMatrix", model);
+    m_shader.setParameter("viewMatrix", view);
 
     //Draw OpenGL
     for (auto renderData : m_renderData) {
@@ -107,6 +110,7 @@ void Renderer::initGL()
 
     //Additional OpenGL setup things
     glViewport(0, 0, m_window.getSize().x, m_window.getSize().y);
+    glEnable(GL_DEPTH_TEST);
 }
 
 void Renderer::prepareSfmlDraw()

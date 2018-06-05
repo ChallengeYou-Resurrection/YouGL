@@ -3,15 +3,15 @@
 #include "../Renderer/Camera.h"
 
 
-glm::mat4 makeModelMatrix(const glm::vec3& position, const glm::vec3 rotation)
+glm::mat4 makeModelMatrix(const Transform& transform)
 {
     glm::mat4 matrix;
 
-    matrix = glm::rotate(matrix, glm::radians(rotation.x), { 1, 0, 0 });
-    matrix = glm::rotate(matrix, glm::radians(rotation.y), { 0, 1, 0 });
-    matrix = glm::rotate(matrix, glm::radians(rotation.z), { 0, 0, 1 });
+    matrix = glm::rotate(matrix, glm::radians(transform.rotation.x), { 1, 0, 0 });
+    matrix = glm::rotate(matrix, glm::radians(transform.rotation.y), { 0, 1, 0 });
+    matrix = glm::rotate(matrix, glm::radians(transform.rotation.z), { 0, 0, 1 });
 
-    matrix = glm::translate(matrix, position);
+    matrix = glm::translate(matrix, transform.position);
 
     return matrix;
 }

@@ -1,12 +1,16 @@
 #include "Game.h"
 
-#include "States/StatePlaying.h"
+
 
 #include <glad.h>
 #include <iostream>
 
+#include "States/StatePlaying.h"
+#include "Input/KeyboardController.h"
+
 Game::Game()
 {
+    m_controller = std::make_unique<KeyboardController>();
     pushState<StatePlaying>(*this);
 }
 
@@ -14,7 +18,7 @@ Game::Game()
 void Game::run()
 {
     constexpr unsigned TPS = 30; //ticks per seconds
-    const sf::Time     timePerUpdate = sf::seconds(1.0f / float(TPS));
+    const sf::Time timePerUpdate = sf::seconds(1.0f / float(TPS));
     unsigned ticks = 0;
 
     sf::Clock timer;
@@ -33,8 +37,10 @@ void Game::run()
 
         //Real time update
         state.handleInput();
+        m_camera.input(*m_controller, m_renderer.getWindow());
         state.update(elapsed);
         counter.update();
+        m_camera.update(elapsed.asSeconds());
 
         //Fixed time update
         while (lag >= timePerUpdate)
@@ -47,8 +53,7 @@ void Game::run()
         //Render
         state.render(m_renderer);
         counter.draw(m_renderer);
-        m_renderer.renderScene(m_camera);
-
+        m_renderer.renderScene(m_camera); //Finalise render
 
         //Handle window events
         handleEvent();

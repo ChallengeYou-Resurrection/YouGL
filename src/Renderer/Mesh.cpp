@@ -12,5 +12,6 @@ void Mesh::clearData()
     clear(verticies);
     clear(texCoords);
     clear(normals);
+    clear(colour);
     clear(indices);
 }

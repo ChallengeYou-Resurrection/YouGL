@@ -23,5 +23,5 @@ class Model : public NonCopyable
 
     private:
         RenderData m_renderData;
-        std::array<GLuint, 4> m_buffers;
+        std::array<GLuint, 5> m_buffers;
 };

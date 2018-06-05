@@ -19,7 +19,5 @@ class FPSCounter
         sf::Clock m_delayTimer;
         sf::Clock m_fpsTimer;
 
-        float m_fps = 0;
-
         int m_frameCount = 0;
 };

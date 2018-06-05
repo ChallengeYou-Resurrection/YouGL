@@ -134,6 +134,7 @@
     <ClCompile Include="src\Editor\EditorObject.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
+    <ClCompile Include="src\Input\KeyboardController.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Maths\Matrix.cpp" />
     <ClCompile Include="src\Renderer\Camera.cpp" />
@@ -143,7 +144,6 @@
     <ClCompile Include="src\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Renderer\Shader\Shader.cpp" />
     <ClCompile Include="src\Renderer\Shader\ShaderLoader.cpp" />
-    <ClCompile Include="src\Renderer\Shader\StaticModelShader.cpp" />
     <ClCompile Include="src\ResourceManager\ResourceHolder.cpp" />
     <ClCompile Include="src\States\StatePlaying.cpp" />
     <ClCompile Include="src\Util\FileUtil.cpp" />
@@ -202,6 +202,8 @@
     <ClInclude Include="src\Editor\EditorObject.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\GameObject.h" />
+    <ClInclude Include="src\Input\Controller.h" />
+    <ClInclude Include="src\Input\KeyboardController.h" />
     <ClInclude Include="src\Maths\GlmCommon.h" />
     <ClInclude Include="src\Maths\Matrix.h" />
     <ClInclude Include="src\Renderer\Camera.h" />
@@ -212,7 +214,7 @@
     <ClInclude Include="src\Renderer\Renderer.h" />
     <ClInclude Include="src\Renderer\Shader\Shader.h" />
     <ClInclude Include="src\Renderer\Shader\ShaderLoader.h" />
-    <ClInclude Include="src\Renderer\Shader\StaticModelShader.h" />
+    <ClInclude Include="src\Renderer\Transform.h" />
     <ClInclude Include="src\ResourceManager\ResourceHolder.h" />
     <ClInclude Include="src\ResourceManager\ResourceManager.h" />
     <ClInclude Include="src\States\StateBase.h" />

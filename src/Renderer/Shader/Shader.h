@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glad.h>
+#include <unordered_map>
 #include "../../Util/NonCopyable.h"
 #include "../../Maths/GlmCommon.h"
 
@@ -17,11 +18,11 @@ class Shader : public NonCopyable
 
         void create(const char* vertexFileName, const char* fragFileName);
 
-    protected:
-        GLuint getUniformLocation(const char* name);
-
-        void setMatrixParam(GLuint location, const glm::mat4& param);
+        void setParameter(const char* name, const glm::mat4& value);
 
     private:
+        GLuint getUniformLocation(const char* name);
+
+        std::unordered_map<std::string, GLuint> m_uniformLocations;
         GLuint m_shaderID = 0;
 };

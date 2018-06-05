@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "RenderData.h"
-#include "Shader/StaticModelShader.h"
+#include "Shader/Shader.h"
 
 class Model;
 class RenderData;
@@ -37,5 +37,5 @@ class Renderer
         std::vector<const sf::Drawable*> m_sfDraws;
         std::vector<const RenderData* > m_renderData;
 
-        StaticModelShader m_staticModelShader;
+        Shader m_shader;
 };

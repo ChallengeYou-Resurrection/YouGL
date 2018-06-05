@@ -10,6 +10,8 @@
 #include "Renderer/Renderer.h"
 #include "Renderer/Camera.h"
 
+#include "Input/Controller.h"
+
 /**
     Main controlling class of the game.
     Handles state switches and the main loop, as well
@@ -38,8 +40,12 @@ class Game : public NonCopyable, public NonMovable
 
         StateBase& getCurrentState();
 
+        
         Camera m_camera;
         Renderer m_renderer;
+        std::unique_ptr<Controller> m_controller;
+
+        std::unique_ptr<StateBase> m_change;
         std::vector<std::unique_ptr<StateBase>> m_states;
 
         FPSCounter counter;
@@ -47,7 +53,7 @@ class Game : public NonCopyable, public NonMovable
         bool m_shouldPop = false;
         bool m_shouldExit = false;
         bool m_shouldChageState = false;
-        std::unique_ptr<StateBase> m_change;
+        
 
 };
 

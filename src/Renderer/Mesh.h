@@ -8,6 +8,7 @@ struct Mesh
     std::vector<GLfloat> verticies;
     std::vector<GLfloat> texCoords;
     std::vector<GLfloat> normals;
+    std::vector<GLfloat> colour;
     std::vector<GLuint> indices;
 
     void clearData();

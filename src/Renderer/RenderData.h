@@ -20,5 +20,4 @@ class RenderData
     private:
         GLuint vao = 0;
         GLuint indicesCount = 0;
-
 };
