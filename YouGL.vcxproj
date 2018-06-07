@@ -132,6 +132,7 @@
     <ClCompile Include="src\Editor\CYPlat.cpp" />
     <ClCompile Include="src\Editor\CYWall.cpp" />
     <ClCompile Include="src\Editor\EditorObject.cpp" />
+    <ClCompile Include="src\Editor\GeoOctree.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\Input\KeyboardController.cpp" />
@@ -200,6 +201,7 @@
     <ClInclude Include="src\Editor\CYPlat.h" />
     <ClInclude Include="src\Editor\CYWall.h" />
     <ClInclude Include="src\Editor\EditorObject.h" />
+    <ClInclude Include="src\Editor\GeoOctree.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\GameObject.h" />
     <ClInclude Include="src\Input\Controller.h" />

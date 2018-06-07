@@ -14,6 +14,8 @@ class Controller
         virtual bool jumpPressed() const = 0;
         virtual bool firePressed() const = 0;
 
+        //virtual bool mouseLock() = 0;
+
         virtual glm::vec3 getLookChange(const sf::RenderWindow& window) const = 0;
 
     protected:
@@ -23,7 +25,8 @@ class Controller
             Back,
             Left,
             Right,
-            Jump, 
-            Fire
+            Jump,
+            Fire,
+            MouseLock
         };
 };

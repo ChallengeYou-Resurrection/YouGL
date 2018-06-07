@@ -32,18 +32,16 @@ CYWall::CYWall(const std::smatch& match_groups)
 
     // If 10 doesn't exist then 9 = Level, else 9 = Z_Index
     if (match_groups[10] != "") {
-        sub_match = match_groups[9];
-        //std::cout << "Z_Index: " << sub_match.str() << std::endl;
-
-        sub_match = match_groups[10];
-        //std::cout << "Level: " << sub_match.str() << std::endl;
+        sub_match = match_groups[9];    // Z_Index
+        sub_match = match_groups[10];   // Level
     } else {
-        sub_match = match_groups[9];
-        //std::cout << "Level: " << sub_match.str() << std::endl;
+        sub_match = match_groups[9];    // Level
     }
 
     this->type = "WALL";
 }
+
+
 
 void CYWall::toJsonFormat(json& jLevel, int id)
 {

@@ -85,7 +85,7 @@ void Game::tryPop()
 void Game::handleEvent()
 {
     sf::Event event;
-        
+
 
     while (m_renderer.pollEvent(event)) {
         getCurrentState().handleEvent(event);

@@ -62,6 +62,8 @@ class GeoOctree
     protected:
 
     private:
+        int size;
+
         std::vector<std::shared_ptr<EditorObject>> m_objects;
 
         bool subdivided = false;

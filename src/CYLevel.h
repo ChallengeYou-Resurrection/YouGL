@@ -3,6 +3,7 @@
 
 #include <string>
 #include <regex>
+#include <memory>
 #include <fstream>
 
 // For the JSON format CY Levels
@@ -11,6 +12,7 @@ using json = nlohmann::json;
 
 #include "Editor/CYWall.h"
 #include "Editor/CYPlat.h"
+#include "Editor/GeoOctree.h"
 
 struct CYLevelHeader
 {
@@ -25,6 +27,8 @@ struct CYLevelHeader
 class CYLevel
 {
 public:
+    CYLevel();
+
     CYLevelHeader m_header;
 
     // Editor
@@ -47,7 +51,9 @@ public:
     void destroyObjects();
 
 private:
-    std::vector<EditorObject*> m_editorObjects;
+    std::vector<std::shared_ptr<EditorObject>> m_editorObjects;
+
+    GeoOctree m_octree;
 };
 
 #endif // CYLEVEL_H

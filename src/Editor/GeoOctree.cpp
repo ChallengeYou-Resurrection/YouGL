@@ -2,7 +2,7 @@
 
 GeoOctree::GeoOctree(int octreeSize)
 {
-    //ctor
+    size = octreeSize;
 }
 
 void GeoOctree::insertGeometry(std::unique_ptr<EditorObject> obj)

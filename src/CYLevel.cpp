@@ -1,15 +1,20 @@
 #include "CYLevel.h"
 
+CYLevel::CYLevel()
+: m_octree(512) {
+
+}
+
 void CYLevel::addWall(const std::smatch& match_groups)
 {
-    CYWall *wall = new CYWall(match_groups);
-    m_editorObjects.push_back(wall);
+    std::shared_ptr<EditorObject> wall = std::make_shared<CYWall>(match_groups);
+    m_editorObjects.push_back(std::move(wall));
 }
 
 void CYLevel::addPlat(const std::smatch& match_groups)
 {
-    CYPlat *plat = new CYPlat(match_groups);
-    m_editorObjects.push_back(plat);
+    std::shared_ptr<EditorObject> plat = std::make_shared<CYPlat>(match_groups);
+    m_editorObjects.push_back(std::move(plat));
 }
 
 bool CYLevel::serializeIntoJsonFormat(std::string file_name)
@@ -45,8 +50,9 @@ bool CYLevel::serializeIntoJsonFormat(std::string file_name)
 
 void CYLevel::destroyObjects()
 {
-    for (auto e_obj : m_editorObjects)
+    // Smart Pointers ;)
+    /*for (auto e_obj : m_editorObjects)
     {
         delete e_obj;
-    }
+    }*/
 }
