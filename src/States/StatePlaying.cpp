@@ -9,6 +9,8 @@
 #include "../Renderer/Model.h"
 #include "../Renderer/Mesh.h"
 
+#include "../CYWebParser.h"
+
 std::vector<GLfloat> vertices =
 {
     0.5f,  0.5f, 0.0f,  // Top Right
