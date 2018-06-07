@@ -13,6 +13,7 @@ public:
     EditorObject();
 
     virtual void toJsonFormat(json& jLevel, int id) = 0;
+    //virtual void createMesh();
 
     std::string type = "NONE";
 private:

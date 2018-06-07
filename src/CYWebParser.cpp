@@ -85,7 +85,10 @@ std::optional<CYLevel> loadFile(const std::string& levelCode)
     std::map<std::string, std::string> classes = classifiedLevelCode(levelCode);
 
     // Return pointer to CYLevel
-    return cyLevel;
+    if (true)
+        return cyLevel;
+
+    return {};
 }
 
 std::map<std::string, std::string> classifiedLevelCode(const std::string& levelCode)
