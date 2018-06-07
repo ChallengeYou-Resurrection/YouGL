@@ -47,6 +47,8 @@ public:
     void addWall(const std::smatch& match_groups);
     void addPlat(const std::smatch& match_groups);
 
+    void drawGeometry(Renderer& renderer);
+
     // Clean up
     void destroyObjects();
 

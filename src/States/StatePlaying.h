@@ -3,6 +3,9 @@
 
 #include "StateBase.h"
 
+#include "CYLevel.h"
+#include "CYWebParser.h"
+
 /**
     Game state for the main part of the game
 */
@@ -18,4 +21,5 @@ public:
     void render(Renderer& renderer) override;
 
 private:
+    CYLevel m_level;
 };

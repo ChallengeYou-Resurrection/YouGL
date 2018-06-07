@@ -5,7 +5,7 @@
 
 struct Mesh
 {
-    std::vector<GLfloat> verticies;
+    std::vector<GLfloat> vertices;
     std::vector<GLfloat> texCoords;
     std::vector<GLfloat> normals;
     std::vector<GLfloat> colour;
