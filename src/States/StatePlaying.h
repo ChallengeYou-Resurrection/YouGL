@@ -2,9 +2,7 @@
 
 
 #include "StateBase.h"
-
-#include "CYLevel.h"
-#include "CYWebParser.h"
+#include "../CYLevel.h"
 
 /**
     Game state for the main part of the game

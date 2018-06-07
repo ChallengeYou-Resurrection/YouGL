@@ -99,7 +99,7 @@ std::map<std::string, std::string> classifiedLevelCode(const std::string& levelC
     bool isInString = false;
 
     // length 6, at(5)
-    while (charPos < (levelCode.length() - 2))
+    while ((unsigned)charPos < (levelCode.length() - 2))
     {
         if (levelCode.at(charPos) == '"')
             isInString = !isInString;

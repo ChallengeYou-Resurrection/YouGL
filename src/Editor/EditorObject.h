@@ -1,9 +1,9 @@
 #ifndef EDITOROBJECT_H
 #define EDITOROBJECT_H
 
-#include "Renderer/Model.h"
-#include "Renderer/Mesh.h"
-#include "Renderer/Renderer.h"
+#include "../Renderer/Model.h"
+#include "../Renderer/Mesh.h"
+#include "../Renderer/Renderer.h"
 
 #include <regex>
 
