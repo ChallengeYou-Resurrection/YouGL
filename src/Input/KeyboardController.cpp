@@ -50,11 +50,18 @@ glm::vec3 KeyboardController::getLookChange(const sf::RenderWindow& window) cons
     auto pos = sf::Mouse::getPosition(window);
     auto change = pos - lastPosition;
 
-    //sf::Mouse::setPosition(center, window);
-    lastPosition = pos;
+    if (m_mouseLocked)
+    {
+        sf::Mouse::setPosition(center, window);
+        lastPosition = center;
+    } else {
+        lastPosition = pos;
+    }
+
     return
     {
-        change.y/10, change.x/10, 0
+        // Convert to float for that smooth movement
+        change.y/10.f, change.x/10.f, 0
     };
 }
 
