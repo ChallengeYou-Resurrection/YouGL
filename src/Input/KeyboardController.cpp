@@ -50,7 +50,7 @@ glm::vec3 KeyboardController::getLookChange(const sf::RenderWindow& window) cons
     auto pos = sf::Mouse::getPosition(window);
     auto change = pos - lastPosition;
 
-    //sf::Mouse::setPosition(center, window);
+    sf::Mouse::setPosition(center, window);
     lastPosition = pos;
     return
     {
