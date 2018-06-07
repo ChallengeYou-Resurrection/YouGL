@@ -13,10 +13,10 @@
 
 std::vector<GLfloat> vertices =
 {
-    0.5f,  0.5f, 0.0f,  // Top Right
-    0.5f, -0.5f, 0.0f,  // Bottom Right
-    -0.5f, -0.5f, 0.0f,  // Bottom Left
-    -0.5f,  0.5f, 0.0f   // Top Left
+    0.5f,  0.5f, 15.0f,  // Top Right
+    0.5f, -0.5f, 15.0f,  // Bottom Right
+    -0.5f, -0.5f, 15.0f,  // Bottom Left
+    -0.5f,  0.5f, 15.0f   // Top Left
 };
 
 std::vector<GLfloat> texCoords =
@@ -59,6 +59,9 @@ StatePlaying::StatePlaying(Game& game)
 {
     // Load level
     m_level = CYWebParser::loadFileFromWebsite(257);
+
+    m_level.serializeIntoJsonFormat("tower.cy");
+
 
     mesh.vertices = vertices;
     mesh.texCoords = texCoords;

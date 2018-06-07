@@ -6,15 +6,15 @@ CYWall::CYWall(const std::smatch& match_groups)
 
     // Start Position
     sub_match = match_groups[1];
-    this->m_start_pos = sf::Vector2f(std::stof(sub_match.str()), 0);
+    this->m_displacement_pos = sf::Vector2f(std::stof(sub_match.str()), 0);
     sub_match = match_groups[2];
-    this->m_start_pos.y = std::stof(sub_match.str());
+    this->m_displacement_pos.y = std::stof(sub_match.str());
 
     // Displacement Position
     sub_match = match_groups[3];
-    this->m_displacement_pos = sf::Vector2f(std::stof(sub_match.str()), 0);
+    this->m_start_pos = sf::Vector2f(std::stof(sub_match.str()), 0);
     sub_match = match_groups[4];
-    this->m_displacement_pos.y = std::stof(sub_match.str());
+    this->m_start_pos.y = std::stof(sub_match.str());
 
     // 5 = Colour, 6 = TextureID
     if (match_groups[5] != "")
@@ -44,12 +44,18 @@ CYWall::CYWall(const std::smatch& match_groups)
 void CYWall::createModel() {
     Mesh mesh;
 
-    mesh.vertices.insert(mesh.vertices.end(), {(m_start_pos.x                         ), 1, (m_start_pos.y                        )});
+    /*mesh.vertices.insert(mesh.vertices.end(), {(m_start_pos.x                         ), 1, (m_start_pos.y                        )});
     mesh.vertices.insert(mesh.vertices.end(), {(m_start_pos.x + m_displacement_pos.x  ), 1, (m_start_pos.y + m_displacement_pos.y )});
     mesh.vertices.insert(mesh.vertices.end(), {(m_start_pos.x + m_displacement_pos.x  ), 0, (m_start_pos.y + m_displacement_pos.y )});
     mesh.vertices.insert(mesh.vertices.end(), {(m_start_pos.x                         ), 0, (m_start_pos.y                        )});
+    */
 
-    mesh.indices = {0, 1, 3, 1, 2, 3};
+    mesh.vertices.insert(mesh.vertices.end(), {(m_start_pos.x                         ) / 50.f,  0.5f, (m_start_pos.y                            ) / 50.f});
+    mesh.vertices.insert(mesh.vertices.end(), {(m_start_pos.x + m_displacement_pos.x  ) / 50.f,  0.5f, (m_start_pos.y + m_displacement_pos.y     ) / 50.f});
+    mesh.vertices.insert(mesh.vertices.end(), {(m_start_pos.x + m_displacement_pos.x  ) / 50.f, -0.5f, (m_start_pos.y + m_displacement_pos.y ) / 50.f});
+    mesh.vertices.insert(mesh.vertices.end(), {(m_start_pos.x                         ) / 50.f, -0.5f, (m_start_pos.y                        ) / 50.f});
+
+    mesh.indices = {0, 3, 1, 1, 2, 3};
 
     mesh.texCoords =
     {
