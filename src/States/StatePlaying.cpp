@@ -58,7 +58,7 @@ StatePlaying::StatePlaying(Game& game)
 :   StateBase   (game)
 {
     // Load level
-    m_level = CYWebParser::loadFileFromWebsite(100000);
+    m_level = CYWebParser::loadFileFromWebsite(257);
 
     mesh.vertices = vertices;
     mesh.texCoords = texCoords;

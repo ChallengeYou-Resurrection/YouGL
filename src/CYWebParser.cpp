@@ -48,7 +48,11 @@ CYLevel loadFile(const std::string& levelCode)
     // Tested with versions 2.13, 3.12, 3.34, 3.59, 3.68, 3.84
     // TODO: Are there walls with displacement in the decimal direction? (If so please msg me)
     std::string wallCode = cyTable.at("walls");
+#ifdef _MSC_VER //If the compiler is MSVC
     std::regex reg_walls("\\[(-?\\d+), (-?\\d+), (-?\\d+), (-?\\d+), \\[(c[^\\)]*\\))?(\\d+)?, (c[^\\)]*\\))?(\\d+)?]?, (\\d+)],? ?(\\d+)?");
+#else 
+    std::regex reg_walls("\\[(-?\\d+), (-?\\d+), (-?\\d+), (-?\\d+), \\[(c[^\\)]*\\))?(\\d+)?, (c[^\\)]*\\))?(\\d+)?]?, (\\d+)],? ?(\\d+)?");
+#endif
 
     int wall_id = 0;
     while (std::regex_search(wallCode, match_groups, reg_walls))
