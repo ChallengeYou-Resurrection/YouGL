@@ -91,14 +91,16 @@ void CYWall::render(Renderer& renderer)
 
 void CYWall::toJsonFormat(json& jLevel, int id)
 {
+    std::string itemName = "WALL_" + std::to_string(id);
+
     // Add in the properties to JSON
-    jLevel["WALL"]["START_POS"]["x"] = m_start_pos.x;
-    jLevel["WALL"]["START_POS"]["y"] = this->m_start_pos.y;
+    jLevel[itemName]["START_POS"]["x"] = m_start_pos.x;
+    jLevel[itemName]["START_POS"]["y"] = this->m_start_pos.y;
 
-    jLevel["WALL"]["DISP_POS"]["x"] = this->m_displacement_pos.x;
-    jLevel["WALL"]["DISP_POS"]["y"] = this->m_displacement_pos.y;
+    jLevel[itemName]["DISP_POS"]["x"] = this->m_displacement_pos.x;
+    jLevel[itemName]["DISP_POS"]["y"] = this->m_displacement_pos.y;
 
-    jLevel["WALL"]["LEVEL"] = this->m_level;
+    jLevel[itemName]["LEVEL"] = this->m_level;
 
     return;
 }
