@@ -1,7 +1,7 @@
 #include "CYWebParser.h"
 
 // Loads the code from an old parser
-std::optional<CYLevel> loadFile(const std::string& levelCode)
+CYLevel loadFile(const std::string& levelCode)
 {
     // LEVEL STRUCTURE
     // Old format using Adobe Director's default save file parser
@@ -85,10 +85,7 @@ std::optional<CYLevel> loadFile(const std::string& levelCode)
     std::map<std::string, std::string> classes = classifiedLevelCode(levelCode);
 
     // Return pointer to CYLevel
-    if (true)
-        return cyLevel;
-
-    return {};
+    return cyLevel;
 }
 
 std::map<std::string, std::string> classifiedLevelCode(const std::string& levelCode)
@@ -128,7 +125,7 @@ std::map<std::string, std::string> classifiedLevelCode(const std::string& levelC
     return cyTable;
 }
 
-std::optional<CYLevel> CYWebParser::loadFileFromWebsite(int gameNumber)
+CYLevel CYWebParser::loadFileFromWebsite(int gameNumber)
 {
     std::cout << "Loading Game #" << gameNumber << '\n';
 
