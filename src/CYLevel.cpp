@@ -48,6 +48,14 @@ bool CYLevel::serializeIntoJsonFormat(std::string file_name)
     return true;
 }
 
+void CYLevel::drawGeometry(Renderer& renderer)
+{
+    for (auto obj : m_editorObjects)
+    {
+        obj->render(renderer);
+    }
+}
+
 void CYLevel::destroyObjects()
 {
     // Smart Pointers ;)

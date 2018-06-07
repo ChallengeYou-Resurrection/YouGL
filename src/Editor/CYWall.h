@@ -15,6 +15,9 @@ public:
 
     virtual void toJsonFormat(json& jLevel, int id);
 
+    virtual void createModel();
+    virtual void render(Renderer& renderer);
+
 private:
     sf::Vector2f m_start_pos = sf::Vector2f(0, 0);
     sf::Vector2f m_displacement_pos = sf::Vector2f(0, 0);

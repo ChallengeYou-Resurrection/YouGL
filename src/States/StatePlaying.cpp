@@ -17,7 +17,7 @@ std::vector<GLfloat> vertices =
     -0.5f,  0.5f, 0.0f   // Top Left
 };
 
-std::vector<GLfloat> texCoords = 
+std::vector<GLfloat> texCoords =
 {
     1.0f, 1.0f,
     1.0f, 0.0f,
@@ -55,7 +55,10 @@ Model model;
 StatePlaying::StatePlaying(Game& game)
 :   StateBase   (game)
 {
-    mesh.verticies = vertices;
+    // Load level
+    m_level = CYWebParser::loadFileFromWebsite(100000);
+
+    mesh.vertices = vertices;
     mesh.texCoords = texCoords;
     mesh.normals = normals;
     mesh.colour = colours;
@@ -87,4 +90,6 @@ void StatePlaying::fixedUpdate(sf::Time deltaTime)
 void StatePlaying::render(Renderer& renderer)
 {
     renderer.draw(model);
+
+    m_level.drawGeometry(renderer);
 }

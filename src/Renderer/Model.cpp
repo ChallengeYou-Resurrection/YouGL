@@ -45,7 +45,7 @@ void Model::create(Mesh& mesh)
 
     GLuint currBuffer = 0;
     glGenBuffers(m_buffers.size(), m_buffers.data());
-    createBuffer(currBuffer++, 3, mesh.verticies);
+    createBuffer(currBuffer++, 3, mesh.vertices);
     createBuffer(currBuffer++, 2, mesh.texCoords);
     createBuffer(currBuffer++, 3, mesh.normals);
     createBuffer(currBuffer++, 3, mesh.colour);

@@ -15,6 +15,9 @@ public:
 
     virtual void toJsonFormat(json& jLevel, int id);
 
+    virtual void createModel();
+    virtual void render(Renderer& renderer);
+
     std::string type = "PLAT";
 
 protected:

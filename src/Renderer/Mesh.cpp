@@ -9,7 +9,7 @@ void clear(std::vector<T>& v)
 
 void Mesh::clearData()
 {
-    clear(verticies);
+    clear(vertices);
     clear(texCoords);
     clear(normals);
     clear(colour);
