@@ -173,7 +173,6 @@
     <ClInclude Include="src\CYWebParser.h" />
     <ClInclude Include="src\Dependancies\glad.h" />
     <ClInclude Include="src\Dependencies\glad.h" />
-    <ClInclude Include="src\Dependencies\json.hpp" />
     <ClInclude Include="src\Editor\CYPlat.h" />
     <ClInclude Include="src\Editor\CYWall.h" />
     <ClInclude Include="src\Editor\EditorObject.h" />

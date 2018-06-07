@@ -8,7 +8,7 @@
 #include <regex>
 
 // For the JSON format CY Levels
-#include <json.hpp>
+#include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
 const float WORLD_WIDTH_SCALE  = 1.0f;
