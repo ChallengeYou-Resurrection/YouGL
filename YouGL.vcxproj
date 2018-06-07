@@ -76,11 +76,11 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\_Programming_Projects\C++\_Collab\YouGL\YouGL\src\Dependencies;D:\_Programming_Libraries\C++\SFML\MSVC\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\_Programming_Projects\C++\_Collab\YouGL\YouGL\src\Dependencies;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>D:\_Programming_Libraries\C++\SFML\MSVC\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-audio-d.lib;sfml-network-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -100,14 +100,14 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\_Programming_Projects\C++\_Collab\YouGL\YouGL\src\Dependencies;D:\_Programming_Libraries\C++\SFML\MSVC\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\_Programming_Projects\C++\_Collab\YouGL\YouGL\src\Dependencies;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>D:\_Programming_Libraries\C++\SFML\MSVC\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics.lib;sfml-audio.lib;sfml-network.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -173,31 +173,6 @@
     <ClInclude Include="src\CYWebParser.h" />
     <ClInclude Include="src\Dependancies\glad.h" />
     <ClInclude Include="src\Dependencies\glad.h" />
-    <ClInclude Include="src\Dependencies\json.hpp" />
-    <ClInclude Include="src\Dependencies\selene.h" />
-    <ClInclude Include="src\Dependencies\selene\BaseFun.h" />
-    <ClInclude Include="src\Dependencies\selene\Class.h" />
-    <ClInclude Include="src\Dependencies\selene\ClassFun.h" />
-    <ClInclude Include="src\Dependencies\selene\Ctor.h" />
-    <ClInclude Include="src\Dependencies\selene\Dtor.h" />
-    <ClInclude Include="src\Dependencies\selene\ExceptionHandler.h" />
-    <ClInclude Include="src\Dependencies\selene\ExceptionTypes.h" />
-    <ClInclude Include="src\Dependencies\selene\Fun.h" />
-    <ClInclude Include="src\Dependencies\selene\function.h" />
-    <ClInclude Include="src\Dependencies\selene\LuaName.h" />
-    <ClInclude Include="src\Dependencies\selene\LuaRef.h" />
-    <ClInclude Include="src\Dependencies\selene\MetatableRegistry.h" />
-    <ClInclude Include="src\Dependencies\selene\Obj.h" />
-    <ClInclude Include="src\Dependencies\selene\ObjFun.h" />
-    <ClInclude Include="src\Dependencies\selene\primitives.h" />
-    <ClInclude Include="src\Dependencies\selene\references.h" />
-    <ClInclude Include="src\Dependencies\selene\Registry.h" />
-    <ClInclude Include="src\Dependencies\selene\ResourceHandler.h" />
-    <ClInclude Include="src\Dependencies\selene\Selector.h" />
-    <ClInclude Include="src\Dependencies\selene\State.h" />
-    <ClInclude Include="src\Dependencies\selene\traits.h" />
-    <ClInclude Include="src\Dependencies\selene\Tuple.h" />
-    <ClInclude Include="src\Dependencies\selene\util.h" />
     <ClInclude Include="src\Editor\CYPlat.h" />
     <ClInclude Include="src\Editor\CYWall.h" />
     <ClInclude Include="src\Editor\EditorObject.h" />
