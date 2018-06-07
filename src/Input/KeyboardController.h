@@ -22,4 +22,6 @@ class KeyboardController : public Controller
         bool isPressed(Controller::Input input) const;
 
         std::unordered_map<Controller::Input, sf::Keyboard::Key> m_keyMap;
+
+        bool m_mouseLocked = true;
 };
