@@ -1,8 +1,10 @@
 #include "FPSCounter.h"
 
 #include "../ResourceManager/ResourceHolder.h"
+#include "../Renderer/Renderer.h"
 
-#include <iostream>
+#include <sstream>
+#include <iomanip>
 
 FPSCounter::FPSCounter()
 {
@@ -20,15 +22,19 @@ void FPSCounter::update()
     m_frameCount++;
 
     if (m_delayTimer.getElapsedTime().asSeconds() > 0.2) {
-        m_fps = m_frameCount / m_fpsTimer.restart().asSeconds();
+        float fps = m_frameCount / m_fpsTimer.restart().asSeconds();
         m_frameCount = 0;
         m_delayTimer.restart();
+        std::ostringstream stream;
+        stream << "Frame time: ";
+        stream << std::setprecision(2) << std::fixed << std::showpoint << (1000.0f / fps) << '\n';
+        m_text.setString(stream.str());
+        
     }
 }
 
 //Draws the FPS display to the window
-void FPSCounter::draw(sf::RenderTarget& renderer)
+void FPSCounter::draw(Renderer& renderer)
 {
-    m_text.setString("FPS " + std::to_string((int)m_fps));
     renderer.draw(m_text);
 }
