@@ -48,6 +48,14 @@ bool CYLevel::serializeIntoJsonFormat(std::string file_name)
     return true;
 }
 
+void CYLevel::buildGeometry()
+{
+    for (auto obj : m_editorObjects)
+    {
+        obj->createModel();
+    }
+}
+
 void CYLevel::drawGeometry(Renderer& renderer)
 {
     for (auto obj : m_editorObjects)

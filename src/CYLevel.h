@@ -48,6 +48,7 @@ public:
     void addPlat(const std::smatch& match_groups);
 
     void drawGeometry(Renderer& renderer);
+    void buildGeometry();
 
     // Clean up
     void destroyObjects();

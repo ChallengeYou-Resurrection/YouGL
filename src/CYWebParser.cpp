@@ -53,14 +53,14 @@ CYLevel loadFile(const std::string& levelCode)
     int wall_id = 0;
     while (std::regex_search(wallCode, match_groups, reg_walls))
     {
-        std::cout << "Wall ID: " << wall_id << '\n';
+        //std::cout << "Wall ID: " << wall_id << '\n';
 
         cyLevel.addWall(match_groups);
 
         wall_id++;
         wallCode = match_groups.suffix();
 
-        std::cout << "------------------" << std::endl;
+        //std::cout << "------------------" << std::endl;
     }
 
     // PLATFORMS
@@ -79,10 +79,13 @@ CYLevel loadFile(const std::string& levelCode)
         cyLevel.addPlat(match_groups);
 
         platCode = match_groups.suffix();
-        std::cout << "------------------" << std::endl;
+        //std::cout << "------------------" << std::endl;
     }
 
     std::map<std::string, std::string> classes = classifiedLevelCode(levelCode);
+
+    cyLevel.buildGeometry();
+    std::cout << "done" << std::endl;
 
     return cyLevel;
 }
