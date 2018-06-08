@@ -14,6 +14,7 @@ class KeyboardController : public Controller
         bool leftPressed() const;
         bool rightPressed() const;
         bool jumpPressed() const;
+        bool downPressed() const;
         bool firePressed() const;
 
         void tryToggleLookLock();

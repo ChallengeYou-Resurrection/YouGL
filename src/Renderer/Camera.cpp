@@ -27,7 +27,10 @@ void Camera::input(const Controller& controller)
         m_transform.position.z += glm::sin(glm::radians(m_transform.rotation.y)) * speed;
     }
     if (controller.jumpPressed()) {
-        m_transform.position.y += 0.1f;
+        m_transform.position.y += speed;
+    }
+    if (controller.downPressed()) {
+        m_transform.position.y -= speed;
     }
 
     m_transform.rotation += controller.getLookChange();

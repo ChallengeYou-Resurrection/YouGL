@@ -11,6 +11,7 @@ KeyboardController::KeyboardController(sf::RenderWindow& window)
     m_keyMap.emplace(Controller::Input::Left, sf::Keyboard::Key::A);
     m_keyMap.emplace(Controller::Input::Right, sf::Keyboard::Key::D);
     m_keyMap.emplace(Controller::Input::Jump, sf::Keyboard::Key::Space);
+    m_keyMap.emplace(Controller::Input::Down, sf::Keyboard::Key::LShift);
 
     m_pWindow->setMouseCursorGrabbed(true);
     m_pWindow->setMouseCursorVisible(false);
@@ -39,6 +40,11 @@ bool KeyboardController::rightPressed() const
 bool KeyboardController::jumpPressed() const
 {
     return isPressed(Controller::Input::Jump);
+}
+
+bool KeyboardController::downPressed() const
+{
+    return isPressed(Controller::Input::Down);
 }
 
 bool KeyboardController::firePressed() const
