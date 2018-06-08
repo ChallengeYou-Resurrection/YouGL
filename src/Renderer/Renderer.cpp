@@ -130,4 +130,5 @@ void Renderer::prepareSfmlDraw()
 void Renderer::endSfmlDraw()
 {
     m_window.popGLStates();
+	glEnable(GL_DEPTH_TEST);
 }

@@ -93,5 +93,5 @@ void StatePlaying::render(Renderer& renderer)
 {
     renderer.draw(model);
 
-    //m_level.drawGeometry(renderer);
+    m_level.drawGeometry(renderer);
 }
