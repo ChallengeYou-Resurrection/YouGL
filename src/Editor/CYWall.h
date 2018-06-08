@@ -22,8 +22,8 @@ private:
     sf::Vector2f m_start_pos = sf::Vector2f(0, 0);
     sf::Vector2f m_displacement_pos = sf::Vector2f(0, 0);
 
-    int m_texture1;
-    int m_texture2;
+	Material m_front_mat;
+	Material m_back_mat;
 
     float m_start_height;
 	float m_end_height;
