@@ -6,6 +6,7 @@
 
 class Game;
 class Renderer;
+class Controller;
 
 class StateBase : public NonCopyable
 {
@@ -17,7 +18,7 @@ class StateBase : public NonCopyable
         virtual ~StateBase() = default;
 
         virtual void handleEvent(sf::Event e) {}
-        virtual void handleInput() = 0;
+        virtual void handleInput(Controller& controller) = 0;
         virtual void update(sf::Time deltaTime) {}
         virtual void fixedUpdate(sf::Time deltaTime) {}
         virtual void render(Renderer& renderer) = 0;

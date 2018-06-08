@@ -57,8 +57,8 @@ StatePlaying::StatePlaying(Game& game)
 :   StateBase   (game)
 {
     // Load level
-    m_level = CYWebParser::loadFileFromWebsite(158209);
-    m_level.serializeIntoJsonFormat("tower.cy");
+    m_level = CYWebParser::loadFileFromWebsite(99279);
+    //m_level.serializeIntoJsonFormat("tower.cy");
 
     mesh.vertices = vertices;
     mesh.texCoords = texCoords;
@@ -74,9 +74,9 @@ void StatePlaying::handleEvent(sf::Event e)
 
 }
 
-void StatePlaying::handleInput()
+void StatePlaying::handleInput(Controller& controller)
 {
-
+    controller.tryToggleLookLock();
 }
 
 void StatePlaying::update(sf::Time deltaTime)
