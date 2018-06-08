@@ -1,6 +1,10 @@
 #Visual Studio Ignore 
 *.user
 *.filters 
+*.vcxproj 
+*.sln
+*.obj
+Object/
 Debug/
 Release/
 src/Dependencies/
@@ -19,3 +23,6 @@ src/Dependencies/
 /.vs
 /cmake-build-debug
 .vcxproj
+
+#Project Ignore
+*.cy
