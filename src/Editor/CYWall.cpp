@@ -48,7 +48,7 @@ void CYWall::createModel() {
     mesh.vertices.insert(mesh.vertices.end(), {(m_start_pos.x + m_displacement_pos.x  ), 1, (m_start_pos.y + m_displacement_pos.y )});
     mesh.vertices.insert(mesh.vertices.end(), {(m_start_pos.x + m_displacement_pos.x  ), 0, (m_start_pos.y + m_displacement_pos.y )});
     mesh.vertices.insert(mesh.vertices.end(), {(m_start_pos.x                         ), 0, (m_start_pos.y                        )});
-    */
+    
 
     mesh.vertices.insert(mesh.vertices.end(), {(m_start_pos.x + m_displacement_pos.x  ) / 50.f,  0.5f, (m_start_pos.y + m_displacement_pos.y     ) / 50.f});
     mesh.vertices.insert(mesh.vertices.end(), {(m_start_pos.x + m_displacement_pos.x  ) / 50.f, -0.5f, (m_start_pos.y + m_displacement_pos.y ) / 50.f});
@@ -81,12 +81,12 @@ void CYWall::createModel() {
         0.5f, 1.0f, 0.7f
     };
 
-    m_geometry.create(mesh);
+    m_geometry.create(mesh);*/
 }
 
 void CYWall::render(Renderer& renderer)
 {
-    renderer.draw(m_geometry);
+    //renderer.draw(m_geometry);
 }
 
 void CYWall::toJsonFormat(json& jLevel, int id)

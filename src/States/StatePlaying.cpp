@@ -11,12 +11,11 @@
 
 #include "../CYWebParser.h"
 
-std::vector<GLfloat> vertices =
-{
-    0.5f,  0.5f, 15.0f,  // Top Right
-    0.5f, -0.5f, 15.0f,  // Bottom Right
-    -0.5f, -0.5f, 15.0f,  // Bottom Left
-    -0.5f,  0.5f, 15.0f   // Top Left
+std::vector<GLfloat> vertices = {
+	0.5f,  0.5f, 0.0f,  // top right
+	0.5f, -0.5f, 0.0f,  // bottom right
+	-0.5f, -0.5f, 0.0f,  // bottom left
+	-0.5f,  0.5f, 0.0f   // top left 
 };
 
 std::vector<GLfloat> texCoords =
@@ -94,5 +93,5 @@ void StatePlaying::render(Renderer& renderer)
 {
     renderer.draw(model);
 
-    m_level.drawGeometry(renderer);
+    //m_level.drawGeometry(renderer);
 }
