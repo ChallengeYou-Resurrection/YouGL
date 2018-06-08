@@ -1,6 +1,7 @@
 #Visual Studio Ignore 
 *.user
 *.filters 
+*.vcxproj 
 Debug/
 Release/
 
