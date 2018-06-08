@@ -31,12 +31,40 @@ CYWall::CYWall(const std::smatch& match_groups)
     //std::cout << "Texture 2: " << sub_match.str() << std::endl;
 
     // If 10 doesn't exist then 9 = Level, else 9 = Z_Index
+	int z_index, level;
     if (match_groups[10] != "") {
         sub_match = match_groups[9];    // Z_Index
+		z_index = std::stoi(sub_match.str());
+
         sub_match = match_groups[10];   // Level
+		level = std::stoi(sub_match.str());
+
     } else {
         sub_match = match_groups[9];    // Level
+		level = std::stoi(sub_match.str());
+
+		z_index = 1;
     }
+
+	m_level = level;
+
+	// Find mix and max heights from Z-Index (0 -> 1)
+	switch (z_index)
+	{
+		case 2:  m_end_height = 3 / 4.f;  m_start_height = 0.f;		  break;
+		case 3:  m_end_height = 2 / 4.f;  m_start_height = 0.f;		  break;
+		case 4:  m_end_height = 1 / 4.f;  m_start_height = 0.f;		  break;
+
+		case 5:  m_end_height =  2 / 4.f;  m_start_height =  1 / 4.f; break;
+		case 6:  m_end_height =  3 / 4.f;  m_start_height =  2 / 4.f; break;
+		case 7:  m_end_height =  4 / 4.f;  m_start_height =  3 / 4.f; break;
+
+		case 8:  m_end_height =  4 / 4.f;  m_start_height =  2 / 4.f; break;
+		case 9:  m_end_height =  4 / 4.f;  m_start_height =  1 / 4.f; break;
+		case 10: m_end_height =  3 / 4.f;  m_start_height =  1 / 4.f; break;
+
+		default: m_end_height =  4 / 4.f;  m_start_height = 0.f;	  break;
+	}
 
     this->type = "WALL";
 }
@@ -46,8 +74,8 @@ void CYWall::createModel() {
 	glm::vec3 vertex[4];
 
 	// Get geometric properties of the wall
-	float min_height = -0.5f;
-	float max_height =  0.5f;
+	float min_height = (m_level + m_start_height) / 5.f;
+	float max_height = (m_level + m_end_height)   / 5.f;
 	glm::vec2 wall_origin = { m_start_pos.x, m_start_pos.y };
 	glm::vec2 wall_finish = { m_start_pos.x + m_displacement_pos.x, m_start_pos.y + m_displacement_pos.y };
 
@@ -108,8 +136,8 @@ void CYWall::toJsonFormat(json& jLevel, int id)
     std::string itemName = "WALL_" + std::to_string(id);
 
     // Add in the properties to JSON
-    jLevel[itemName]["START_POS"]["x"] = m_start_pos.x;
-    jLevel[itemName]["START_POS"]["y"] = this->m_start_pos.y;
+    jLevel[itemName]["end_POS"]["x"] = m_start_pos.x;
+    jLevel[itemName]["end_POS"]["y"] = this->m_start_pos.y;
 
     jLevel[itemName]["DISP_POS"]["x"] = this->m_displacement_pos.x;
     jLevel[itemName]["DISP_POS"]["y"] = this->m_displacement_pos.y;

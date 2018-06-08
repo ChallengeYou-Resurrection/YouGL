@@ -25,8 +25,8 @@ private:
     int m_texture1;
     int m_texture2;
 
-    int m_start_height;
-    int m_end_height;
+    float m_start_height;
+	float m_end_height;
     int m_level;
 };
 
