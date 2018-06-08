@@ -50,10 +50,10 @@ void CYWall::createModel() {
     mesh.vertices.insert(mesh.vertices.end(), {(m_start_pos.x                         ), 0, (m_start_pos.y                        )});
     */
 
-    mesh.vertices.insert(mesh.vertices.end(), {(m_start_pos.x                         ) / 50.f,  0.5f, (m_start_pos.y                            ) / 50.f});
     mesh.vertices.insert(mesh.vertices.end(), {(m_start_pos.x + m_displacement_pos.x  ) / 50.f,  0.5f, (m_start_pos.y + m_displacement_pos.y     ) / 50.f});
     mesh.vertices.insert(mesh.vertices.end(), {(m_start_pos.x + m_displacement_pos.x  ) / 50.f, -0.5f, (m_start_pos.y + m_displacement_pos.y ) / 50.f});
     mesh.vertices.insert(mesh.vertices.end(), {(m_start_pos.x                         ) / 50.f, -0.5f, (m_start_pos.y                        ) / 50.f});
+	mesh.vertices.insert(mesh.vertices.end(), { (m_start_pos.x) / 50.f,  0.5f, (m_start_pos.y) / 50.f });
 
     mesh.indices = {0, 3, 1, 1, 2, 3};
 

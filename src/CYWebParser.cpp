@@ -48,24 +48,16 @@ CYLevel loadFile(const std::string& levelCode)
     // Tested with versions 2.13, 3.12, 3.34, 3.59, 3.68, 3.84
     // TODO: Are there walls with displacement in the decimal direction? (If so please msg me)
     std::string wallCode = cyTable.at("walls");
-#ifdef _MSC_VER //If the compiler is MSVC
-    std::regex reg_walls("\\[(-?\\d+), (-?\\d+), (-?\\d+), (-?\\d+), \\[(c[^\\)]*\\))?(\\d+)?, (c[^\\)]*\\))?(\\d+)?]?, (\\d+)],? ?(\\d+)?");
-#else 
-    std::regex reg_walls("\\[(-?\\d+), (-?\\d+), (-?\\d+), (-?\\d+), \\[(c[^\\)]*\\))?(\\d+)?, (c[^\\)]*\\))?(\\d+)?]?, (\\d+)],? ?(\\d+)?");
-#endif
+	std::regex reg_walls("\\[(-?\\d+), (-?\\d+), (-?\\d+), (-?\\d+), \\[(c[^\\)]*\\))?(\\d+)?, (c[^\\)]*\\))?(\\d+)?\\]?, (\\d+)\\],? ?(\\d+)?");
 
     int wall_id = 0;
     while (std::regex_search(wallCode, match_groups, reg_walls))
     {
-        //std::cout << "Wall ID: " << wall_id << '\n';
-
         cyLevel.addWall(match_groups);
 
         wall_id++;
         wallCode = match_groups.suffix();
-
-        //std::cout << "------------------" << std::endl;
-    }
+   }
 
     // PLATFORMS
     // V2.13 = [X_Pos, Y_Pos, [Texture], Level]
@@ -73,10 +65,7 @@ CYLevel loadFile(const std::string& levelCode)
     // V3.37+ = [X_Pos, Y_Pos, [Size, Texture, Z_Index], Level]
     // Tested on Version 2.13, 3.06, 3.09, 3.13, 3.27. 3.37, 3.52, 3.68
     std::string platCode = cyTable.at("Plat");
-    std::regex reg_plats("\\[\\[([\\d\\.]+), ([\\d\\.]+)], \\[(\\d+),? ?(c[^\\)]*\\))?(\\d+)?,? ?(\\d+)?], (\\d+)");
-
-    //std::regex_search(levelCode, match_groups, reg_platCode);
-    //td::string plat_code = match_groups[1].str();
+	std::regex reg_plats("\\[\\[([\\d\\.]+), ([\\d\\.]+)\\], \\[(\\d+),? ?(c[^\\)]*\\))?(\\d+)?,? ?(\\d+)?\\], (\\d+)");
 
     while (std::regex_search(platCode, match_groups, reg_plats))
     {

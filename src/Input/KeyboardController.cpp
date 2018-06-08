@@ -52,7 +52,7 @@ glm::vec3 KeyboardController::getLookChange(const sf::RenderWindow& window) cons
 
     if (m_isMouseCentreLocked)
     {
-        sf::Mouse::setPosition(center, window);
+        //sf::Mouse::setPosition(center, window);
         lastPosition = center;
     } else {
         lastPosition = pos;
