@@ -10,7 +10,7 @@
 
 Game::Game()
 {
-    m_controller = std::make_unique<KeyboardController>();
+    m_controller = std::make_unique<KeyboardController>(m_renderer.m_window);
     pushState<StatePlaying>(*this);
 }
 
@@ -37,7 +37,7 @@ void Game::run()
 
         //Real time update
         state.handleInput();
-        m_camera.input(*m_controller, m_renderer.getWindow());
+        m_camera.input(*m_controller);
         state.update(elapsed);
         counter.update();
         m_camera.update(elapsed.asSeconds());

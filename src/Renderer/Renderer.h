@@ -15,6 +15,7 @@ class Camera;
 
 class Renderer
 {
+    friend class Game;
     public:
         Renderer();
 

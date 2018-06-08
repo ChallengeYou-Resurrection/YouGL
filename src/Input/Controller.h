@@ -16,7 +16,7 @@ class Controller
 
         //virtual bool mouseLock() = 0;
 
-        virtual glm::vec3 getLookChange(const sf::RenderWindow& window) const = 0;
+        virtual glm::vec3 getLookChange() const = 0;
 
     protected:
         enum class Input

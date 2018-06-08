@@ -7,7 +7,7 @@ Camera::Camera()
     :   m_projectionMatrix(makeProjectionMatrix())
 { }
 
-void Camera::input(const Controller& controller, const sf::RenderWindow& window)
+void Camera::input(const Controller& controller)
 {
     float speed = 0.05f;
     if (controller.forwardPressed()) {
@@ -30,7 +30,7 @@ void Camera::input(const Controller& controller, const sf::RenderWindow& window)
         m_transform.position.y += 0.1f;
     }
 
-    m_transform.rotation += controller.getLookChange(window);
+    m_transform.rotation += controller.getLookChange();
 }
 
 void Camera::update(float dt)

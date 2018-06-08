@@ -7,7 +7,7 @@
 class KeyboardController : public Controller
 {
     public:
-        KeyboardController();
+        KeyboardController(sf::RenderWindow& window);
 
         bool forwardPressed() const;
         bool backPressed() const;
@@ -16,12 +16,16 @@ class KeyboardController : public Controller
         bool jumpPressed() const;
         bool firePressed() const;
 
-        glm::vec3 getLookChange(const sf::RenderWindow& window) const;
+        void toggleLookLock();
+
+        glm::vec3 getLookChange() const;
 
     private:
         bool isPressed(Controller::Input input) const;
 
         std::unordered_map<Controller::Input, sf::Keyboard::Key> m_keyMap;
+        sf::RenderWindow* m_pWindow;
 
         bool m_isMouseCentreLocked = true;
+        bool m_isLookLocked = false;
 };

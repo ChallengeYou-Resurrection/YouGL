@@ -57,8 +57,8 @@ StatePlaying::StatePlaying(Game& game)
 :   StateBase   (game)
 {
     // Load level
-    m_level = CYWebParser::loadFileFromWebsite(158209);
-    m_level.serializeIntoJsonFormat("tower.cy");
+    m_level = CYWebParser::loadFileFromWebsite(99279);
+    //m_level.serializeIntoJsonFormat("tower.cy");
 
     mesh.vertices = vertices;
     mesh.texCoords = texCoords;
