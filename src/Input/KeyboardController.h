@@ -16,7 +16,7 @@ class KeyboardController : public Controller
         bool jumpPressed() const;
         bool firePressed() const;
 
-        void toggleLookLock();
+        void tryToggleLookLock();
 
         glm::vec3 getLookChange() const;
 

@@ -14,9 +14,8 @@ class Controller
         virtual bool jumpPressed() const = 0;
         virtual bool firePressed() const = 0;
 
-        //virtual bool mouseLock() = 0;
-
         virtual glm::vec3 getLookChange() const = 0;
+        virtual void tryToggleLookLock() = 0;
 
     protected:
         enum class Input

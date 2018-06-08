@@ -74,9 +74,9 @@ void StatePlaying::handleEvent(sf::Event e)
 
 }
 
-void StatePlaying::handleInput()
+void StatePlaying::handleInput(Controller& controller)
 {
-
+    controller.tryToggleLookLock();
 }
 
 void StatePlaying::update(sf::Time deltaTime)

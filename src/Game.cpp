@@ -36,7 +36,7 @@ void Game::run()
         lag += elapsed;
 
         //Real time update
-        state.handleInput();
+        state.handleInput(*m_controller);
         m_camera.input(*m_controller);
         state.update(elapsed);
         counter.update();

@@ -11,6 +11,9 @@ KeyboardController::KeyboardController(sf::RenderWindow& window)
     m_keyMap.emplace(Controller::Input::Left, sf::Keyboard::Key::A);
     m_keyMap.emplace(Controller::Input::Right, sf::Keyboard::Key::D);
     m_keyMap.emplace(Controller::Input::Jump, sf::Keyboard::Key::Space);
+
+    m_pWindow->setMouseCursorGrabbed(true);
+    m_pWindow->setMouseCursorVisible(false);
 }
 
 bool KeyboardController::forwardPressed() const
@@ -43,18 +46,26 @@ bool KeyboardController::firePressed() const
     return isPressed(Controller::Input::Fire);
 }
 
-void KeyboardController::toggleLookLock()
+void KeyboardController::tryToggleLookLock()
 {
-    m_isLookLocked = !m_isLookLocked;
-    if (m_isLookLocked) {
-        m_isLookLocked = false;
-        m_pWindow->setMouseCursorGrabbed(true);
-        m_pWindow->setMouseCursorVisible(false);
+    static bool isKeyBackUp = true;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::L) && isKeyBackUp) {
+        isKeyBackUp = false;
+        if (m_isLookLocked) {
+            m_isLookLocked = false;
+            m_pWindow->setMouseCursorGrabbed(true);
+            m_pWindow->setMouseCursorVisible(false);
+        }
+        else {
+            m_isLookLocked = true;
+            m_pWindow->setMouseCursorGrabbed(false);
+            m_pWindow->setMouseCursorVisible(true);
+        }
     }
-    else {
-        m_isLookLocked = true;
-        m_pWindow->setMouseCursorGrabbed(false);
-        m_pWindow->setMouseCursorVisible(true);
+    if (!isKeyBackUp) {
+        if (!sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
+            isKeyBackUp = true;
+        }
     }
 }
 
