@@ -7,7 +7,7 @@
 #include <fstream>
 
 // For the JSON format CY Levels
-#include <nlohmann/json.hpp>
+#include <json.hpp>
 using json = nlohmann::json;
 
 #include "Editor/CYWall.h"
