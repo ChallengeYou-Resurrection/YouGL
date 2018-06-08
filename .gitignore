@@ -3,6 +3,7 @@
 *.filters 
 Debug/
 Release/
+src/Dependencies/
 
 #Codeblocks Ignore
 *.cbp
@@ -14,3 +15,7 @@ Release/
 
 #General
 *.dll
+/.idea
+/.vs
+/cmake-build-debug
+.vcxproj
