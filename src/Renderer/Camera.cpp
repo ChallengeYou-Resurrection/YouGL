@@ -9,7 +9,7 @@ Camera::Camera()
 
 void Camera::input(const Controller& controller)
 {
-    float speed = 0.05f;
+    float speed = 0.01f;
     if (controller.forwardPressed()) {
         m_transform.position.x += -glm::cos(glm::radians(m_transform.rotation.y + 90)) * speed;
         m_transform.position.z += -glm::sin(glm::radians(m_transform.rotation.y + 90)) * speed;
