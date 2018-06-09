@@ -5,15 +5,15 @@ CYLevel::CYLevel()
 
 }
 
-void CYLevel::addWall(const std::smatch& match_groups)
+void CYLevel::addWall(const std::smatch& matchGroups)
 {
-    std::shared_ptr<EditorObject> wall = std::make_shared<CYWall>(match_groups);
+    std::shared_ptr<EditorObject> wall = std::make_shared<CYWall>(matchGroups);
     m_editorObjects.push_back(std::move(wall));
 }
 
-void CYLevel::addPlat(const std::smatch& match_groups)
+void CYLevel::addPlat(const std::smatch& matchGroups)
 {
-    std::shared_ptr<EditorObject> plat = std::make_shared<CYPlat>(match_groups);
+    std::shared_ptr<EditorObject> plat = std::make_shared<CYPlat>(matchGroups);
     m_editorObjects.push_back(std::move(plat));
 }
 

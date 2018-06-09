@@ -1,54 +1,55 @@
 #include "CYWall.h"
 
-CYWall::CYWall(const std::smatch& match_groups)
+CYWall::CYWall(const std::smatch& matchGroups)
 {
-    std::ssub_match sub_match;
+    std::ssub_match subMatch;
 
     // Start Position
-    sub_match = match_groups[1];
-    this->m_displacement_pos = sf::Vector2f(std::stof(sub_match.str()), 0);
-    sub_match = match_groups[2];
-    this->m_displacement_pos.y = std::stof(sub_match.str());
+    subMatch = matchGroups[1];
+    this->m_displacementPosition = sf::Vector2f(std::stof(subMatch.str()), 0);
+    subMatch = matchGroups[2];
+    this->m_displacementPosition.y = std::stof(subMatch.str());
 
     // Displacement Position
-    sub_match = match_groups[3];
-    this->m_start_pos = sf::Vector2f(std::stof(sub_match.str()), 0);
-    sub_match = match_groups[4];
-    this->m_start_pos.y = std::stof(sub_match.str());
-
+    subMatch = matchGroups[3];
+    this->m_startPosition = sf::Vector2f(std::stof(subMatch.str()), 0);
+    subMatch = matchGroups[4];
+    this->m_startPosition.y = std::stof(subMatch.str());
+  
     // 5 = Colour, 6 = TextureID (Front side)
-	if (match_groups[5] != "") {
+	if (matchGroups[5] != "") {
 		// Default colour texture
-		m_front_mat.texture_id = 0;
+		m_frontMaterial.texture_id = 0;
 
-		sub_match = match_groups[5];
-		m_front_mat.mat_color = stringToColor(sub_match.str());
+		subMatch = matchGroups[5];
+		m_frontMaterial.colour = stringToColor(subMatch.str());
 	} else {
-		sub_match = match_groups[6];
-		m_front_mat.texture_id = 0;
+		sub_match = matchGroups[6];
+		m_frontMaterial.textureId = 0;
 
-		m_front_mat.mat_color = { 1.0f, 1.0f, 1.0f };
+		m_frontMaterial.colour = { 1.0f, 1.0f, 1.0f };
 	}
 
+
     // 7 = Colour, 8 = TextureID
-    if (match_groups[7] != "")
-        sub_match = match_groups[7];
+    if (matchGroups[7] != "")
+        subMatch = matchGroups[7];
     else
-        sub_match = match_groups[8];
-    //std::cout << "Texture 2: " << sub_match.str() << std::endl;
+        subMatch = matchGroups[8];
+    //std::cout << "Texture 2: " << subMatch.str() << std::endl;
 
     // If 10 doesn't exist then 9 = Level, else 9 = Z_Index
 	int z_index, level;
-    if (match_groups[10] != "") {
-        sub_match = match_groups[9];    // Z_Index
-		z_index = std::stoi(sub_match.str());
+    if (matchGroups[10] != "") {
+        subMatch = matchGroups[9];    // Z_Index
+		z_index = std::stoi(subMatch.str());
 
-        sub_match = match_groups[10];   // Level
-		level = std::stoi(sub_match.str());
+        subMatch = matchGroups[10];   // Level
+		level = std::stoi(subMatch.str());
 
     } else {
-        sub_match = match_groups[9];    // Level
-		level = std::stoi(sub_match.str());
+        subMatch = matchGroups[9];    // Level
+		level = std::stoi(subMatch.str());
 
 		z_index = 1;
     }
@@ -56,45 +57,46 @@ CYWall::CYWall(const std::smatch& match_groups)
 	m_level = level;
 
 	// Find mix and max heights from Z-Index (0 -> 1)
-	switch (z_index)
-	{
-		case 2:  m_end_height = 3 / 4.f;  m_start_height = 0.f;		  break;
-		case 3:  m_end_height = 2 / 4.f;  m_start_height = 0.f;		  break;
-		case 4:  m_end_height = 1 / 4.f;  m_start_height = 0.f;		  break;
+	switch (z_index) {
+		case 2:  m_endHeight = 3 / 4.f;  m_startHeight = 0.f; break;
+		case 3:  m_endHeight = 2 / 4.f;  m_startHeight = 0.f; break;
+		case 4:  m_endHeight = 1 / 4.f;  m_startHeight = 0.f; break;
 
-		case 5:  m_end_height =  2 / 4.f;  m_start_height =  1 / 4.f; break;
-		case 6:  m_end_height =  3 / 4.f;  m_start_height =  2 / 4.f; break;
-		case 7:  m_end_height =  4 / 4.f;  m_start_height =  3 / 4.f; break;
+		case 5:  m_endHeight =  2 / 4.f;  m_startHeight =  1 / 4.f; break;
+		case 6:  m_endHeight =  3 / 4.f;  m_startHeight =  2 / 4.f; break;
+		case 7:  m_endHeight =  4 / 4.f;  m_startHeight =  3 / 4.f; break;
 
-		case 8:  m_end_height =  4 / 4.f;  m_start_height =  2 / 4.f; break;
-		case 9:  m_end_height =  4 / 4.f;  m_start_height =  1 / 4.f; break;
-		case 10: m_end_height =  3 / 4.f;  m_start_height =  1 / 4.f; break;
+		case 8:  m_endHeight =  4 / 4.f;  m_startHeight =  2 / 4.f; break;
+		case 9:  m_endHeight =  4 / 4.f;  m_startHeight =  1 / 4.f; break;
+		case 10: m_endHeight =  3 / 4.f;  m_startHeight =  1 / 4.f; break;
 
-		default: m_end_height =  4 / 4.f;  m_start_height = 0.f;	  break;
+		default: m_endHeight =  4 / 4.f;  m_startHeight = 0.f;	  break;
 	}
 
     this->type = "WALL";
 }
+
 
 void CYWall::createModel() {
 	// TODO : Make this a constant for all objects
 	float WORLD_SIZE = 50.f;
 	float WORLD_HEIGHT = 2.5f;
 
+
     Mesh mesh;
 	glm::vec3 vertex[4];
 
 	// Get geometric properties of the wall
-	float min_height = (m_level + m_start_height) / WORLD_HEIGHT;
-	float max_height = (m_level + m_end_height)   / WORLD_HEIGHT;
-	glm::vec2 wall_origin = { m_start_pos.x, m_start_pos.y };
-	glm::vec2 wall_finish = { m_start_pos.x + m_displacement_pos.x, m_start_pos.y + m_displacement_pos.y };
+	float minHeight = (m_level + m_startHeight) / WORLD_HEIGHT;
+	float maxHeight = (m_level + m_endHeight)   / WORLD_HEIGHT;
+	glm::vec2 wallOrigin = { m_startPosition.x, m_start_pos.y };
+	glm::vec2 wallFinish = { m_startPosition.x + m_displacementPosition.x, m_startPosition.y + m_displacementPosition.y };
     
 	// Set the vertices of the wall using such properties
-	vertex[1] = glm::vec3((wall_origin.x) / WORLD_SIZE, max_height, (wall_origin.y) / WORLD_SIZE);
-	vertex[2] = glm::vec3((wall_finish.x) / WORLD_SIZE, max_height, (wall_finish.y) / WORLD_SIZE);
-	vertex[3] = glm::vec3((wall_finish.x) / WORLD_SIZE, min_height, (wall_finish.y) / WORLD_SIZE);
-	vertex[0] = glm::vec3((wall_origin.x) / WORLD_SIZE, min_height, (wall_origin.y) / WORLD_SIZE);
+	vertex[1] = glm::vec3((wallOrigin.x) / WORLD_SIZE, maxHeight, (wallOrigin.y) / WORLD_SIZE);
+	vertex[2] = glm::vec3((wallFinish.x) / WORLD_SIZE, maxHeight, (wallFinish.y) / WORLD_SIZE);
+	vertex[3] = glm::vec3((wallFinish.x) / WORLD_SIZE, minHeight, (wallFinish.y) / WORLD_SIZE);
+	vertex[0] = glm::vec3((wallOrigin.x) / WORLD_SIZE, minHeight, (wallOrigin.y) / WORLD_SIZE);
 
 	// Use the cross product to determine the normal
 	glm::vec3 normal = glm::cross(vertex[2] - vertex[1], vertex[3] - vertex[1]);
@@ -143,11 +145,11 @@ void CYWall::toJsonFormat(json& jLevel, int id)
     std::string itemName = "WALL_" + std::to_string(id);
 
     // Add in the properties to JSON
-    jLevel[itemName]["end_POS"]["x"] = m_start_pos.x;
-    jLevel[itemName]["end_POS"]["y"] = this->m_start_pos.y;
+    jLevel[itemName]["end_POS"]["x"] = m_startPosition.x;
+    jLevel[itemName]["end_POS"]["y"] = this->m_startPosition.y;
 
-    jLevel[itemName]["DISP_POS"]["x"] = this->m_displacement_pos.x;
-    jLevel[itemName]["DISP_POS"]["y"] = this->m_displacement_pos.y;
+    jLevel[itemName]["DISP_POS"]["x"] = this->m_displacementPosition.x;
+    jLevel[itemName]["DISP_POS"]["y"] = this->m_displacementPosition.y;
 
     jLevel[itemName]["LEVEL"] = this->m_level;
 

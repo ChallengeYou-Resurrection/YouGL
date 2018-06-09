@@ -8,28 +8,28 @@ CYLevel loadFile(const std::string& levelCode)
     CYLevel cyLevel;
     std::map<std::string, std::string> cyTable = classifiedLevelCode(levelCode);
 
-    std::smatch match_groups;
-    std::ssub_match sub_match;
+    std::smatch matchGroups;
+    std::ssub_match subMatch;
 
     // LEVEL HEADER
     // #name, #levels, #version, #creator
     // Groups: 1 = Name, 2 = Levels, 3 = Version, 4 = Creator
     // Tested with versions 3.68, 3.45, 3.84, 2.13
-    std::regex reg_header("#name: \"([^\"]+)\", #levels: (\\d+), #version: ([^,]+), #creator: \"([^\"]+)\"");
+    std::regex regexHeader("#name: \"([^\"]+)\", #levels: (\\d+), #version: ([^,]+), #creator: \"([^\"]+)\"");
 
-    if (std::regex_search(levelCode, match_groups, reg_header))
+    if (std::regex_search(levelCode, matchGroups, regexHeader))
     {
-        sub_match = match_groups[1];
-        cyLevel.m_header.name = sub_match.str();
+        subMatch = matchGroups[1];
+        cyLevel.m_header.name = subMatch.str();
 
-        sub_match = match_groups[2];
-        cyLevel.m_header.levels = std::stoi(sub_match.str());
+        subMatch = matchGroups[2];
+        cyLevel.m_header.levels = std::stoi(subMatch.str());
 
-        sub_match = match_groups[3];
-        cyLevel.m_header.version = std::stof(sub_match.str());
+        subMatch = matchGroups[3];
+        cyLevel.m_header.version = std::stof(subMatch.str());
 
-        sub_match = match_groups[4];
-        cyLevel.m_header.author = sub_match.str();
+        subMatch = matchGroups[4];
+        cyLevel.m_header.author = subMatch.str();
 
     } else {
         std::cout << "WEBLOADER ERROR: Could not match header" << std::endl;
@@ -51,12 +51,12 @@ CYLevel loadFile(const std::string& levelCode)
 	std::regex reg_walls("\\[(-?\\d+), (-?\\d+), (-?\\d+), (-?\\d+), \\[(c[^\\)]*\\))?(\\d+)?, (c[^\\)]*\\))?(\\d+)?\\]?, (\\d+)\\],? ?(\\d+)?");
 
     int wall_id = 0;
-    while (std::regex_search(wallCode, match_groups, reg_walls))
+    while (std::regex_search(wallCode, matchGroups, reg_walls))
     {
-        cyLevel.addWall(match_groups);
+        cyLevel.addWall(matchGroups);
 
         wall_id++;
-        wallCode = match_groups.suffix();
+        wallCode = matchGroups.suffix();
    }
 
     // PLATFORMS
@@ -67,11 +67,11 @@ CYLevel loadFile(const std::string& levelCode)
     std::string platCode = cyTable.at("Plat");
 	std::regex reg_plats("\\[\\[([\\d\\.]+), ([\\d\\.]+)\\], \\[(\\d+),? ?(c[^\\)]*\\))?(\\d+)?,? ?(\\d+)?\\], (\\d+)");
 
-    while (std::regex_search(platCode, match_groups, reg_plats))
+    while (std::regex_search(platCode, matchGroups, reg_plats))
     {
-        cyLevel.addPlat(match_groups);
+        cyLevel.addPlat(matchGroups);
 
-        platCode = match_groups.suffix();
+        platCode = matchGroups.suffix();
         //std::cout << "------------------" << std::endl;
     }
 
@@ -98,16 +98,16 @@ std::map<std::string, std::string> classifiedLevelCode(const std::string& levelC
             isInString = !isInString;
 
         // If # and not in a string
-        if ((levelCode.at(charPos) == '#' && !isInString) || charPos == levelCode.length()-3)
+        if ((levelCode.at(charPos) == '#' && !isInString) || charPos == levelCode.length() - 3)
         {
             if (charPos != 1)
             {
-                std::size_t name_start = levelCode.find(":", groupStart);
-                std::string name = levelCode.substr(groupStart+1, name_start-groupStart-1);
+                std::size_t nameStart = levelCode.find(":", groupStart);
+                std::string name = levelCode.substr(groupStart + 1, nameStart - groupStart - 1);
 
-                std::string contents = levelCode.substr(name_start+2, charPos-name_start-4);
+                std::string contents = levelCode.substr(nameStart + 2, charPos-nameStart - 4);
 
-                cyTable.emplace(std::make_pair(name, contents));
+                cyTable.emplace(name, contents);
                 //std::cout << name << " ;) \n" << contents << "\n";
             }
 

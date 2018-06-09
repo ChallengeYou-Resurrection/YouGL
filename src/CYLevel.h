@@ -33,7 +33,7 @@ public:
 
     // Editor
     template<typename T>
-    void addEditorObjectFromRegex(const std::smatch& match_groups);
+    void addEditorObjectFromRegex(const std::smatch& matchGroups);
 
     // Serialize
     bool serializeIntoOldFormat();
@@ -44,8 +44,8 @@ public:
     bool compileMap();
 
     // Editor Objects
-    void addWall(const std::smatch& match_groups);
-    void addPlat(const std::smatch& match_groups);
+    void addWall(const std::smatch& matchGroups);
+    void addPlat(const std::smatch& matchGroups);
 
     void drawGeometry(Renderer& renderer);
     void buildGeometry();

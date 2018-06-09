@@ -11,7 +11,7 @@ class CYWall : public EditorObject
 {
 public:
     // Construct from Regex
-    CYWall(const std::smatch& match_groups);
+    CYWall(const std::smatch& matchGroups);
 
     virtual void toJsonFormat(json& jLevel, int id);
 
@@ -19,14 +19,14 @@ public:
     virtual void render(Renderer& renderer);
 
 private:
-    sf::Vector2f m_start_pos = sf::Vector2f(0, 0);
-    sf::Vector2f m_displacement_pos = sf::Vector2f(0, 0);
+    sf::Vector2f m_startPosition = sf::Vector2f(0, 0);
+    sf::Vector2f m_displacementPosition = sf::Vector2f(0, 0);
 
 	Material m_front_mat;
 	Material m_back_mat;
 
-    float m_start_height;
-	float m_end_height;
+    float m_startHeight;
+	float m_endHeight;
     int m_level;
 };
 
