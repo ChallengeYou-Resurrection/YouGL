@@ -5,6 +5,7 @@
 
 KeyboardController::KeyboardController(sf::RenderWindow& window)
     : m_pWindow (&window)
+    , m_winowCentre (window.getSize().x / 2, window.getSize().y / 2)
 {
     m_keyMap.emplace(Controller::Input::Forward, sf::Keyboard::Key::W);
     m_keyMap.emplace(Controller::Input::Back, sf::Keyboard::Key::S);
@@ -54,7 +55,6 @@ bool KeyboardController::firePressed() const
 
 void KeyboardController::tryToggleLookLock()
 {
-    static sf::Vector2i center = { 1280 / 2, 720 / 2 };
     static bool isKeyBackUp = true;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::L) && isKeyBackUp) {
         isKeyBackUp = false;
@@ -62,7 +62,7 @@ void KeyboardController::tryToggleLookLock()
             m_isLookLocked = false;
             m_pWindow->setMouseCursorGrabbed(true);
             m_pWindow->setMouseCursorVisible(false);
-            sf::Mouse::setPosition(center, *m_pWindow);
+            sf::Mouse::setPosition(m_winowCentre, *m_pWindow);
         }
         else {
             m_isLookLocked = true;
@@ -83,7 +83,6 @@ glm::vec3 KeyboardController::getLookChange() const
         return { 0, 0, 0 };
     }
 
-    static sf::Vector2i center = { 1280 / 2, 720 / 2 };
     static auto lastPosition = sf::Mouse::getPosition(*m_pWindow);
 
     auto pos = sf::Mouse::getPosition(*m_pWindow);
@@ -91,8 +90,8 @@ glm::vec3 KeyboardController::getLookChange() const
 
     if (!m_isMouseCentreLocked)
     {
-        sf::Mouse::setPosition(center, *m_pWindow);
-        lastPosition = center;
+        sf::Mouse::setPosition(m_winowCentre, *m_pWindow);
+        lastPosition = m_winowCentre;
     } else {
         lastPosition = pos;
     }

@@ -27,6 +27,6 @@ class KeyboardController : public Controller
         std::unordered_map<Controller::Input, sf::Keyboard::Key> m_keyMap;
         sf::RenderWindow* m_pWindow;
 
-        bool m_isMouseCentreLocked = true;
+        bool m_isMouseCentreLocked = false;
         bool m_isLookLocked = false;
 };
