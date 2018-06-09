@@ -54,6 +54,7 @@ bool KeyboardController::firePressed() const
 
 void KeyboardController::tryToggleLookLock()
 {
+    static sf::Vector2i center = { 1280 / 2, 720 / 2 };
     static bool isKeyBackUp = true;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::L) && isKeyBackUp) {
         isKeyBackUp = false;
@@ -61,6 +62,7 @@ void KeyboardController::tryToggleLookLock()
             m_isLookLocked = false;
             m_pWindow->setMouseCursorGrabbed(true);
             m_pWindow->setMouseCursorVisible(false);
+            sf::Mouse::setPosition(center, *m_pWindow);
         }
         else {
             m_isLookLocked = true;
@@ -77,7 +79,7 @@ void KeyboardController::tryToggleLookLock()
 
 glm::vec3 KeyboardController::getLookChange() const
 {
-    if (m_isLookLocked) {
+    if (m_isLookLocked || sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
         return { 0, 0, 0 };
     }
 
