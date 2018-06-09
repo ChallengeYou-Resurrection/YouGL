@@ -15,8 +15,8 @@ StatePlaying::StatePlaying(Game& game)
 :   StateBase   (game)
 {
     // Load level
-    m_level = CYWebParser::loadFileFromWebsite(163404);
-    m_level.serializeIntoJsonFormat("tower.cy");
+    m_level = CYWebParser::loadFileFromWebsite(100000);
+    m_level.serializeIntoJsonFormat("testLevel.cy");
 }
 
 void StatePlaying::handleEvent(sf::Event e)

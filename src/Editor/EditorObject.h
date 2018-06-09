@@ -17,8 +17,8 @@ const float WORLD_WIDTH_SCALE  = 1.0f;
 const float WORLD_HEIGHT_SCALE = 1.2f;
 
 struct Material {
-	int texture_id;
-	std::array<GLfloat, 3> mat_color;
+	int textureId;
+	std::array<GLfloat, 3> colour;
 };
 
 class EditorObject

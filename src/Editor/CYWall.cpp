@@ -19,12 +19,12 @@ CYWall::CYWall(const std::smatch& matchGroups)
     // 5 = Colour, 6 = TextureID (Front side)
 	if (matchGroups[5] != "") {
 		// Default colour texture
-		m_frontMaterial.texture_id = 0;
+		m_frontMaterial.textureId = 0;
 
 		subMatch = matchGroups[5];
 		m_frontMaterial.colour = stringToColor(subMatch.str());
 	} else {
-		sub_match = matchGroups[6];
+        subMatch = matchGroups[6];
 		m_frontMaterial.textureId = 0;
 
 		m_frontMaterial.colour = { 1.0f, 1.0f, 1.0f };
@@ -89,7 +89,7 @@ void CYWall::createModel() {
 	// Get geometric properties of the wall
 	float minHeight = (m_level + m_startHeight) / WORLD_HEIGHT;
 	float maxHeight = (m_level + m_endHeight)   / WORLD_HEIGHT;
-	glm::vec2 wallOrigin = { m_startPosition.x, m_start_pos.y };
+	glm::vec2 wallOrigin = { m_startPosition.x, m_startPosition.y };
 	glm::vec2 wallFinish = { m_startPosition.x + m_displacementPosition.x, m_startPosition.y + m_displacementPosition.y };
     
 	// Set the vertices of the wall using such properties
@@ -117,9 +117,9 @@ void CYWall::createModel() {
 
 	// Colors
 	for (int i = 0; i < 4; i++)
-		mesh.colour.insert(mesh.colour.end(), { m_front_mat.mat_color[0], 
-			m_front_mat.mat_color[1],
-			m_front_mat.mat_color[2] });
+		mesh.colour.insert(mesh.colour.end(), { m_frontMaterial.colour[0],
+			m_frontMaterial.colour[1],
+            m_frontMaterial.colour[2] });
 
 	// default
     mesh.texCoords =
