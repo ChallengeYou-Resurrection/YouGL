@@ -37,6 +37,11 @@ CYPlat::CYPlat(const std::smatch& matchGroups)
     //std::cout << "Level: " << subMatch.str() << std::endl;
 }
 
+CYPlat::CYPlat(const json & jObj)
+{
+
+}
+
 void CYPlat::createModel() {
 }
 

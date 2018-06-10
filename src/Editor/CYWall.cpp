@@ -1,5 +1,7 @@
 #include "CYWall.h"
 
+
+// WEB PARSER CONSTRUCTOR
 CYWall::CYWall(const std::smatch& matchGroups)
 {
     std::ssub_match subMatch;
@@ -25,18 +27,26 @@ CYWall::CYWall(const std::smatch& matchGroups)
 		m_frontMaterial.colour = stringToColor(subMatch.str());
 	} else {
         subMatch = matchGroups[6];
-		m_frontMaterial.textureId = 0;
+		m_frontMaterial.textureId = std::stoi(subMatch.str());
 
 		m_frontMaterial.colour = { 1.0f, 1.0f, 1.0f };
 	}
 
 
-    // 7 = Colour, 8 = TextureID
-    if (matchGroups[7] != "")
-        subMatch = matchGroups[7];
-    else
-        subMatch = matchGroups[8];
-    //std::cout << "Texture 2: " << subMatch.str() << std::endl;
+    // 7 = Colour, 8 = TextureID (Back side)
+	if (matchGroups[7] != "") {
+		// Default colour texture
+		m_backMaterial.textureId = 0;
+
+		subMatch = matchGroups[7];
+		m_backMaterial.colour = stringToColor(subMatch.str());
+	}
+	else {
+		subMatch = matchGroups[8];
+		m_backMaterial.textureId = std::stoi(subMatch.str());;
+
+		m_backMaterial.colour = { 1.0f, 1.0f, 1.0f };
+	}
 
     // If 10 doesn't exist then 9 = Level, else 9 = Z_Index
 	int z_index, level;
@@ -74,6 +84,23 @@ CYWall::CYWall(const std::smatch& matchGroups)
 	}
 
     this->type = "WALL";
+}
+
+CYWall::CYWall(const json & jObj)
+{
+	this->m_startPosition			= { jObj["START_POS"][0], jObj["START_POS"][1] };
+	this->m_displacementPosition	= { jObj["DISP_POS"][0], jObj["DISP_POS"][1] };
+
+	this->m_frontMaterial.textureId = jObj["MAT1"]["tex"];
+	this->m_backMaterial.textureId	= jObj["MAT2"]["tex"];
+	this->m_frontMaterial.deserializeColour(jObj["MAT1"]["col"]);
+	this->m_backMaterial.deserializeColour(jObj["MAT2"]["col"]);
+
+	this->m_level					= jObj["LEVEL"];
+	this->m_startHeight				= jObj["HEIGHT"][0];
+	this->m_endHeight				= jObj["HEIGHT"][1];
+
+	this->type = "WALL";
 }
 
 
@@ -142,16 +169,20 @@ void CYWall::render(Renderer& renderer)
 
 void CYWall::toJsonFormat(json& jLevel, int id)
 {
-    std::string itemName = "WALL_" + std::to_string(id);
+	std::string itemId = std::to_string(id);
 
-    // Add in the properties to JSON
-    jLevel[itemName]["end_POS"]["x"] = m_startPosition.x;
-    jLevel[itemName]["end_POS"]["y"] = this->m_startPosition.y;
+	// Add in the properties to JSON
+	jLevel["START_POS"]		= { m_startPosition.x, m_startPosition.y };
 
-    jLevel[itemName]["DISP_POS"]["x"] = this->m_displacementPosition.x;
-    jLevel[itemName]["DISP_POS"]["y"] = this->m_displacementPosition.y;
+	jLevel["DISP_POS"]		= { m_displacementPosition.x, m_displacementPosition.y };
 
-    jLevel[itemName]["LEVEL"] = this->m_level;
+	jLevel["MAT1"]["tex"]	= this->m_frontMaterial.textureId;
+	jLevel["MAT1"]["col"]	= this->m_frontMaterial.serializeColour();
+	jLevel["MAT2"]["tex"]	= this->m_backMaterial.textureId;
+	jLevel["MAT2"]["col"]	= this->m_backMaterial.serializeColour();
+
+    jLevel["LEVEL"]			= this->m_level;
+	jLevel["HEIGHT"]		= { this->m_startHeight, this->m_endHeight };
 
     return;
 }

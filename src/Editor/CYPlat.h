@@ -12,6 +12,7 @@ class CYPlat : public EditorObject
 public:
     // Construct from Regex
     CYPlat(const std::smatch& matchGroups);
+	CYPlat(const json& jObj);
 
     virtual void toJsonFormat(json& jLevel, int id);
 

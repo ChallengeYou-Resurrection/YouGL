@@ -47,6 +47,10 @@ public:
     void addWall(const std::smatch& matchGroups);
     void addPlat(const std::smatch& matchGroups);
 
+	// JSON : Editor Objects
+	void addWall(const json& jObj);
+	void addPlat(const json& jObj);
+
     void drawGeometry(Renderer& renderer);
     void buildGeometry();
 

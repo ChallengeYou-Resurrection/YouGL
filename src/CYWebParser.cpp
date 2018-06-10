@@ -57,7 +57,7 @@ CYLevel loadFile(const std::string& levelCode)
 
         wall_id++;
         wallCode = matchGroups.suffix();
-   }
+	}
 
     // PLATFORMS
     // V2.13 = [X_Pos, Y_Pos, [Texture], Level]
@@ -150,4 +150,37 @@ CYLevel CYWebParser::loadFileFromWebsite(int gameNumber)
     }
 
     return loadFile(response.getBody());
+}
+
+CYLevel CYWebParser::loadFileFromDisk(const std::string& filePath)
+{
+	std::cout << "Loading " << filePath << '\n';
+
+	// Setup string buffers for reading file
+	std::string levelCode;
+	std::ifstream levelCodeBuffer;
+	levelCodeBuffer.exceptions(std::ifstream::badbit);
+
+	// Open the file
+	try
+	{
+		// Open
+		levelCodeBuffer.open(filePath);
+
+		// Read into a string stream
+		std::stringstream levelSS;
+		levelSS << levelCodeBuffer.rdbuf();
+
+		// Convert the stream stream into a string we can use & close the buffer
+		levelCode = levelSS.str();
+		levelCodeBuffer.close();
+
+	}
+	// Error reading file
+	catch (std::ifstream::failure e) {
+		std::cout << "Could not load file " << filePath << std::endl;
+	}
+
+	// Load the level & return
+	return loadFile(levelCode);
 }

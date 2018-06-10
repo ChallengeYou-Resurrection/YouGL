@@ -19,6 +19,23 @@ const float WORLD_HEIGHT_SCALE = 1.2f;
 struct Material {
 	int textureId;
 	std::array<GLfloat, 3> colour;
+
+	// For converting decimal colour values into integers
+	// Used for serializing 
+	std::array<int, 3> serializeColour()
+	{
+		std::array<int, 3> int_colour;
+		for (int i = 0; i < 3; i++)
+			int_colour[i] = colour[i] * 255;
+
+		return int_colour;
+	}
+
+	void deserializeColour(std::array<int, 3> int_colour)
+	{
+		for (int i = 0; i < 3; i++)
+			colour[i] = int_colour[i] / 255.f;
+	}
 };
 
 class EditorObject

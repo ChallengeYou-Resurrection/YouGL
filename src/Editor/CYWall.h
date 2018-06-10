@@ -12,6 +12,7 @@ class CYWall : public EditorObject
 public:
     // Construct from Regex
     CYWall(const std::smatch& matchGroups);
+	CYWall(const json& jObj);
 
     virtual void toJsonFormat(json& jLevel, int id);
 

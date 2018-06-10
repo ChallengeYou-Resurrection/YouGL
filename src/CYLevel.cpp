@@ -5,6 +5,7 @@ CYLevel::CYLevel()
 
 }
 
+///////////// WEB FORMAT /////////////
 void CYLevel::addWall(const std::smatch& matchGroups)
 {
     std::shared_ptr<EditorObject> wall = std::make_shared<CYWall>(matchGroups);
@@ -17,6 +18,20 @@ void CYLevel::addPlat(const std::smatch& matchGroups)
     m_editorObjects.push_back(std::move(plat));
 }
 
+///////////// JSON FORMAT /////////////
+void CYLevel::addWall(const json& jObj)
+{
+	std::shared_ptr<EditorObject> wall = std::make_shared<CYWall>(jObj);
+	m_editorObjects.push_back(std::move(wall));
+}
+
+void CYLevel::addPlat(const json& jObj)
+{
+	std::shared_ptr<EditorObject> plat = std::make_shared<CYPlat>(jObj);
+	m_editorObjects.push_back(std::move(plat));
+}
+
+
 bool CYLevel::serializeIntoJsonFormat(std::string file_name)
 {
     int id = 0;
@@ -26,7 +41,7 @@ bool CYLevel::serializeIntoJsonFormat(std::string file_name)
     // Level Headers
     jLevel["NAME"] = m_header.name;
     jLevel["AUTHOR"] = m_header.author;
-    jLevel["VERSION"] = m_header.version;
+	jLevel["VERSION"] = roundf(m_header.version * 100);
     jLevel["LEVELS"] = m_header.levels;
 
     // WALLS
@@ -34,7 +49,7 @@ bool CYLevel::serializeIntoJsonFormat(std::string file_name)
     {
         if ( obj->type == "WALL")
         {
-            obj->toJsonFormat(jLevel, id);
+            obj->toJsonFormat(jLevel["WALLS"][std::to_string(id)], id);
             id++;
         }
 

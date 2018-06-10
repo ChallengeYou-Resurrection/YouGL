@@ -10,7 +10,7 @@
 
 namespace CYWebParser {
     CYLevel loadFileFromWebsite(int gameNumber);
-    //CYLevel* loadFileFromComputer(std::string filePath);
+	CYLevel loadFileFromDisk(const std::string& filePath);
 }
 
 CYLevel loadFile(const std::string& levelCode);
