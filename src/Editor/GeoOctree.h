@@ -8,7 +8,7 @@
 #include <SFML/Graphics.hpp>
 #include "glm/vec3.hpp"
 
-#include "EditorObject.h"
+//#include "EditorObject.h"
 #include "BoundingBox.h"
 
 /* GEO OCTREE
@@ -32,7 +32,7 @@ class GeoOctree
         GeoOctree(int octreeSize);
 
         // Add geometry to octree
-        void insertGeometry(std::unique_ptr<EditorObject> obj);
+        //void insertGeometry(std::unique_ptr<EditorObject> obj);
 
         // Build Octree
         // To be called after all objects have been inserted
@@ -48,7 +48,7 @@ class GeoOctree
     private:
         int size;
 
-        std::vector<std::shared_ptr<EditorObject>> m_objects;
+        //std::vector<std::shared_ptr<EditorObject>> m_objects;
 
         bool subdivided = false;
         std::vector<BoundingBox> m_subdivisionBB;

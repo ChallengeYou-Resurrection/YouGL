@@ -9,9 +9,6 @@
 #include "../Renderer/Model.h"
 #include "../Renderer/Mesh.h"
 
-#include "../CYWebParser.h"
-#include "../CYJsonParser.h"
-
 namespace Benchmark
 {
     constexpr int

@@ -7,10 +7,12 @@ GeoOctree::GeoOctree(int octreeSize)
     m_subdivisionBB.emplace_back(glm::vec3(0, 0, 0), glm::vec3(40, 40, 40));
 }
 
+/*
 void GeoOctree::insertGeometry(std::unique_ptr<EditorObject> obj)
 {
 
 }
+*/
 
 void GeoOctree::buildOctree() {
 

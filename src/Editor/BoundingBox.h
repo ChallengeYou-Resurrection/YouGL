@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../Common.h"
 #include "../Renderer/Model.h"
 #include "../Renderer/Mesh.h"
 #include "../Renderer/Renderer.h"
