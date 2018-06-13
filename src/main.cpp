@@ -2,18 +2,26 @@
 
 #include <iostream>
 
-int main()
+void runGame()
+{
+    Game game;
+    game.run();
+}
+
+int main(int argc, char** argv)
 {
     //TODO Load a config file for resolution and other options
 
-   // try {
-        Game game;
-        game.run();
-  //  }
-    //catch (std::exception& e) {
-   //     std::cout << "Exception:\n" << e.what();
-     //   std::cin.ignore();
-   //     return -1;
-  //  }
+    if (argc > 1) {
+        for (int i = 1; i < argc; i++) {
+            if (std::string(argv[i]) == "conv") {
+
+            }
+        }
+        runGame();
+    }
+    else {
+        runGame();
+    }
     return 0;
 }

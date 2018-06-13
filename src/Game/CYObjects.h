@@ -8,7 +8,8 @@
 enum class ObjectID
 {
     end,
-    Wall
+    Wall,
+    Platform
 };
 
 struct LevelHeader
@@ -39,6 +40,21 @@ struct Wall
     Property::Position endPosition;
     Property::Material frontMaterial;
     Property::Material backMaterial;
+
+    u8 floor;
+    u8 height;
+};
+
+struct Platform
+{
+    template <typename Archive>
+    void archive(Archive& archive)
+    {
+        archive(Platform, floor, position, material, Property::Type::Height, height);
+    }
+
+    Property::Position position; 
+    Property::Material material;
 
     u8 floor;
     u8 height;

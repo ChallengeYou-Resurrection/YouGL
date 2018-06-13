@@ -1,6 +1,7 @@
 #include "OldFormatUtil.h"
 
 #include <iostream>
+#include <filesystem>
 #include <SFML/Network/Http.hpp>
 
 namespace OldFormat
@@ -97,6 +98,21 @@ namespace OldFormat
             }
         }
         return cyTable;
+    }
+
+    void massConvertFilesBinaryFormat()
+    {
+        namespace fs = std::filesystem;
+
+        int i = 0;
+        fs::directory_iterator itr(fs::current_path() / "cy_files/old/");
+        
+        for (auto& f : fs::directory_iterator(fs::current_path() / "cy_files/old/")) {
+            std::cout << f.path() << "\n";
+            if (i++ > 100) {
+                return;
+            }
+        }
     }
 
 }

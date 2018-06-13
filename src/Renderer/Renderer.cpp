@@ -99,7 +99,7 @@ void Renderer::initWindow()
     m_window.create({ 1280, 720 }, "YouGL", sf::Style::Close, settings);
 
     //m_window.setVerticalSyncEnabled(true);
-	m_window.setFramerateLimit(144);
+	m_window.setFramerateLimit(60);
 }
 
 void Renderer::initGL()

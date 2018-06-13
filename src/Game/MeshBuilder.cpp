@@ -61,7 +61,6 @@ Mesh createMesh(const Wall& wall)
     vertices[2] = glm::vec3((wallFinish.x) / WORLD_SIZE, minHeight, (wallFinish.y) / WORLD_SIZE);
     vertices[3] = glm::vec3((wallOrigin.x) / WORLD_SIZE, minHeight, (wallOrigin.y) / WORLD_SIZE);
     
-
     glm::vec3 normal = glm::cross(vertices[2] - vertices[1], vertices[3] - vertices[1]);
 
     //Vertices
@@ -85,25 +84,9 @@ Mesh createMesh(const Wall& wall)
     }
 
     //Textre Coords (To do)
-    mesh.texCoords = {
-        1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f
-    };
+    mesh.texCoords = { 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f };
 
-    mesh.indices = { 
-        0, 3, 1, 1, 2, 3 
-    };
-
-    /*static int wn = 0;
-    std::cout << "WALL " << wn++ << std::endl;
-    std::cout << wall.startPosition.x << " " << wall.floor << " " << wall.startPosition.y << "\n";
-    std::cout << wall.endPosition.x << " " << wall.floor << " " << wall.endPosition.y << "\n";
-    int i = 0;
-    for (auto& v : vertices) {
-        std::cout 
-            << " X: " << std::setw(3) << v.x 
-            << " Y: " << std::setw(3) << v.y 
-            << " Z: " << std::setw(3) << v.z << "\n";
-    }
-    std::cout << "\n"; */
+    //Indices
+    mesh.indices = { 0, 3, 1, 1, 2, 3 };
     return mesh;
 }

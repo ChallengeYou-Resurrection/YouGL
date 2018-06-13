@@ -10,7 +10,7 @@
 CYGameLevel::CYGameLevel()
 {
 }
-std::vector<Model> models;
+
 void CYGameLevel::loadFromOldFormat(int gameNumber)
 {
     auto gameCode = OldFormat::loadFromWebsite(gameNumber);
@@ -40,19 +40,10 @@ void CYGameLevel::createModels()
         masterMesh.combineWith(mesh);
        // models.emplace_back(mesh);
     }
-
-	std::cout << "Vertices : " << masterMesh.vertices.size() << "/n";
-	std::cout << "Indices : " << masterMesh.indices.size() << "/n";
-
     m_floorModels[0].create(masterMesh);
-    int cont = 0;
-    for (auto& m : models) cont += m.getRenderData().getIndicesCount();
-    std::cout << "Indices count: " << cont << "\n";
 }
 
 void CYGameLevel::renderFloors(Renderer & renderer)
 {
-    CHECK_FOR_GL_ERROR();
-    //for (auto& m : models) renderer.draw(m);
     renderer.draw(m_floorModels[0]);
 }
