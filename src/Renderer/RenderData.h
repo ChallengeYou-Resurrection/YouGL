@@ -17,7 +17,21 @@ class RenderData
             return indicesCount;
         }
 
+		void setMode(GLenum m)
+		{
+			this->m_mode = m;
+		}
+
+		GLenum getMode() const
+		{
+			return m_mode;
+		}
+
+
+
     private:
         GLuint vao = 0;
         GLuint indicesCount = 0;
+
+		GLenum m_mode = GL_TRIANGLES;
 };

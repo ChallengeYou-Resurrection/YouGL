@@ -21,6 +21,8 @@ class Model : public NonCopyable
         void create(Mesh& mesh);
         const RenderData& getRenderData() const;
 
+		void setMode(GLenum m);
+
     private:
         RenderData m_renderData;
         std::array<GLuint, 5> m_buffers;

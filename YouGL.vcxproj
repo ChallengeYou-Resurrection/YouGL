@@ -126,6 +126,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Editor\BoundingBox.cpp" />
+    <ClCompile Include="src\CYJsonParser.cpp" />
     <ClCompile Include="src\CYLevel.cpp" />
     <ClCompile Include="src\CYWebParser.cpp" />
     <ClCompile Include="src\Dependencies\glad.c" />
@@ -169,6 +171,8 @@
     <None Include="src\Dependancies\json.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Editor\BoundingBox.h" />
+    <ClInclude Include="src\CYJsonParser.h" />
     <ClInclude Include="src\CYLevel.h" />
     <ClInclude Include="src\CYWebParser.h" />
     <ClInclude Include="src\Dependancies\glad.h" />
@@ -179,6 +183,7 @@
     <ClInclude Include="src\Editor\GeoOctree.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\GameObject.h" />
+    <ClInclude Include="src\Common.h" />
     <ClInclude Include="src\Input\Controller.h" />
     <ClInclude Include="src\Input\KeyboardController.h" />
     <ClInclude Include="src\Maths\GlmCommon.h" />

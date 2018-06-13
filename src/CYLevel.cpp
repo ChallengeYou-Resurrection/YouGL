@@ -71,6 +71,11 @@ void CYLevel::buildGeometry()
     }
 }
 
+void CYLevel::drawOctree(Renderer & renderer)
+{
+	m_octree.drawOctree(renderer);
+}
+
 void CYLevel::drawGeometry(Renderer& renderer)
 {
     for (auto obj : m_editorObjects)

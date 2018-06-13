@@ -10,13 +10,24 @@
 #include "../Renderer/Mesh.h"
 
 #include "../CYWebParser.h"
+#include "../CYJsonParser.h"
+
+namespace Benchmark
+{
+    constexpr int
+        TheMouseReturns = 158209,
+        WillyWonka = 127388,
+        GrandTheftAuto = 36321,
+		PenguinPixel = 145505,
+        PacMania = 255;
+}
 
 StatePlaying::StatePlaying(Game& game)
 :   StateBase   (game)
 {
-    // Load level
-    m_level = CYWebParser::loadFileFromWebsite(100000);
-    m_level.serializeIntoJsonFormat("testLevel.cy");
+    m_level.loadFromOldFormat(Benchmark::PenguinPixel);
+    m_level.createModels();
+	game.initRendererScene();
 }
 
 void StatePlaying::handleEvent(sf::Event e)
@@ -41,5 +52,5 @@ void StatePlaying::fixedUpdate(sf::Time deltaTime)
 
 void StatePlaying::render(Renderer& renderer)
 {
-    m_level.drawGeometry(renderer);
+	m_level.renderFloors(renderer);
 }

@@ -55,6 +55,8 @@ bool KeyboardController::firePressed() const
 
 void KeyboardController::tryToggleLookLock()
 {
+   // if (!m_pWindow->hasFocus()) return;
+
     static bool isKeyBackUp = true;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::L) && isKeyBackUp) {
         isKeyBackUp = false;
@@ -105,5 +107,6 @@ glm::vec3 KeyboardController::getLookChange() const
 
 bool KeyboardController::isPressed(Controller::Input input) const
 {
+    //if (!m_pWindow->hasFocus()) return false;
     return sf::Keyboard::isKeyPressed(m_keyMap.at(input));
 }

@@ -51,6 +51,7 @@ public:
 	void addWall(const json& jObj);
 	void addPlat(const json& jObj);
 
+	void drawOctree(Renderer& renderer);
     void drawGeometry(Renderer& renderer);
     void buildGeometry();
 

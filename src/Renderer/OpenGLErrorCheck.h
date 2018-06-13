@@ -9,4 +9,4 @@
 */
 void glCheckError_(const char *file, int line);
 
-#define CHECK_GL_ERRORS() glCheckError_(__FILE__, __LINE__) 
+#define CHECK_FOR_GL_ERROR() glCheckError_(__FILE__, __LINE__) 

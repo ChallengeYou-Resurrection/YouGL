@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include <string>
 
-std::string getFileContent(const std::string& filePath, bool throws = false);
+std::optional<std::string> getFileContent(const std::string& filePath);

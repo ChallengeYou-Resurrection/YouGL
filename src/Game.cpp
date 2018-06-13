@@ -130,3 +130,8 @@ const sf::RenderWindow& Game::getWindow() const
 {
     return m_renderer.getWindow();
 }
+
+void Game::initRendererScene()
+{
+	m_renderer.initScene(m_camera);
+}

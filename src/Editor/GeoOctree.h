@@ -9,6 +9,7 @@
 #include "glm/vec3.hpp"
 
 #include "EditorObject.h"
+#include "BoundingBox.h"
 
 /* GEO OCTREE
  * This isn't an exact Octree but one designed to suit how the geometry in
@@ -23,25 +24,6 @@
 
 const int MAX_ITEMS_PER_OCTREE = 12;
 const int MAX_OCTREE_DEPTH     = 8;
-
-class GeoOctree;
-
-// For AABB collision
-// Used for determining what subdivision an object should go to
-struct BoundingBox {
-    glm::vec3 m_vecMin;
-    glm::vec3 m_vecMax;
-
-    bool checkAABB(const BoundingBox& obj)
-    {
-        return (this->m_vecMax.x > obj.m_vecMin.x &&
-                this->m_vecMin.x < obj.m_vecMax.x &&
-                this->m_vecMax.y > obj.m_vecMin.y &&
-                this->m_vecMin.y < obj.m_vecMax.y &&
-                this->m_vecMax.z > obj.m_vecMin.z &&
-                this->m_vecMin.z < obj.m_vecMax.z);
-    }
-};
 
 class GeoOctree
 {
@@ -59,6 +41,8 @@ class GeoOctree
         // Safely dispose of contents in Octree
         void cleanOctree();
 
+		void drawOctree(Renderer& renderer);
+
     protected:
 
     private:
@@ -67,7 +51,7 @@ class GeoOctree
         std::vector<std::shared_ptr<EditorObject>> m_objects;
 
         bool subdivided = false;
-        std::array<BoundingBox, 8> m_subdivisionBB;
+        std::vector<BoundingBox> m_subdivisionBB;
         std::array<std::unique_ptr<GeoOctree>, 8> m_nodes;
 };
 

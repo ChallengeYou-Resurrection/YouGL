@@ -105,25 +105,21 @@ CYWall::CYWall(const json & jObj)
 
 
 void CYWall::createModel() {
-	// TODO : Make this a constant for all objects
-	float WORLD_SIZE = 50.f;
-	float WORLD_HEIGHT = 2.5f;
-
 
     Mesh mesh;
 	glm::vec3 vertex[4];
 
 	// Get geometric properties of the wall
-	float minHeight = (m_level + m_startHeight) / WORLD_HEIGHT;
-	float maxHeight = (m_level + m_endHeight)   / WORLD_HEIGHT;
+	float minHeight = (m_level + m_startHeight) / GLOBAL_WORLD_HEIGHT;
+	float maxHeight = (m_level + m_endHeight)   / GLOBAL_WORLD_HEIGHT;
 	glm::vec2 wallOrigin = { m_startPosition.x, m_startPosition.y };
 	glm::vec2 wallFinish = { m_startPosition.x + m_displacementPosition.x, m_startPosition.y + m_displacementPosition.y };
     
 	// Set the vertices of the wall using such properties
-	vertex[1] = glm::vec3((wallOrigin.x) / WORLD_SIZE, maxHeight, (wallOrigin.y) / WORLD_SIZE);
-	vertex[2] = glm::vec3((wallFinish.x) / WORLD_SIZE, maxHeight, (wallFinish.y) / WORLD_SIZE);
-	vertex[3] = glm::vec3((wallFinish.x) / WORLD_SIZE, minHeight, (wallFinish.y) / WORLD_SIZE);
-	vertex[0] = glm::vec3((wallOrigin.x) / WORLD_SIZE, minHeight, (wallOrigin.y) / WORLD_SIZE);
+	vertex[1] = glm::vec3((wallOrigin.x) / GLOBAL_WORLD_SIZE, maxHeight, (wallOrigin.y) / GLOBAL_WORLD_SIZE);
+	vertex[2] = glm::vec3((wallFinish.x) / GLOBAL_WORLD_SIZE, maxHeight, (wallFinish.y) / GLOBAL_WORLD_SIZE);
+	vertex[3] = glm::vec3((wallFinish.x) / GLOBAL_WORLD_SIZE, minHeight, (wallFinish.y) / GLOBAL_WORLD_SIZE);
+	vertex[0] = glm::vec3((wallOrigin.x) / GLOBAL_WORLD_SIZE, minHeight, (wallOrigin.y) / GLOBAL_WORLD_SIZE);
 
 	// Use the cross product to determine the normal
 	glm::vec3 normal = glm::cross(vertex[2] - vertex[1], vertex[3] - vertex[1]);

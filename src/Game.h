@@ -33,6 +33,7 @@ class Game : public NonCopyable, public NonMovable
         void changeState(Args&&... args);
 
         const sf::RenderWindow& getWindow() const;
+		void initRendererScene();
 
     private:
         void handleEvent();
@@ -53,8 +54,6 @@ class Game : public NonCopyable, public NonMovable
         bool m_shouldPop = false;
         bool m_shouldExit = false;
         bool m_shouldChageState = false;
-        
-
 };
 
 template<typename T, typename... Args>

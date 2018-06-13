@@ -24,6 +24,17 @@ void Renderer::draw(const sf::Drawable& drawable)
     m_sfDraws.push_back(&drawable);
 }
 
+void Renderer::initScene(const Camera& camera)
+{
+	glm::mat4 model;
+
+	model = makeModelMatrix({ { 0, 0, -5 },{ 0, 45, 0 } });
+
+	m_shader.bind();
+	m_shader.setParameter("projMatrix", camera.getProjectionMatrix());
+	m_shader.setParameter("modelMatrix", model);
+}
+
 void Renderer::renderScene(const Camera& camera)
 {
     glClearColor(0.2f, 0.2f, 0.22f, 1.0f);
@@ -32,21 +43,19 @@ void Renderer::renderScene(const Camera& camera)
     m_shader.bind();
 
     /*TEMP STUFF*/
-    glm::mat4 model;
-    glm::mat4 view;
-
-    model = makeModelMatrix({ { 0, 0, -5 }, { 0, 45, 0 } });
-    view = makeViewMatrix(camera);
+    glm::mat4 view = makeViewMatrix(camera);
     /*TEMP END*/
 
-    m_shader.setParameter("projMatrix", camera.getProjectionMatrix());
-    m_shader.setParameter("modelMatrix", model);
+    //m_shader.setParameter("projMatrix", camera.getProjectionMatrix());
+    //m_shader.setParameter("modelMatrix", model);
     m_shader.setParameter("viewMatrix", view);
 
     //Draw OpenGL
+    int drawCalls = 0;
     for (auto renderData : m_renderData) {
         renderData->bind();
         glDrawElements(GL_TRIANGLES, renderData->getIndicesCount(), GL_UNSIGNED_INT, 0);
+        //std::cout << "Call: " << drawCalls++ << " Indices: " << renderData->getIndicesCount() << '\n';
     }
 
     //Draw SFML
@@ -89,7 +98,8 @@ void Renderer::initWindow()
     settings.stencilBits = 8;
     m_window.create({ 1280, 720 }, "YouGL", sf::Style::Close, settings);
 
-    m_window.setVerticalSyncEnabled(true);
+    //m_window.setVerticalSyncEnabled(true);
+	m_window.setFramerateLimit(144);
 }
 
 void Renderer::initGL()
@@ -132,5 +142,5 @@ void Renderer::endSfmlDraw()
     m_window.popGLStates();
 
 	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
+	//glDisable(GL_CULL_FACE);
 }

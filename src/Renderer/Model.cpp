@@ -56,10 +56,13 @@ void Model::create(Mesh& mesh)
     mesh.clearData();
 }
 
-const RenderData & Model::getRenderData() const
+const RenderData& Model::getRenderData() const
 {
     return m_renderData;
 }
 
-
+void Model::setMode(GLenum m)
+{
+	m_renderData.setMode(m);
+}
 

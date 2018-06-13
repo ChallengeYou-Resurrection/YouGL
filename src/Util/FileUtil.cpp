@@ -5,18 +5,13 @@
 #include <iostream>
 #include <stdexcept>
 
-std::string getFileContent(const std::string& filePath, bool throws)
+std::optional<std::string> getFileContent(const std::string& filePath)
 {
     std::ifstream inFile(filePath);
     if (!inFile.is_open())
     {
         std::string error = "Unable to open file: " + filePath + "!";
-        if (throws) {
-            throw std::runtime_error(error);
-        }
-        else {
-            std::cerr << error << '\n';
-        }
+        return {};
     }
 
     std::ostringstream stream;

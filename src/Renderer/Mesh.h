@@ -9,7 +9,8 @@ struct Mesh
     std::vector<GLfloat> texCoords;
     std::vector<GLfloat> normals;
     std::vector<GLfloat> colour;
-    std::vector<GLuint> indices;
+    std::vector<GLuint>  indices;
 
     void clearData();
+    void combineWith(const Mesh& otherMesh);
 };

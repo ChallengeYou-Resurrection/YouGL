@@ -21,6 +21,7 @@ class Renderer
 
         void draw(const Model& model);
         void draw(const sf::Drawable& drawable);
+		void initScene(const Camera& camera);
         void renderScene(const Camera& camera);
 
         const sf::RenderWindow& getWindow() const;

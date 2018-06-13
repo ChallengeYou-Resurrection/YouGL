@@ -2,7 +2,7 @@
 
 
 #include "StateBase.h"
-#include "../CYLevel.h"
+#include "../Game/CYGameLevel.h"
 
 class Controller;
 /**
@@ -20,5 +20,5 @@ public:
     void render(Renderer& renderer) override;
 
 private:
-    CYLevel m_level;
+    CYGameLevel m_level;
 };

@@ -29,7 +29,7 @@ CYLevel loadJsonFile(const std::string& levelCode)
 	}
 
 	// Build all geometry
-	cyLevel.buildGeometry();
+	//cyLevel.buildGeometry();
 
 	return cyLevel;
 }
@@ -63,5 +63,5 @@ CYLevel CYJsonParser::loadFileFromDisk(const std::string& filePath)
 	}
 
 	// Load the level & return
-	return loadJsonFile(levelCode);
+	return loadJsonFile(std::move(levelCode));
 }

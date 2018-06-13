@@ -46,8 +46,12 @@ GLuint loadShaders(const std::string& vertexShader,
     auto vertexSource = getFileContent("Shaders/" + vertexShader + ".vert");
     auto fragmentSource = getFileContent("Shaders/" + fragmentShader + ".frag");
 
-    auto vertexShaderID = compileShader(vertexSource.c_str(), GL_VERTEX_SHADER);
-    auto fragmentShaderID = compileShader(fragmentSource.c_str(), GL_FRAGMENT_SHADER);
+    if (!vertexSource || !fragmentSource) {
+        throw std::runtime_error("Unable to load shader files");
+    }
+
+    auto vertexShaderID = compileShader(vertexSource->c_str(), GL_VERTEX_SHADER);
+    auto fragmentShaderID = compileShader(fragmentSource->c_str(), GL_FRAGMENT_SHADER);
 
     auto shaderID = linkProgram(vertexShaderID, fragmentShaderID);
 
