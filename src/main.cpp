@@ -2,26 +2,25 @@
 
 #include <iostream>
 
-void runGame()
-{
-    Game game;
-    game.run();
-}
+#include "Game/OldFormatUtil.h"
+
 
 int main(int argc, char** argv)
 {
     //TODO Load a config file for resolution and other options
-
+    OldFormat::massConvertFilesBinaryFormat();
+    return 0;/*
     if (argc > 1) {
         for (int i = 1; i < argc; i++) {
-            if (std::string(argv[i]) == "conv") {
-
+            if (!strcmp(argv[i], "conv")) {
+                OldFormat::massConvertFilesBinaryFormat();
+                return 0;
             }
         }
-        runGame();
     }
-    else {
-        runGame();
-    }
+    */
+    Game game;
+    game.run();
+
     return 0;
 }
