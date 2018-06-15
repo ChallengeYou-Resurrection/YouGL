@@ -2,10 +2,11 @@
 
 #include <string>
 #include <cstdint>
+#include <cereal/types/string.hpp>
 
 #include "CYObjectProperties.h"
 
-enum class ObjectID
+enum class ObjectID : u8
 {
     end,
     Wall,
@@ -15,7 +16,7 @@ enum class ObjectID
 struct LevelHeader
 {
     template <typename Archive>
-    void archive(Archive& archive)
+    void serialize(Archive& archive)
     {
         archive(gameAuthor, gameName, floorCount);
     }
@@ -28,12 +29,17 @@ struct LevelHeader
 struct Wall
 {
     template <typename Archive>
-    void archive(Archive& archive)
+    void save(Archive& archive) const
     {
-        archive(Wall, floor, 
-            startPosition, endPosition, 
-            frontMaterial, backMaterial, 
-            Property::Type::Height, height);
+        archive(ObjectID::Wall, floor, startPosition, endPosition,
+            frontMaterial, backMaterial, Property::Type::Height, height);
+    }
+
+    template <typename Archive>
+    void load(Archive& archive)
+    {
+        archive(floor, startPosition, endPosition, frontMaterial, 
+            backMaterial, Property::Type::Height, height);
     }
 
     Property::Position startPosition;
@@ -48,9 +54,15 @@ struct Wall
 struct Platform
 {
     template <typename Archive>
-    void archive(Archive& archive)
+    void save(Archive& archive) const
     {
-        archive(Platform, floor, position, material, Property::Type::Height, height);
+        archive(ObjectID::Platform, floor, position, material, Property::Type::Height, height);
+    }
+
+    template <typename Archive>
+    void load(Archive& archive)
+    {
+        archive(floor, position, material, Property::Type::Height, height);
     }
 
     Property::Position position; 

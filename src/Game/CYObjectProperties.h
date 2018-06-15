@@ -30,25 +30,52 @@ namespace Property
     struct Material
     {
         Colour colour;
-        uint8_t textureId;
+        u8 textureId;
     };
 }
 
-//Serialisation/ Deserialisation functions
-template <typename Archive>
-void archive(Archive& archive, Property::Position& position)
-{
-    archive(Property::Type::Position, position.x, position.y);
-}
 
-template <typename Archive>
-void archive(Archive& archive, Property::Colour& colour)
+namespace cereal 
 {
-    archive(Property::Type::Colour, colour.r, colour.g, colour.b);
-}
+    //Serialisation/ Deserialisation functions
 
-template <typename Archive>
-void archive(Archive& archive, Property::Material& material)
-{
-    archive(Property::Type::Material, material.colour, material.textureId);
+    //
+    //Colour
+    //
+    template <typename Archive>
+    void serialize(Archive& archive, Property::Colour& colour)
+    {
+        archive(colour.r, colour.g, colour.b);
+    }
+
+    //
+    //Position
+    //
+    template <typename Archive>
+    void save(Archive& archive, const Property::Position& position)
+    {
+        archive(Property::Type::Position, position.x, position.y);
+    }
+
+    template <typename Archive>
+    void load(Archive& archive, Property::Position& position)
+    {
+        archive(position.x, position.y);
+    }
+
+
+    //
+    //Material 
+    //
+    template <typename Archive>
+    void save(Archive& archive, const Property::Material& material)
+    {
+        archive(Property::Type::Material, material.colour, material.textureId);
+    }
+
+    template <typename Archive>
+    void load(Archive& archive, Property::Material& material)
+    {
+        archive(material.colour, material.textureId);
+    }
 }

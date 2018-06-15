@@ -2,7 +2,7 @@
 
 out vec4 outColour;
 
-in vec2 passTexCoords;
+in vec2 passTexCoord;
 in vec3 passColour; 
 
 void main()

@@ -2,7 +2,12 @@
 
 #include <iostream>
 #include <filesystem>
+#include <fstream>
+#include <cereal/cereal.hpp>
+#include <cereal/archives/binary.hpp>
 #include <SFML/Network/Http.hpp>
+
+#include "../Util/FileUtil.h"
 
 namespace OldFormat
 {
@@ -105,12 +110,27 @@ namespace OldFormat
         namespace fs = std::filesystem;
 
         int i = 0;
-        fs::directory_iterator itr(fs::current_path() / "cy_files/old/");
-        
+        std::string buffer;
         for (auto& f : fs::directory_iterator(fs::current_path() / "cy_files/old/")) {
-            std::cout << f.path() << "\n";
-            if (i++ > 100) {
-                return;
+            buffer = *getFileContent(f.path().string());
+            auto table = getObjectTable(buffer);
+            auto header = extractHeader(buffer);
+            auto walls = extractWalls(table["walls"]);
+
+            auto fName = f.path().filename().string();
+            fName.pop_back(); fName.pop_back();
+            fName = fs::current_path().string() + "cy_files/binary/" + fName + "bcy";
+
+            std::ofstream outFile(fName, std::ios::binary | std::ios::out);
+            {
+                cereal::BinaryOutputArchive archive(outFile);
+                std::cout << "Writing: " << fName << "\n";
+
+                archive(header);
+                for (auto& wall : walls) {
+                    archive(wall);
+                }
+                if (i++ >= 10) return;
             }
         }
     }

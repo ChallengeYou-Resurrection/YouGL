@@ -9,13 +9,13 @@ uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projMatrix;
 
-out vec2 passTexCoords;
+out vec2 passTexCoord;
 out vec3 passColour;
 
 void main()
 {
 	gl_Position = projMatrix * viewMatrix * modelMatrix * vec4(inVertexPosition, 1.0);
 
-	passTexCoords = inTexCoord;
+	passTexCoord = inTexCoord;
 	passColour = inColour;
 }
