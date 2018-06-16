@@ -5,6 +5,7 @@
 #include <fstream>
 #include <cereal/cereal.hpp>
 #include <cereal/archives/binary.hpp>
+#include <cereal/types/vector.hpp>
 #include <SFML/Network/Http.hpp>
 
 #include "../Util/FileUtil.h"
@@ -109,30 +110,34 @@ namespace OldFormat
     {
         namespace fs = std::filesystem;
 
+        auto getFileNewName = [](const fs::directory_entry& directoryEntry) {
+            auto fName = directoryEntry.path().filename().string();
+            fName.pop_back(); fName.pop_back();
+            return fs::current_path() / "cy_files/binary/" / (fName + "bcy");
+        };
+
         int i = 0;
         std::string buffer;
-        for (auto& f : fs::directory_iterator(fs::current_path() / "cy_files/old/")) {
-            buffer = *getFileContent(f.path().string());
+        for (const auto& entry : fs::directory_iterator(fs::current_path() / "cy_files/old/")) {
+            buffer = *getFileContent(entry.path().string());
+
+            //Get level data to convert to binary format
             auto table = getObjectTable(buffer);
             auto header = extractHeader(buffer);
             auto walls = extractWalls(table["walls"]);
 
-            auto fName = f.path().filename().string();
-            fName.pop_back(); fName.pop_back();
-            fName = fs::current_path().string() + "cy_files/binary/" + fName + "bcy";
+            //Serialise to binary format and write
+            auto fName = getFileNewName(entry);
+            std::cout << "Wall is " << (int)ObjectID::Wall << "\n";
+            std::ofstream outFile (fName, std::ios::binary);
+            cereal::BinaryOutputArchive archive(outFile);
 
-            std::ofstream outFile(fName, std::ios::binary | std::ios::out);
-            {
-                cereal::BinaryOutputArchive archive(outFile);
-                std::cout << "Writing: " << fName << "\n";
-
-                archive(header);
-                for (auto& wall : walls) {
-                    archive(wall);
-                }
-                if (i++ >= 10) return;
-            }
+            archive(header);
+            archive(walls);
+            
+            if (i++ >= 5) break;
         }
+        std::cin.ignore(); std::cin.ignore();
     }
 
 }

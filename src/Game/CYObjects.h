@@ -26,6 +26,9 @@ struct LevelHeader
     u8 floorCount;
 };
 
+//
+//  Wall
+//
 struct Wall
 {
     template <typename Archive>
@@ -51,6 +54,9 @@ struct Wall
     u8 height;
 };
 
+//
+//  Platform
+//
 struct Platform
 {
     template <typename Archive>
