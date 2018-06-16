@@ -14,16 +14,6 @@ enum class PropertyType  : u8
 
 namespace Property
 {
-    enum class Type : u8
-    {
-        End,
-        Position,
-        Size,
-        Material,
-        Height,
-        Direction
-    };
-
     using Position = sf::Vector2<i16>;
     using Colour = sf::Color;
 
@@ -52,29 +42,16 @@ namespace cereal
     //Position
     //
     template <typename Archive>
-    void save(Archive& archive, const Property::Position& position)
-    {
-        archive(Property::Type::Position, position.x, position.y);
-    }
-
-    template <typename Archive>
-    void load(Archive& archive, Property::Position& position)
+    void serialize(Archive& archive, Property::Position& position)
     {
         archive(position.x, position.y);
     }
-
 
     //
     //Material 
     //
     template <typename Archive>
-    void save(Archive& archive, const Property::Material& material)
-    {
-        archive(Property::Type::Material, material.colour, material.textureId);
-    }
-
-    template <typename Archive>
-    void load(Archive& archive, Property::Material& material)
+    void serialize(Archive& archive, Property::Material& material)
     {
         archive(material.colour, material.textureId);
     }

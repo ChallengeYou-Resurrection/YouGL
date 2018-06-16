@@ -6,21 +6,16 @@
 
 #include "CYObjectProperties.h"
 
-enum class ObjectID : u8
-{
-    end,
-    Wall,
-    Platform
-};
 
 struct LevelHeader
 {
     template <typename Archive>
     void serialize(Archive& archive)
     {
-        archive(gameAuthor, gameName, floorCount);
+        archive(formatVersion, gameAuthor, gameName, floorCount);
     }
 
+    u32 formatVersion;
     std::string gameName;
     std::string gameAuthor;
     u8 floorCount;
@@ -32,17 +27,10 @@ struct LevelHeader
 struct Wall
 {
     template <typename Archive>
-    void save(Archive& archive) const
+    void serialize(Archive& archive) 
     {
-        archive(ObjectID::Wall, floor, startPosition, endPosition,
+        archive(floor, startPosition, endPosition,
             frontMaterial, backMaterial, Property::Type::Height, height);
-    }
-
-    template <typename Archive>
-    void load(Archive& archive)
-    {
-        archive(floor, startPosition, endPosition, frontMaterial, 
-            backMaterial, Property::Type::Height, height);
     }
 
     Property::Position startPosition;
@@ -54,21 +42,17 @@ struct Wall
     u8 height;
 };
 
+
 //
 //  Platform
 //
 struct Platform
 {
-    template <typename Archive>
-    void save(Archive& archive) const
-    {
-        archive(ObjectID::Platform, floor, position, material, Property::Type::Height, height);
-    }
 
     template <typename Archive>
-    void load(Archive& archive)
+    void serialize(Archive& archive) 
     {
-        archive(floor, position, material, Property::Type::Height, height);
+        archive(floor, position, material, height);
     }
 
     Property::Position position; 

@@ -2,8 +2,7 @@
 
 #include <iostream>
 
-#include "Game/OldFormatUtil.h"
-
+#include "Game/OldFormat/OldFormatUtil.h"
 
 int main(int argc, char** argv)
 {

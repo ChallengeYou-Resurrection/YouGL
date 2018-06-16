@@ -4,7 +4,7 @@
 #include "../Renderer/Mesh.h"
 #include "../Renderer/Renderer.h"
 #include "MeshBuilder.h"
-#include "OldFormatUtil.h"
+#include "OldFormat/OldFormatUtil.h"
 #include "../Renderer/OpenGLErrorCheck.h"
 
 CYGameLevel::CYGameLevel()
