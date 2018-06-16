@@ -26,4 +26,5 @@ src/Dependencies/
 
 #Project Ignore
 *.cy
+*.bcy
 
