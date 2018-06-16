@@ -15,7 +15,6 @@ namespace OldFormat {
     namespace {
         void serializeToBinaryFile(std::string& dataBuffer, const fs::path& newFilePath)
         {
-            std::cout << newFilePath << '\n';
             auto table = getObjectTable(dataBuffer);
             auto header = extractHeader(dataBuffer);
             auto walls = extractWalls(table["walls"]);
@@ -25,7 +24,6 @@ namespace OldFormat {
             
             archive(header, walls);
         }
-
     }
 
     void massConvertFilesBinaryFormat()
@@ -44,7 +42,7 @@ namespace OldFormat {
             auto newPath = getNewFilePath(entry);
             serializeToBinaryFile(buffer, newPath);
 
-            if (++i > 2) break;
+            if (++i > 100) break;
             /*
             std::ifstream inFile(temp);
             cereal::BinaryInputArchive archive(inFile);

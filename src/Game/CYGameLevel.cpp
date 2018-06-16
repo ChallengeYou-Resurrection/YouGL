@@ -1,15 +1,19 @@
 #include "CYGameLevel.h"
 
 #include <iostream>
+#include <fstream>
+#include <cereal/cereal.hpp>
+#include <cereal/archives/binary.hpp>
+#include <cereal/types/vector.hpp>
+
+#include "../Renderer/OpenGLErrorCheck.h"
 #include "../Renderer/Mesh.h"
 #include "../Renderer/Renderer.h"
-#include "MeshBuilder.h"
 #include "OldFormat/OldFormatUtil.h"
-#include "../Renderer/OpenGLErrorCheck.h"
+#include "MeshBuilder.h"
 
 CYGameLevel::CYGameLevel()
-{
-}
+{ }
 
 void CYGameLevel::loadFromOldFormat(int gameNumber)
 {
@@ -21,6 +25,28 @@ void CYGameLevel::loadFromOldFormat(int gameNumber)
     auto gameCodeTable  = OldFormat::getObjectTable(*gameCode);
     m_header            = OldFormat::extractHeader(*gameCode);
     m_walls             = OldFormat::extractWalls(gameCodeTable.at("walls"));
+
+    std::cout << "Game    " << m_header.gameName << '\n';
+    std::cout << "Author: " << m_header.gameAuthor << '\n';
+    std::cout << "Floors  " << m_header.floorCount << '\n';
+    std::cout << "Walls: " << m_walls.size() << '\n';
+
+    for (int i = 0; i < m_header.floorCount; i++) {
+        m_floorModels.emplace_back();
+    }
+}
+
+void CYGameLevel::load(const std::string & fileName)
+{
+    std::ifstream inFile("cy_files/binary/" + fileName);
+    if (!inFile.is_open()) {
+        std::cout << "UH OH !";
+        std::cin.ignore();
+        std::exit(0);
+    }
+    cereal::BinaryInputArchive archive(inFile);
+
+    archive(m_header, m_walls);
 
     std::cout << "Game    " << m_header.gameName << '\n';
     std::cout << "Author: " << m_header.gameAuthor << '\n';

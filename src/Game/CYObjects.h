@@ -30,7 +30,7 @@ struct Wall
     void serialize(Archive& archive) 
     {
         archive(floor, startPosition, endPosition,
-            frontMaterial, backMaterial, Property::Type::Height, height);
+            frontMaterial, backMaterial, height);
     }
 
     Property::Position startPosition;
