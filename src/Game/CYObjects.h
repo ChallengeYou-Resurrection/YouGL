@@ -2,43 +2,60 @@
 
 #include <string>
 #include <cstdint>
+#include <cereal/types/string.hpp>
 
 #include "CYObjectProperties.h"
 
-enum class ObjectID
-{
-    end,
-    Wall
-};
 
 struct LevelHeader
 {
     template <typename Archive>
-    void archive(Archive& archive)
+    void serialize(Archive& archive)
     {
-        archive(gameAuthor, gameName, floorCount);
+        archive(formatVersion, gameAuthor, gameName, floorCount);
     }
 
+    u32 formatVersion;
     std::string gameName;
     std::string gameAuthor;
     u8 floorCount;
 };
 
+//
+//  Wall
+//
 struct Wall
 {
     template <typename Archive>
-    void archive(Archive& archive)
+    void serialize(Archive& archive) 
     {
-        archive(Wall, floor, 
-            startPosition, endPosition, 
-            frontMaterial, backMaterial, 
-            Property::Type::Height, height);
+        archive(floor, startPosition, endPosition,
+            frontMaterial, backMaterial, height);
     }
 
     Property::Position startPosition;
     Property::Position endPosition;
     Property::Material frontMaterial;
     Property::Material backMaterial;
+
+    u8 floor;
+    u8 height;
+};
+
+
+//
+//  Platform
+//
+struct Platform
+{
+    template <typename Archive>
+    void serialize(Archive& archive) 
+    {
+        archive(floor, position, material, height);
+    }
+
+    Property::Position position; 
+    Property::Material material;
 
     u8 floor;
     u8 height;

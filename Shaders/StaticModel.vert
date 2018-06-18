@@ -9,7 +9,8 @@ uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projMatrix;
 
-out vec3 passTexCoords;
+
+out vec3 passTexCoord;
 out vec3 passColour;
 
 // Temp Lighting Variables
@@ -33,6 +34,6 @@ void main()
 	diffuse  = light_Color * max(0.3, dot(unitNormal, lightDirection)) + vec3(0.3, 0.3, 0.3);
 	diffuse *= inColour;
 
-	passTexCoords = inTexCoord;
+	passTexCoord = inTexCoord;
 	passColour = diffuse;
 }

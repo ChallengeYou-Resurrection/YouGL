@@ -14,6 +14,7 @@ class CYGameLevel
         CYGameLevel();
 
         void loadFromOldFormat(int gameNumber);
+        void load(const std::string& fileName);
         void createModels();
         void renderFloors(Renderer& renderer);
 

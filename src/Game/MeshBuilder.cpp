@@ -61,7 +61,6 @@ Mesh createMesh(const Wall& wall, const WorldTextures& wTex)
     vertices[3] = glm::vec3((wallFinish.x) / WORLD_SIZE, minHeight, (wallFinish.y) / WORLD_SIZE);
     vertices[0] = glm::vec3((wallOrigin.x) / WORLD_SIZE, minHeight, (wallOrigin.y) / WORLD_SIZE);
     
-
     glm::vec3 normal = glm::cross(vertices[2] - vertices[1], vertices[3] - vertices[1]);
 
     //Vertices
@@ -110,5 +109,6 @@ Mesh createMesh(const Wall& wall, const WorldTextures& wTex)
             << " Z: " << std::setw(3) << v.z << "\n";
     }
     std::cout << "\n"; */
+
     return mesh;
 }

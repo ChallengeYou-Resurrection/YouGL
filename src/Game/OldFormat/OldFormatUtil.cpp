@@ -98,6 +98,5 @@ namespace OldFormat
         }
         return cyTable;
     }
-
 }
 

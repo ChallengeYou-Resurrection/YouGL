@@ -108,6 +108,14 @@ namespace OldFormat
         }
         return walls;
     }
+
+    std::vector<Platform> extractPlatforms(std::string& platformData)
+    {
+        std::vector<Platform> platforms;
+        //std::smatch matchGroups;
+        //std::regex reg_plats("\\[\\[([\\d\\.]+), ([\\d\\.]+)\\], \\[(\\d+),? ?(c[^\\)]*\\))?(\\d+)?,? ?(\\d+)?\\], (\\d+)");
+        return platforms;
+    }
 }
 
 /*

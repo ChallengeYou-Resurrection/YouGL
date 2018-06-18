@@ -14,4 +14,7 @@ namespace OldFormat
 
     LevelHeader extractHeader(std::string& levelData);
     std::vector<Wall> extractWalls(std::string& wallData);
+    std::vector<Platform> extractPlatforms(std::string& platformData);
+
+    void massConvertFilesBinaryFormat();
 }

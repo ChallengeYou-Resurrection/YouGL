@@ -1,30 +1,37 @@
 #include "WorldTextures.h"
 
-void inline WorldTextures::setupMap()
+namespace
 {
-	m_TextureMap.insert(std::make_pair(TextureID::Color,	WorldTex("Color",   "res/txrs/color256.jpg",		{ 2.f, 2.f }	)));
-	m_TextureMap.insert(std::make_pair(TextureID::Grass,	WorldTex("Grass",   "res/txrs/grass256.jpg",		{ 1.f, 1.f }	)));
-	m_TextureMap.insert(std::make_pair(TextureID::Stucco,	WorldTex("Stucco",  "res/txrs/stucco256.jpg",		{ 1.f, 1.f }	)));
-	m_TextureMap.insert(std::make_pair(TextureID::Brick,	WorldTex("Brick",   "res/txrs/brick256.jpg",		{ 2.5f, 2.666f })));
-	m_TextureMap.insert(std::make_pair(TextureID::Stone,	WorldTex("Stone",   "res/txrs/stone256.jpg",		{ 1.f, 1.f }	)));
-	m_TextureMap.insert(std::make_pair(TextureID::Wood,		WorldTex("Wood",    "res/txrs/wood256.jpg",			{ 1.f, 1.f }	)));
-	m_TextureMap.insert(std::make_pair(TextureID::Happy,	WorldTex("Happy",   "res/txrs/happy256.jpg",		{ 4.f, 4.f }	)));
-	m_TextureMap.insert(std::make_pair(TextureID::Egypt,	WorldTex("Egypt",   "res/txrs/egypt256.jpg",		{ 1.f, 1.f }	)));
-	m_TextureMap.insert(std::make_pair(TextureID::Bark,		WorldTex("Bark",	"res/txrs/bark256.jpg",			{ 1.f, 1.f }	)));
-	m_TextureMap.insert(std::make_pair(TextureID::Scifi,	WorldTex("Sci-Fi",  "res/txrs/scifi256.jpg",		{ 1.f, 1.f }	)));
-	m_TextureMap.insert(std::make_pair(TextureID::Tile,		WorldTex("Tiles",   "res/txrs/tile256.jpg",			{ 4.f, 5.f }	)));
-	m_TextureMap.insert(std::make_pair(TextureID::Rock,		WorldTex("Rock",    "res/txrs/rock256.jpg",			{ 1.f, 1.f }	)));
-	m_TextureMap.insert(std::make_pair(TextureID::Parquet,	WorldTex("Parquet", "res/txrs/parquet256.jpg",		{ 1.f, 1.f }	)));
-	m_TextureMap.insert(std::make_pair(TextureID::Books,	WorldTex("Books",   "res/txrs/bookshelf256.png",	{ 1.f, 1.333f }	)));
-	m_TextureMap.insert(std::make_pair(TextureID::Bars,		WorldTex("Bars",	"res/txrs/bars256.png",			{ 3.5f, 1.f }	)));
-	m_TextureMap.insert(std::make_pair(TextureID::Glass,	WorldTex("Glass",   "res/txrs/glass256.png",		{ 1.f, 1.f }	)));
-};
+    struct WorldTexure
+    {
+        std::string name;
+        std::string fileName;
+        sf::Vector2f texScale;
+    };
+
+    const std::map<TextureID, WorldTexure> worldTexturesMap = {
+        {TextureID::Color,	    WorldTexure{"Color",    "res/txrs/color256.jpg",        { 2.f, 2.f      }}},
+        {TextureID::Grass,	    WorldTexure{"Grass",    "res/txrs/grass256.jpg",        { 1.f, 1.f      }}},
+        {TextureID::Stucco,	    WorldTexure{"Stucco",   "res/txrs/stucco256.jpg",       { 1.f, 1.f      }}},
+        {TextureID::Brick,	    WorldTexure{"Brick",    "res/txrs/brick256.jpg",		{ 2.5f, 2.666f  }}},
+        {TextureID::Stone,	    WorldTexure{"Stone",    "res/txrs/stone256.jpg",		{ 1.f, 1.f      }}},
+        {TextureID::Wood,		WorldTexure{"Wood",     "res/txrs/wood256.jpg",         { 1.f, 1.f      }}},
+        {TextureID::Happy,	    WorldTexure{"Happy",    "res/txrs/happy256.jpg",		{ 4.f, 4.f      }}},
+        {TextureID::Egypt,	    WorldTexure{"Egypt",    "res/txrs/egypt256.jpg",		{ 1.f, 1.f      }}},
+        {TextureID::Bark,		WorldTexure{"Bark",	    "res/txrs/bark256.jpg",			{ 1.f, 1.f      }}},
+        {TextureID::Scifi,	    WorldTexure{"Sci-Fi",   "res/txrs/scifi256.jpg",		{ 1.f, 1.f      }}},
+        {TextureID::Tile,		WorldTexure{"Tiles",    "res/txrs/tile256.jpg",         { 4.f, 5.f      }}},
+        {TextureID::Rock,		WorldTexure{"Rock",     "res/txrs/rock256.jpg",         { 1.f, 1.f      }}},
+        {TextureID::Parquet,	WorldTexure{"Parquet",  "res/txrs/parquet256.jpg",      { 1.f, 1.f      }}},
+        {TextureID::Books,	    WorldTexure{"Books",    "res/txrs/bookshelf256.png",    { 1.f, 1.333f   }}},
+        {TextureID::Bars,       WorldTexure{"Bars",	    "res/txrs/bars256.png",			{ 3.5f, 1.f     }}},
+        {TextureID::Glass,	    WorldTexure{"Glass",   "res/txrs/glass256.png",		    { 1.f, 1.f      }}}
+    };
+}
 
 WorldTextures::WorldTextures()
 {
 	std::cout << "Hello Textures\n";
-	// Create the map used to reference texture information
-	setupMap();
 
 	// Create texture array
 	glGenTextures(1, &textureArrayID);
@@ -43,17 +50,17 @@ WorldTextures::WorldTextures()
 
 	// Data containing all the textures
 	int image_size = 4 * TEXTURE_HEIGHT * TEXTURE_WIDTH;
-	int total_size = m_TextureMap.size() * image_size;
+	int total_size = worldTexturesMap.size() * image_size;
 
 	sf::Uint8* data = (sf::Uint8*)malloc(total_size);
 
-	int textureCount = m_TextureMap.size();
+	int textureCount = worldTexturesMap.size();
 	for (int tex = 0; tex < textureCount; tex++)
 	{
-		if (auto texture = this->loadTexture(m_TextureMap.at(static_cast<TextureID>(tex)).fileName))
+		if (auto texture = this->loadTexture(worldTexturesMap.at(static_cast<TextureID>(tex)).fileName))
 		{
-			std::cout << "Loaded texture: " << m_TextureMap.at(static_cast<TextureID>(tex)).fileName << "\n";
-			memcpy(data + (tex*image_size), texture->getPixelsPtr(), image_size);
+			std::cout << "Loaded texture: " << worldTexturesMap.at(static_cast<TextureID>(tex)).fileName << "\n";
+			std::memcpy(data + (tex * image_size), texture->getPixelsPtr(), image_size);
 		}
 		else {
 			std::cout << "Could not load texture\n";
@@ -123,5 +130,6 @@ GLuint WorldTextures::getTexID()
 
 const sf::Vector2f& WorldTextures::getTextureScale(TextureID tex) const
 {
-	return m_TextureMap.at(tex).texScale;
+    std::cout << "Texture: " << int(tex) << std::endl;
+	return worldTexturesMap.at(tex).texScale;
 }

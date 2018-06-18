@@ -23,7 +23,9 @@ namespace Benchmark
 StatePlaying::StatePlaying(Game& game)
 :   StateBase   (game)
 {
-    m_level.loadFromOldFormat(51450);
+    m_level.loadFromOldFormat(Benchmark::TheMouseReturns);
+    //m_level.load("100000.CYs 100 000th Game.Haakson.bcy");
+
     m_level.createModels();
 	game.initRendererScene();
 }
