@@ -33,6 +33,10 @@ void Renderer::initScene(const Camera& camera)
 	m_shader.bind();
 	m_shader.setParameter("projMatrix", camera.getProjectionMatrix());
 	m_shader.setParameter("modelMatrix", model);
+
+	// Allow for transparent textures 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void Renderer::renderScene(const Camera& camera)
@@ -46,8 +50,6 @@ void Renderer::renderScene(const Camera& camera)
     glm::mat4 view = makeViewMatrix(camera);
     /*TEMP END*/
 
-    //m_shader.setParameter("projMatrix", camera.getProjectionMatrix());
-    //m_shader.setParameter("modelMatrix", model);
     m_shader.setParameter("viewMatrix", view);
 
     //Draw OpenGL

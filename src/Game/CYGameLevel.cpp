@@ -36,7 +36,7 @@ void CYGameLevel::createModels()
 {
     Mesh masterMesh;
     for (auto& wall : m_walls) {
-        auto mesh = createMesh(wall);
+        auto mesh = createMesh(wall, m_textures);
         masterMesh.combineWith(mesh);
        // models.emplace_back(mesh);
     }
@@ -44,7 +44,7 @@ void CYGameLevel::createModels()
 	std::cout << "Vertices : " << masterMesh.vertices.size() << "/n";
 	std::cout << "Indices : " << masterMesh.indices.size() << "/n";
 
-    m_floorModels[0].create(masterMesh);
+    m_floorModels[0].create(masterMesh, m_textures.getTexID());
     int cont = 0;
     for (auto& m : models) cont += m.getRenderData().getIndicesCount();
     std::cout << "Indices count: " << cont << "\n";

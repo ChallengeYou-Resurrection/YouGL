@@ -10,6 +10,7 @@ class RenderData
         void bind() const
         {
             glBindVertexArray(vao);
+			glBindTexture(GL_TEXTURE_2D_ARRAY, textureID);
         }
 
         GLuint getIndicesCount() const
@@ -31,6 +32,7 @@ class RenderData
 
     private:
         GLuint vao = 0;
+		GLuint textureID = 0;
         GLuint indicesCount = 0;
 
 		GLenum m_mode = GL_TRIANGLES;

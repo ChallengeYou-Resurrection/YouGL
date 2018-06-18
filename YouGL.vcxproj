@@ -127,16 +127,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Editor\BoundingBox.cpp" />
-    <ClCompile Include="src\CYJsonParser.cpp" />
-    <ClCompile Include="src\CYLevel.cpp" />
-    <ClCompile Include="src\CYWebParser.cpp" />
     <ClCompile Include="src\Dependencies\glad.c" />
-    <ClCompile Include="src\Editor\CYPlat.cpp" />
-    <ClCompile Include="src\Editor\CYWall.cpp" />
-    <ClCompile Include="src\Editor\EditorObject.cpp" />
     <ClCompile Include="src\Editor\GeoOctree.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
+    <ClCompile Include="src\Game\CYGameLevel.cpp" />
+    <ClCompile Include="src\Game\MeshBuilder.cpp" />
+    <ClCompile Include="src\Game\OldFormatExtractor.cpp" />
+    <ClCompile Include="src\Game\OldFormatUtil.cpp" />
+    <ClCompile Include="src\Game\WorldTextures.cpp" />
     <ClCompile Include="src\Input\KeyboardController.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Maths\Matrix.cpp" />
@@ -168,22 +167,20 @@
     <None Include="sfml-window-d-2.dll" />
     <None Include="Shaders\StaticModel.frag" />
     <None Include="Shaders\StaticModel.vert" />
-    <None Include="src\Dependancies\json.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Editor\BoundingBox.h" />
-    <ClInclude Include="src\CYJsonParser.h" />
-    <ClInclude Include="src\CYLevel.h" />
-    <ClInclude Include="src\CYWebParser.h" />
-    <ClInclude Include="src\Dependancies\glad.h" />
-    <ClInclude Include="src\Dependencies\glad.h" />
-    <ClInclude Include="src\Editor\CYPlat.h" />
-    <ClInclude Include="src\Editor\CYWall.h" />
     <ClInclude Include="src\Editor\EditorObject.h" />
     <ClInclude Include="src\Editor\GeoOctree.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\GameObject.h" />
-    <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\Game\CYGameLevel.h" />
+    <ClInclude Include="src\Game\CYObjectProperties.h" />
+    <ClInclude Include="src\Game\CYObjects.h" />
+    <ClInclude Include="src\Game\MeshBuilder.h" />
+    <ClInclude Include="src\Game\OldFormatUtil.h" />
+    <ClInclude Include="src\Game\WorldConstants.h" />
+    <ClInclude Include="src\Game\WorldTextures.h" />
     <ClInclude Include="src\Input\Controller.h" />
     <ClInclude Include="src\Input\KeyboardController.h" />
     <ClInclude Include="src\Maths\GlmCommon.h" />

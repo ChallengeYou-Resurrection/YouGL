@@ -1,5 +1,6 @@
 #pragma once
 
+#include "WorldTextures.h"
 #include <SFML/Graphics.hpp>
 #include "../Util/Types.h"
 
@@ -30,7 +31,7 @@ namespace Property
     struct Material
     {
         Colour colour;
-        uint8_t textureId;
+        TextureID textureId;
     };
 }
 

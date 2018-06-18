@@ -42,10 +42,12 @@ namespace
         Property::Material material;
 
         if (match[firstIndex] != "") { //Colour
+			material.textureId = TextureID::Color;
             material.colour = stringToColour(match[firstIndex].str());
         }
         else {  //Texture
-            material.textureId = (u8)std::stoi(match[firstIndex + 1].str());
+			auto tex_id = WorldTextures::getWallTexture(std::stoi(match[firstIndex + 1].str()));
+            material.textureId = tex_id;
             material.colour = WHITE;
         }
         return material;

@@ -43,7 +43,7 @@ namespace {
 /////////////
 ///  WALL  //
 /////////////
-Mesh createMesh(const Wall& wall)
+Mesh createMesh(const Wall& wall, const WorldTextures& wTex)
 {
     Mesh mesh;
     auto geometricHeight = getWallGeometricHeight(wall);
@@ -56,10 +56,10 @@ Mesh createMesh(const Wall& wall)
     glm::vec2 wallFinish = { (float)wall.endPosition.x, (float)wall.endPosition.y };
 
     std::array<glm::vec3, 4> vertices;
-    vertices[0] = glm::vec3((wallOrigin.x) / WORLD_SIZE, maxHeight, (wallOrigin.y) / WORLD_SIZE);
-    vertices[1] = glm::vec3((wallFinish.x) / WORLD_SIZE, maxHeight, (wallFinish.y) / WORLD_SIZE);
-    vertices[2] = glm::vec3((wallFinish.x) / WORLD_SIZE, minHeight, (wallFinish.y) / WORLD_SIZE);
-    vertices[3] = glm::vec3((wallOrigin.x) / WORLD_SIZE, minHeight, (wallOrigin.y) / WORLD_SIZE);
+    vertices[1] = glm::vec3((wallOrigin.x) / WORLD_SIZE, maxHeight, (wallOrigin.y) / WORLD_SIZE);
+    vertices[2] = glm::vec3((wallFinish.x) / WORLD_SIZE, maxHeight, (wallFinish.y) / WORLD_SIZE);
+    vertices[3] = glm::vec3((wallFinish.x) / WORLD_SIZE, minHeight, (wallFinish.y) / WORLD_SIZE);
+    vertices[0] = glm::vec3((wallOrigin.x) / WORLD_SIZE, minHeight, (wallOrigin.y) / WORLD_SIZE);
     
 
     glm::vec3 normal = glm::cross(vertices[2] - vertices[1], vertices[3] - vertices[1]);
@@ -84,13 +84,18 @@ Mesh createMesh(const Wall& wall)
             });
     }
 
-    //Textre Coords (To do)
-    mesh.texCoords = {
-        1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f
-    };
+    //Textre Coords
+	float length = sqrt(pow(wallFinish.y - wallOrigin.y, 2) + pow(wallFinish.x - wallOrigin.x, 2));
+	float x_2d = length / WORLD_SIZE;
+	const sf::Vector2f tSize = wTex.getTextureScale(wall.frontMaterial.textureId);
+
+	mesh.texCoords.insert(mesh.texCoords.end(), { 0			  *TEXTURE_SIZE * tSize.x, vertices[2].y *TEXTURE_SIZE * tSize.y, (float)wall.frontMaterial.textureId });
+	mesh.texCoords.insert(mesh.texCoords.end(), { x_2d		  *TEXTURE_SIZE * tSize.x, vertices[2].y *TEXTURE_SIZE * tSize.y, (float)wall.frontMaterial.textureId });
+	mesh.texCoords.insert(mesh.texCoords.end(), { x_2d		  *TEXTURE_SIZE * tSize.x, vertices[0].y *TEXTURE_SIZE * tSize.y, (float)wall.frontMaterial.textureId });
+	mesh.texCoords.insert(mesh.texCoords.end(), { 0			  *TEXTURE_SIZE * tSize.x, vertices[0].y *TEXTURE_SIZE * tSize.y, (float)wall.frontMaterial.textureId });
 
     mesh.indices = { 
-        0, 3, 1, 1, 2, 3 
+        0, 1, 3, 1, 2, 3 
     };
 
     /*static int wn = 0;
