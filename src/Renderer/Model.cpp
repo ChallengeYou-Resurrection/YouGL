@@ -46,7 +46,7 @@ void Model::create(Mesh& mesh)
     GLuint currBuffer = 0;
     glGenBuffers(m_buffers.size(), m_buffers.data());
     createBuffer(currBuffer++, 3, mesh.vertices);
-    createBuffer(currBuffer++, 2, mesh.texCoords);
+    createBuffer(currBuffer++, 3, mesh.texCoords);
     createBuffer(currBuffer++, 3, mesh.normals);
     createBuffer(currBuffer++, 3, mesh.colour);
 
@@ -54,6 +54,12 @@ void Model::create(Mesh& mesh)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * mesh.indices.size(), mesh.indices.data(), GL_STATIC_DRAW);
     m_renderData.indicesCount = mesh.indices.size();
     mesh.clearData();
+}
+
+void Model::create(Mesh& mesh, GLuint textureID)
+{
+	this->create(mesh);
+	m_renderData.textureID = textureID;
 }
 
 const RenderData& Model::getRenderData() const

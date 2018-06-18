@@ -57,11 +57,15 @@ void CYGameLevel::createModels()
 {
     Mesh masterMesh;
     for (auto& wall : m_walls) {
-        auto mesh = createMesh(wall);
+        auto mesh = createMesh(wall, m_textures);
         masterMesh.combineWith(mesh);
        // models.emplace_back(mesh);
     }
-    m_floorModels[0].create(masterMesh);
+
+	std::cout << "Vertices : " << masterMesh.vertices.size() << "/n";
+	std::cout << "Indices : " << masterMesh.indices.size() << "/n";
+
+    m_floorModels[0].create(masterMesh, m_textures.getTexID());
 }
 
 void CYGameLevel::renderFloors(Renderer & renderer)

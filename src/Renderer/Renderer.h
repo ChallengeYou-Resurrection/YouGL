@@ -6,6 +6,7 @@
 #include <glad.h>
 #include <vector>
 
+#include "../Game/WorldTextures.h"
 #include "RenderData.h"
 #include "Shader/Shader.h"
 

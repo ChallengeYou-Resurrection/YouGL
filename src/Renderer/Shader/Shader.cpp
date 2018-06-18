@@ -40,6 +40,11 @@ void Shader::setParameter(const char* name, const glm::mat4& value)
     glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
 }
 
+void Shader::setParameter(const char* name, const int value)
+{
+	glUniform1i(getUniformLocation(name), value);
+}
+
 GLuint Shader::getUniformLocation(const char* name)
 {
     std::string nameStr = name;

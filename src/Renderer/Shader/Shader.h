@@ -19,6 +19,7 @@ class Shader : public NonCopyable
         void create(const char* vertexFileName, const char* fragFileName);
 
         void setParameter(const char* name, const glm::mat4& value);
+		void setParameter(const char* name, const int value);
 
     private:
         GLuint getUniformLocation(const char* name);

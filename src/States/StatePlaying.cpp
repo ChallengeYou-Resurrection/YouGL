@@ -11,19 +11,21 @@
 
 namespace Benchmark
 {
-    constexpr int
-        TheMouseReturns = 158209,
-        WillyWonka = 127388,
-        GrandTheftAuto = 36321,
+	constexpr int
+		TheMouseReturns = 158209,
+		WillyWonka = 127388,
+		GrandTheftAuto = 36321,
 		PenguinPixel = 145505,
+		XMasCabin = 155913,
         PacMania = 255;
 }
 
 StatePlaying::StatePlaying(Game& game)
 :   StateBase   (game)
 {
-    //m_level.loadFromOldFormat(Benchmark::TheMouseReturns);
-    m_level.load("100000.CYs 100 000th Game.Haakson.bcy");
+    m_level.loadFromOldFormat(Benchmark::TheMouseReturns);
+    //m_level.load("100000.CYs 100 000th Game.Haakson.bcy");
+
     m_level.createModels();
 	game.initRendererScene();
 }

@@ -19,6 +19,7 @@ class Model : public NonCopyable
         ~Model();
 
         void create(Mesh& mesh);
+		void create(Mesh& mesh, GLuint textureID);
         const RenderData& getRenderData() const;
 
 		void setMode(GLenum m);
