@@ -48,7 +48,6 @@ struct Wall
 //
 struct Platform
 {
-
     template <typename Archive>
     void serialize(Archive& archive) 
     {

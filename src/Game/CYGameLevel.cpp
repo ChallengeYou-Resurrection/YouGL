@@ -39,11 +39,6 @@ void CYGameLevel::loadFromOldFormat(int gameNumber)
 void CYGameLevel::load(const std::string & fileName)
 {
     std::ifstream inFile("cy_files/binary/" + fileName);
-    if (!inFile.is_open()) {
-        std::cout << "UH OH !";
-        std::cin.ignore();
-        std::exit(0);
-    }
     cereal::BinaryInputArchive archive(inFile);
 
     archive(m_header, m_walls);
