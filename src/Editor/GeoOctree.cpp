@@ -5,31 +5,29 @@ GeoOctree::GeoOctree(int octreeSize)
     size = octreeSize;
 	// Bottom Nodes
 	m_subdivisionBB.emplace_back(glm::vec3(0, 0, 0),
-		glm::vec3(256 / WORLD_SIZE, 256 / WORLD_SIZE, 256 / WORLD_SIZE));
-	m_subdivisionBB.emplace_back(glm::vec3(256 / WORLD_SIZE, 0, 0),
-		glm::vec3(512 / WORLD_SIZE, 256 / WORLD_SIZE, 256 / WORLD_SIZE));
-	m_subdivisionBB.emplace_back(glm::vec3(0, 0, 256 / WORLD_SIZE),
-		glm::vec3(256 / WORLD_SIZE, 256 / WORLD_SIZE, 512 / WORLD_SIZE));
-	m_subdivisionBB.emplace_back(glm::vec3(256 / WORLD_SIZE, 0, 256 / WORLD_SIZE),
-		glm::vec3(512 / WORLD_SIZE, 256 / WORLD_SIZE, 512 / WORLD_SIZE));
+		glm::vec3(octreeSize / 2, octreeSize / 2, octreeSize / 2));
+	m_subdivisionBB.emplace_back(glm::vec3(octreeSize / 2, 0, 0),
+		glm::vec3(octreeSize, octreeSize / 2, octreeSize / 2));
+	m_subdivisionBB.emplace_back(glm::vec3(0, 0, octreeSize / 2),
+		glm::vec3(octreeSize / 2, octreeSize / 2, octreeSize));
+	m_subdivisionBB.emplace_back(glm::vec3(octreeSize / 2, 0, octreeSize / 2),
+		glm::vec3(octreeSize, octreeSize / 2, octreeSize));
 
 	// Top Nodes
-	m_subdivisionBB.emplace_back(glm::vec3(0, 256 / WORLD_SIZE, 0),
-		glm::vec3(256 / WORLD_SIZE, 512 / WORLD_SIZE, 256 / WORLD_SIZE));
-	m_subdivisionBB.emplace_back(glm::vec3(256 / WORLD_SIZE, 256 / WORLD_SIZE, 0),
-		glm::vec3(512 / WORLD_SIZE, 512 / WORLD_SIZE, 256 / WORLD_SIZE));
-	m_subdivisionBB.emplace_back(glm::vec3(0, 256 / WORLD_SIZE, 256 / WORLD_SIZE),
-		glm::vec3(256 / WORLD_SIZE, 512 / WORLD_SIZE, 512 / WORLD_SIZE));
-	m_subdivisionBB.emplace_back(glm::vec3(256 / WORLD_SIZE, 256 / WORLD_SIZE, 256 / WORLD_SIZE),
-		glm::vec3(512 / WORLD_SIZE, 512 / WORLD_SIZE, 512 / WORLD_SIZE));
+	m_subdivisionBB.emplace_back(glm::vec3(0, octreeSize / 2, 0),
+		glm::vec3(octreeSize / 2, octreeSize, octreeSize / 2));
+	m_subdivisionBB.emplace_back(glm::vec3(octreeSize / 2, octreeSize / 2, 0),
+		glm::vec3(octreeSize, octreeSize, octreeSize / 2));
+	m_subdivisionBB.emplace_back(glm::vec3(0, octreeSize / 2, octreeSize / 2),
+		glm::vec3(octreeSize / 2, octreeSize, octreeSize));
+	m_subdivisionBB.emplace_back(glm::vec3(octreeSize / 2, octreeSize / 2, octreeSize / 2),
+		glm::vec3(octreeSize, octreeSize, octreeSize));
 }
 
-/*
-void GeoOctree::insertGeometry(std::unique_ptr<EditorObject> obj)
+/*void GeoOctree::insertGeometry(std::unique_ptr<EditorObject> obj)
 {
 
-}
-*/
+}*/
 
 void GeoOctree::buildOctree() {
 

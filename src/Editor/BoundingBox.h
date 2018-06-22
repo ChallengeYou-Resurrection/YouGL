@@ -5,6 +5,7 @@
 #include "../Renderer/Renderer.h"
 
 #include "glm/vec3.hpp"
+#include "../Game/WorldConstants.h"
 
 #define RENDER_BOUNDING_BOX true
 

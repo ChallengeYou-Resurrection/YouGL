@@ -24,15 +24,15 @@ BoundingBox::BoundingBox(glm::vec3 min, glm::vec3 max)
 		// Vertices (Static)
 		cubeMesh.vertices = {
 			// front
-			m_vecMin.x, m_vecMin.y,  m_vecMax.z,
-			m_vecMax.x, m_vecMin.y,  m_vecMax.z,
-			m_vecMax.x, m_vecMax.y,  m_vecMax.z,
-			m_vecMin.x, m_vecMax.y,  m_vecMax.z,
+			m_vecMin.x / WORLD_SIZE, m_vecMin.y / WORLD_SIZE,  m_vecMax.z / WORLD_SIZE,
+			m_vecMax.x / WORLD_SIZE, m_vecMin.y / WORLD_SIZE,  m_vecMax.z / WORLD_SIZE,
+			m_vecMax.x / WORLD_SIZE, m_vecMax.y / WORLD_SIZE,  m_vecMax.z / WORLD_SIZE,
+			m_vecMin.x / WORLD_SIZE, m_vecMax.y / WORLD_SIZE,  m_vecMax.z / WORLD_SIZE,
 			// back
-			m_vecMin.x, m_vecMin.y, m_vecMin.z,
-			m_vecMax.x, m_vecMin.y, m_vecMin.z,
-			m_vecMax.x, m_vecMax.y, m_vecMin.z,
-			m_vecMin.x, m_vecMax.y, m_vecMin.z,
+			m_vecMin.x / WORLD_SIZE, m_vecMin.y / WORLD_SIZE, m_vecMin.z / WORLD_SIZE,
+			m_vecMax.x / WORLD_SIZE, m_vecMin.y / WORLD_SIZE, m_vecMin.z / WORLD_SIZE,
+			m_vecMax.x / WORLD_SIZE, m_vecMax.y / WORLD_SIZE, m_vecMin.z / WORLD_SIZE,
+			m_vecMin.x / WORLD_SIZE, m_vecMax.y / WORLD_SIZE, m_vecMin.z / WORLD_SIZE
 		};
 
 		// Indices

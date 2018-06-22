@@ -29,7 +29,7 @@ void CYGameLevel::loadFromOldFormat(int gameNumber)
 
     std::cout << "Game    " << m_header.gameName << '\n';
     std::cout << "Author: " << m_header.gameAuthor << '\n';
-    std::cout << "Floors  " << m_header.floorCount << '\n';
+    std::cout << "Floors:  " << m_header.floorCount << '\n';
     std::cout << "Walls: " << m_walls.size() << '\n';
 
     for (int i = 0; i < m_header.floorCount; i++) {
@@ -46,7 +46,7 @@ void CYGameLevel::load(const std::string & fileName)
 
     std::cout << "Game    " << m_header.gameName << '\n';
     std::cout << "Author: " << m_header.gameAuthor << '\n';
-    std::cout << "Floors  " << m_header.floorCount << '\n';
+    std::cout << "Floors:  " << m_header.floorCount << '\n';
     std::cout << "Walls: " << m_walls.size() << '\n';
 
     for (int i = 0; i < m_header.floorCount; i++) {
