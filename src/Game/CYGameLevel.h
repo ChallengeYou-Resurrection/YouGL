@@ -4,6 +4,7 @@
 #include "CYObjectProperties.h"
 #include "CYObjects.h"
 #include "WorldTextures.h"
+#include "../Editor/GeoOctree.h"
 #include "../Renderer/Model.h"
 
 class Renderer;
@@ -20,6 +21,7 @@ class CYGameLevel
 
     private:
         std::vector<Model> m_floorModels;
+		GeoOctree m_octree;
 
         LevelHeader m_header;
 

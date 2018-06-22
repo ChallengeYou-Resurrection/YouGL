@@ -22,7 +22,7 @@ BoundingBox::BoundingBox(glm::vec3 min, glm::vec3 max)
 		Mesh cubeMesh;
 
 		// Vertices (Static)
-		/*cubeMesh.vertices = {
+		cubeMesh.vertices = {
 			// front
 			m_vecMin.x, m_vecMin.y,  m_vecMax.z,
 			m_vecMax.x, m_vecMin.y,  m_vecMax.z,
@@ -33,19 +33,6 @@ BoundingBox::BoundingBox(glm::vec3 min, glm::vec3 max)
 			m_vecMax.x, m_vecMin.y, m_vecMin.z,
 			m_vecMax.x, m_vecMax.y, m_vecMin.z,
 			m_vecMin.x, m_vecMax.y, m_vecMin.z,
-		};*/
-
-		cubeMesh.vertices = {
-			// front
-			-1.0, -1.0, 1.0,
-			1.0, -1.0, 1.0,
-			1.0, 1.0, 1.0,
-			-1.0, 1.0, 1.0,
-			// back
-			-1.0, -1.0, -1.0,
-			1.0, -1.0, -1.0,
-			1.0, 1.0, -1.0,
-			-1.0, 1.0, -1.0,
 		};
 
 		// Indices

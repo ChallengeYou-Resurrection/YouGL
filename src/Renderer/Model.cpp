@@ -10,8 +10,15 @@ Model::Model(Mesh& mesh)
 Model::Model(Model&& model)
 :   m_buffers(std::move(model.m_buffers))
 {
-    m_renderData.vao = model.m_renderData.vao;
-    model.m_renderData.vao = 0;
+    m_renderData.vao			= model.m_renderData.vao;
+	m_renderData.indicesCount	= model.m_renderData.indicesCount;
+	m_renderData.textureID		= model.m_renderData.textureID;
+	m_renderData.m_mode			= model.m_renderData.m_mode;
+
+    model.m_renderData.vao			= 0;
+	model.m_renderData.indicesCount = 0;
+	model.m_renderData.textureID	= 0;
+	model.m_renderData.m_mode		= GL_POLYGON;
 }
 
 Model& Model::operator=(Model&& model)

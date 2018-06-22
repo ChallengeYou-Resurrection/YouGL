@@ -56,7 +56,7 @@ void Renderer::renderScene(const Camera& camera)
     int drawCalls = 0;
     for (auto renderData : m_renderData) {
         renderData->bind();
-        glDrawElements(GL_TRIANGLES, renderData->getIndicesCount(), GL_UNSIGNED_INT, 0);
+        glDrawElements(renderData->getMode(), renderData->getIndicesCount(), GL_UNSIGNED_INT, 0);
         //std::cout << "Call: " << drawCalls++ << " Indices: " << renderData->getIndicesCount() << '\n';
     }
 

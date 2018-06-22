@@ -31,7 +31,7 @@ namespace
 
 WorldTextures::WorldTextures()
 {
-	std::cout << "Hello Textures\n";
+	std::cout << "Initialising Textures...\n";
 
 	// Create texture array
 	glGenTextures(1, &textureArrayID);
@@ -72,6 +72,9 @@ WorldTextures::WorldTextures()
 		0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
 	glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
+
+	// Finish loading
+	std::cout << "Success\n" << std::endl;
 }
 
 // Returns pointer to raw image data from a given file
@@ -130,6 +133,6 @@ GLuint WorldTextures::getTexID()
 
 const sf::Vector2f& WorldTextures::getTextureScale(TextureID tex) const
 {
-    std::cout << "Texture: " << int(tex) << std::endl;
+    //std::cout << "Texture: " << int(tex) << std::endl;
 	return worldTexturesMap.at(tex).texScale;
 }

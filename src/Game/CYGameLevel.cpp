@@ -13,6 +13,7 @@
 #include "MeshBuilder.h"
 
 CYGameLevel::CYGameLevel()
+	: m_octree(512)
 { }
 
 void CYGameLevel::loadFromOldFormat(int gameNumber)
@@ -62,8 +63,8 @@ void CYGameLevel::createModels()
        // models.emplace_back(mesh);
     }
 
-	std::cout << "Vertices : " << masterMesh.vertices.size() << "/n";
-	std::cout << "Indices : " << masterMesh.indices.size() << "/n";
+	std::cout << "Vertices : " << masterMesh.vertices.size() << "\n";
+	std::cout << "Indices : " << masterMesh.indices.size() << "\n";
 
     m_floorModels[0].create(masterMesh, m_textures.getTexID());
 }
@@ -71,4 +72,5 @@ void CYGameLevel::createModels()
 void CYGameLevel::renderFloors(Renderer & renderer)
 {
     renderer.draw(m_floorModels[0]);
+	m_octree.drawOctree(renderer);
 }
