@@ -27,5 +27,4 @@ class CYGameLevel
 
 		WorldTextures m_textures;
         std::vector<Wall> m_walls;
-
 };

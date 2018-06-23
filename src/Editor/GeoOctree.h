@@ -11,6 +11,7 @@
 //#include "EditorObject.h"
 #include "BoundingBox.h"
 #include "../Game/WorldConstants.h"
+#include "../Game/CYObjects.h"
 
 /* GEO OCTREE
  * This isn't an exact Octree but one designed to suit how the geometry in
@@ -31,9 +32,11 @@ class GeoOctree
     public:
         // Constructor, power of 2 recommended
         GeoOctree(int octreeSize);
+		GeoOctree(int octreeSize, std::unique_ptr<BoundingBox> bb);
 
         // Add geometry to octree
         //void insertGeometry(std::unique_ptr<EditorObject> obj);
+		void insertWall(std::shared_ptr<Wall> wall_ptr);
 
         // Build Octree
         // To be called after all objects have been inserted
@@ -44,14 +47,22 @@ class GeoOctree
 
 		void drawOctree(Renderer& renderer);
 
+		int getObjectSize();
+
     protected:
 
     private:
         int size;
 
         //std::vector<std::shared_ptr<EditorObject>> m_objects;
+		std::vector<std::shared_ptr<Wall>> m_walls;
 
+		bool checkIfWallInsideAABB(const Wall& wall, const glm::vec3& min,
+			const glm::vec3& max);
+
+		void subdivide();
         bool subdivided = false;
+		std::unique_ptr<BoundingBox> m_boundingBox;
         std::vector<BoundingBox> m_subdivisionBB;
         std::array<std::unique_ptr<GeoOctree>, 8> m_nodes;
 };

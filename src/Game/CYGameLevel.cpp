@@ -58,6 +58,9 @@ void CYGameLevel::createModels()
 {
     Mesh masterMesh;
     for (auto& wall : m_walls) {
+		std::shared_ptr<Wall> wall_ptr = std::make_shared<Wall>(wall);
+		m_octree.insertWall(wall_ptr);
+
         auto mesh = createMesh(wall, m_textures);
         masterMesh.combineWith(mesh);
        // models.emplace_back(mesh);
@@ -66,6 +69,8 @@ void CYGameLevel::createModels()
 	std::cout << "Vertices : " << masterMesh.vertices.size() << "\n";
 	std::cout << "Indices : " << masterMesh.indices.size() << "\n";
 
+	std::cout << "\nConstructing Octree\n";
+	m_octree.buildOctree();
     m_floorModels[0].create(masterMesh, m_textures.getTexID());
 }
 
