@@ -1,53 +1,67 @@
 #include "GeoOctree.h"
 
 GeoOctree::GeoOctree(int octreeSize)
+	: size(octreeSize)
+	, m_origin({0,0,0})
 {
-    size = octreeSize;
-
 	// Create a bounding box for the whole build space
 	m_boundingBox = std::make_unique<BoundingBox>(glm::vec3(0, 0, 0), 
 		glm::vec3(size, size, size));
 }
 
-GeoOctree::GeoOctree(int octreeSize, std::unique_ptr<BoundingBox> bb)
+GeoOctree::GeoOctree(int octreeSize, std::unique_ptr<BoundingBox> bb,
+	const glm::vec3& origin)
+	: size(octreeSize)
+	, m_origin(origin)
 {
-	size = octreeSize;
-
 	m_boundingBox = std::move(bb);
 }
 
-void GeoOctree::subdivide()
+bool GeoOctree::subdivide()
 {
+	// If there are any issues, return false
 	if (subdivided)
-		return;
+		return false;
+
+	// Check if theres enough items for subdivision to be worth it
+	if (m_walls.size() < MAX_ITEMS_PER_OCTREE)
+		return false;
+
+	// Check if we can subdivide further (no decimal)
+	if (size % 2 == 1)
+		return false;
 
 	this->subdivided = true;
 
 	// Create bounding boxes for subdivisions 
 	// Bottom Nodes
-	m_subdivisionBB.emplace_back(glm::vec3(0, 0, 0),
-		glm::vec3(size / 2, size / 2, size / 2));
-	m_subdivisionBB.emplace_back(glm::vec3(size / 2, 0, 0),
-		glm::vec3(size, size / 2, size / 2));
-	m_subdivisionBB.emplace_back(glm::vec3(0, 0, size / 2),
-		glm::vec3(size / 2, size / 2, size));
-	m_subdivisionBB.emplace_back(glm::vec3(size / 2, 0, size / 2),
-		glm::vec3(size, size / 2, size));
+	m_subdivisionBB.emplace_back(glm::vec3(0, 0, 0) + m_origin,
+		glm::vec3(size / 2, size / 2, size / 2) + m_origin);
+	m_subdivisionBB.emplace_back(glm::vec3(size / 2, 0, 0) + m_origin,
+		glm::vec3(size, size / 2, size / 2) + m_origin);
+	m_subdivisionBB.emplace_back(glm::vec3(0, 0, size / 2) + m_origin,
+		glm::vec3(size / 2, size / 2, size) + m_origin);
+	m_subdivisionBB.emplace_back(glm::vec3(size / 2, 0, size / 2) + m_origin,
+		glm::vec3(size, size / 2, size) + m_origin);
 
 	// Top Nodes
-	m_subdivisionBB.emplace_back(glm::vec3(0, size / 2, 0),
-		glm::vec3(size / 2, size, size / 2));
-	m_subdivisionBB.emplace_back(glm::vec3(size / 2, size / 2, 0),
-		glm::vec3(size, size, size / 2));
-	m_subdivisionBB.emplace_back(glm::vec3(0, size / 2, size / 2),
-		glm::vec3(size / 2, size, size));
-	m_subdivisionBB.emplace_back(glm::vec3(size / 2, size / 2, size / 2),
-		glm::vec3(size, size, size));
+	m_subdivisionBB.emplace_back(glm::vec3(0, size / 2, 0) + m_origin,
+		glm::vec3(size / 2, size, size / 2) + m_origin);
+	m_subdivisionBB.emplace_back(glm::vec3(size / 2, size / 2, 0) + m_origin,
+		glm::vec3(size, size, size / 2) + m_origin);
+	m_subdivisionBB.emplace_back(glm::vec3(0, size / 2, size / 2) + m_origin,
+		glm::vec3(size / 2, size, size) + m_origin);
+	m_subdivisionBB.emplace_back(glm::vec3(size / 2, size / 2, size / 2) + m_origin,
+		glm::vec3(size, size, size) + m_origin);
 
 	// Create nodes and assign the bounding boxes to them
 	for (int i = 0; i < 8; i++)
 		m_nodes[i] = std::make_unique<GeoOctree>(size / 2, 
-			std::make_unique<BoundingBox>(std::move(m_subdivisionBB.at(i))));
+			std::make_unique<BoundingBox>(std::move(m_subdivisionBB.at(i))),
+			m_subdivisionBB.at(i).getVecMin());
+
+	// Success
+	return true;
 }
 
 bool GeoOctree::checkIfWallInsideAABB(const Wall& wall, const glm::vec3& min,
@@ -64,7 +78,8 @@ void GeoOctree::insertWall(std::shared_ptr<Wall> wall_ptr)
 void GeoOctree::buildOctree() {
 	std::cout << "Current node has " << m_walls.size() << " walls\n";
 
-	subdivide();
+	if (!subdivide())
+		return;
 
 	// Check if each wall can fit into each node
 	for (auto& wall : m_walls)
@@ -80,7 +95,7 @@ void GeoOctree::buildOctree() {
 		{
 			if (node->checkIfWallInsideAABB(*wall, min, max))
 			{
-				node->insertWall(std::move(wall));
+				node->insertWall(wall);
 			}
 		}
 	}
@@ -88,6 +103,10 @@ void GeoOctree::buildOctree() {
 	// For debugging
 	for (auto& node : m_nodes)
 		std::cout << "Node: " << m_walls.size() << " - > " << node->getObjectSize() << "\n";
+
+	// Recursive
+	for (auto& node : m_nodes)
+		node->buildOctree();
 }
 
 void GeoOctree::cleanOctree() {

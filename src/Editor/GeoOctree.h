@@ -24,7 +24,7 @@
  * difference between it and a naive collision detection.
 */
 
-const int MAX_ITEMS_PER_OCTREE = 12;
+const int MAX_ITEMS_PER_OCTREE = 16;
 const int MAX_OCTREE_DEPTH     = 8;
 
 class GeoOctree
@@ -32,7 +32,7 @@ class GeoOctree
     public:
         // Constructor, power of 2 recommended
         GeoOctree(int octreeSize);
-		GeoOctree(int octreeSize, std::unique_ptr<BoundingBox> bb);
+		GeoOctree(int octreeSize, std::unique_ptr<BoundingBox> bb, const glm::vec3& origin);
 
         // Add geometry to octree
         //void insertGeometry(std::unique_ptr<EditorObject> obj);
@@ -53,6 +53,7 @@ class GeoOctree
 
     private:
         int size;
+		glm::vec3 m_origin;
 
         //std::vector<std::shared_ptr<EditorObject>> m_objects;
 		std::vector<std::shared_ptr<Wall>> m_walls;
@@ -60,7 +61,7 @@ class GeoOctree
 		bool checkIfWallInsideAABB(const Wall& wall, const glm::vec3& min,
 			const glm::vec3& max);
 
-		void subdivide();
+		bool subdivide();
         bool subdivided = false;
 		std::unique_ptr<BoundingBox> m_boundingBox;
         std::vector<BoundingBox> m_subdivisionBB;

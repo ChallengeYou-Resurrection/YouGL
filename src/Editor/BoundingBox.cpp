@@ -22,6 +22,17 @@ bool BoundingBox::checkAABB(const glm::vec3& obj_minv3, const glm::vec3& obj_max
 		this->m_vecMin.z < obj_maxv3.z);
 }
 
+glm::vec3 BoundingBox::getVecMin()
+{
+	return m_vecMin;
+}
+
+glm::vec3 BoundingBox::getVecMax()
+{
+	return m_vecMax;
+}
+
+
 BoundingBox::BoundingBox(glm::vec3 min, glm::vec3 max)
 	: m_vecMin(min)
 	, m_vecMax(max)
