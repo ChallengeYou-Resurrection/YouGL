@@ -82,7 +82,13 @@ void CYGameLevel::renderFloors(Renderer & renderer)
 
 bool CYGameLevel::cameraCollsion(Camera & camera)
 {
-	std::cout << "Walls near camera: " 
+	/*std::cout << "Walls near camera: " 
 		<< m_octree.getWallVectorNearPoint(Coordinate::WorldToLevel(camera.getPositon())).size() << "\n";
+	*/
+	const glm::vec3 cam_pos = Coordinate::WorldToLevel(camera.getPositon());
+	const glm::vec3 cam_end = Coordinate::WorldToLevel(camera.getPositon() + camera.getVelocity());
+	if (!m_octree.checkIfTwoPointsInSameOctree(cam_pos, cam_end))
+		std::cout << "Two octrees\n";
+
 	return false;
 }

@@ -47,8 +47,9 @@ void StatePlaying::handleInput(Controller& controller)
 void StatePlaying::update(sf::Time deltaTime)
 {
 	m_camera.update(deltaTime.asSeconds());
-	m_level.cameraCollsion(m_camera);
-	m_camera.applyVelocity();
+
+	if (!m_level.cameraCollsion(m_camera));
+		m_camera.applyVelocity();
 }
 
 void StatePlaying::fixedUpdate(sf::Time deltaTime)

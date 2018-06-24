@@ -141,7 +141,7 @@ std::vector<std::shared_ptr<Wall>> GeoOctree::getWallVectorNearPoint(const glm::
 		if (node->checkPointInOctree(point))
 			return node->getWallVectorNearPoint(point);
 
-	// fail safe
+	// fail safe (Caused by point outside of the octree)
 	std::cout << "Warning: Point is outside the octree\n";
 	return std::vector<std::shared_ptr<Wall>>();
 }
@@ -149,6 +149,21 @@ std::vector<std::shared_ptr<Wall>> GeoOctree::getWallVectorNearPoint(const glm::
 bool GeoOctree::checkPointInOctree(const glm::vec3 & point)
 {
 	return m_boundingBox->checkAABB(point);
+}
+
+bool GeoOctree::checkIfTwoPointsInSameOctree(const glm::vec3 & p1, const glm::vec3 & p2)
+{
+	// Base case
+	if (!subdivided)
+		return (m_boundingBox->checkAABB(p1) && m_boundingBox->checkAABB(p2));
+
+	// Step Case (Find octree with point p1)
+	for (auto& node : m_nodes)
+		if (node->checkPointInOctree(p1))
+			return node->checkIfTwoPointsInSameOctree(p1, p2);
+
+	// fail safe
+	return true;
 }
 
 /*bool GeoOctree::checkForCollision(const glm::vec3& start, const glm::vec3& end)
