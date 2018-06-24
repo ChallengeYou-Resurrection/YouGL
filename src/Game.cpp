@@ -11,7 +11,7 @@
 Game::Game()
 {
     m_controller = std::make_unique<KeyboardController>(m_renderer.m_window);
-    pushState<StatePlaying>(*this);
+    pushState<StatePlaying>(*this, m_renderer);
 }
 
 //Runs the main loop
@@ -37,11 +37,8 @@ void Game::run()
 
         //Real time update
         state.handleInput(*m_controller);
-        m_camera.input(*m_controller);
         state.update(elapsed);
         counter.update();
-        m_camera.update(elapsed.asSeconds());
-		m_camera.applyVelocity();
 
         //Fixed time update
         while (lag >= timePerUpdate)
@@ -54,7 +51,7 @@ void Game::run()
         //Render
         state.render(m_renderer);
         counter.draw(m_renderer);
-        m_renderer.renderScene(m_camera); //Finalise render
+     
 
         //Handle window events
         handleEvent();
@@ -134,5 +131,5 @@ const sf::RenderWindow& Game::getWindow() const
 
 void Game::initRendererScene()
 {
-	m_renderer.initScene(m_camera);
+	
 }

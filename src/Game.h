@@ -41,8 +41,6 @@ class Game : public NonCopyable, public NonMovable
 
         StateBase& getCurrentState();
 
-        
-        Camera m_camera;
         Renderer m_renderer;
         std::unique_ptr<Controller> m_controller;
 
