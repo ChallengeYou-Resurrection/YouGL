@@ -49,7 +49,8 @@ class GeoOctree
 		void drawOctree(Renderer& renderer);
 
 		int getObjectSize();
-		bool checkForCollision(const glm::vec3& start, const glm::vec3& end);
+		bool checkPointInOctree(const glm::vec3& point);
+		//bool checkForCollision(const glm::vec3& start, const glm::vec3& end);
 		std::vector<std::shared_ptr<Wall>> getWallVectorNearPoint(const glm::vec3& point);
 
     protected:

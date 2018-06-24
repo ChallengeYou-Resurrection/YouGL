@@ -134,13 +134,24 @@ int GeoOctree::getObjectSize()
 
 std::vector<std::shared_ptr<Wall>> GeoOctree::getWallVectorNearPoint(const glm::vec3& point)
 {
-	//if (!subdivided)
+	if (!subdivided)
 		return m_walls;
 
+	for (auto& node : m_nodes)
+		if (node->checkPointInOctree(point))
+			return node->getWallVectorNearPoint(point);
 
+	// fail safe
+	std::cout << "Warning: Point is outside the octree\n";
+	return std::vector<std::shared_ptr<Wall>>();
 }
 
-bool GeoOctree::checkForCollision(const glm::vec3& start, const glm::vec3& end)
+bool GeoOctree::checkPointInOctree(const glm::vec3 & point)
+{
+	return m_boundingBox->checkAABB(point);
+}
+
+/*bool GeoOctree::checkForCollision(const glm::vec3& start, const glm::vec3& end)
 {
 	return false;
-}
+}*/

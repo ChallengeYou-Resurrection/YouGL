@@ -79,3 +79,10 @@ void CYGameLevel::renderFloors(Renderer & renderer)
     renderer.draw(m_floorModels[0]);
 	m_octree.drawOctree(renderer);
 }
+
+bool CYGameLevel::cameraCollsion(Camera & camera)
+{
+	std::cout << "Walls near camera: " 
+		<< m_octree.getWallVectorNearPoint(Coordinate::WorldToLevel(camera.getPositon())).size() << "\n";
+	return false;
+}

@@ -18,6 +18,7 @@ public :
 
 	bool checkAABB(const BoundingBox& obj);
 	bool checkAABB(const glm::vec3& obj_minv3, const glm::vec3& obj_maxv3);
+	bool checkAABB(const glm::vec3& point);
 
 	glm::vec3 getVecMin();
 	glm::vec3 getVecMax();

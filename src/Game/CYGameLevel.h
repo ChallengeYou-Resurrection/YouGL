@@ -6,6 +6,7 @@
 #include "WorldTextures.h"
 #include "../Editor/GeoOctree.h"
 #include "../Renderer/Model.h"
+#include "../Renderer/Camera.h"
 
 class Renderer;
 
@@ -18,6 +19,8 @@ class CYGameLevel
         void load(const std::string& fileName);
         void createModels();
         void renderFloors(Renderer& renderer);
+
+		bool cameraCollsion(Camera& camera);
 
     private:
         std::vector<Model> m_floorModels;
