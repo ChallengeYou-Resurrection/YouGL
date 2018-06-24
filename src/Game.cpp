@@ -41,6 +41,7 @@ void Game::run()
         state.update(elapsed);
         counter.update();
         m_camera.update(elapsed.asSeconds());
+		m_camera.applyVelocity();
 
         //Fixed time update
         while (lag >= timePerUpdate)

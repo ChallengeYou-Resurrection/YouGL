@@ -17,9 +17,13 @@ class Camera
         const glm::vec3& getPositon() const;
         const glm::vec3& getRotation() const;
         const glm::mat4& getProjectionMatrix() const;
+		const glm::vec3& getVelocity() const;
+
+		void applyVelocity();
 
     private:
         Transform m_transform;
+		glm::vec3 m_velocity;
 
         glm::mat4 m_projectionMatrix;
 };

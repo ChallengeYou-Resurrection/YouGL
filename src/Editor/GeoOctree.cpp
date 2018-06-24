@@ -85,11 +85,13 @@ void GeoOctree::buildOctree() {
 	for (auto& wall : m_walls)
 	{
 		// Get AABB of the wall
-		glm::vec3 min = glm::vec3(wall->startPosition.x, wall->floor * WORLD_HEIGHT,
-			wall->startPosition.y);
+		auto geometricHeight = getWallGeometricHeight(*wall);
+
+		glm::vec3 min = glm::vec3(wall->startPosition.x, 
+			((float)wall->floor + geometricHeight.bottom) * WORLD_HEIGHT, wall->startPosition.y);
 
 		glm::vec3 max = glm::vec3(wall->endPosition.x, 
-			(wall->floor + wall->height) * WORLD_HEIGHT, wall->endPosition.y);
+			((float)wall->floor + geometricHeight.top) * WORLD_HEIGHT, wall->endPosition.y);
 
 		for (auto& node : m_nodes)
 		{
@@ -107,6 +109,8 @@ void GeoOctree::buildOctree() {
 	// Recursive
 	for (auto& node : m_nodes)
 		node->buildOctree();
+
+	m_walls.clear();
 }
 
 void GeoOctree::cleanOctree() {
@@ -126,4 +130,17 @@ void GeoOctree::drawOctree(Renderer & renderer)
 int GeoOctree::getObjectSize()
 {
 	return m_walls.size();
+}
+
+std::vector<std::shared_ptr<Wall>> GeoOctree::getWallVectorNearPoint(const glm::vec3& point)
+{
+	//if (!subdivided)
+		return m_walls;
+
+
+}
+
+bool GeoOctree::checkForCollision(const glm::vec3& start, const glm::vec3& end)
+{
+	return false;
 }

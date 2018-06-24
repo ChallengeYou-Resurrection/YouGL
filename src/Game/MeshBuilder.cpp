@@ -8,37 +8,6 @@
 #include "CYObjects.h"
 #include "WorldConstants.h"
 
-namespace {
-    struct WallHeight 
-    {
-        float bottom;
-        float top;
-    };
-
-    WallHeight getWallGeometricHeight(const Wall& wall) 
-    {
-        float bottomHeight = 0.0f;
-        float topHeight = 1.0f;
-
-        switch (wall.height) {
-            case 2:  topHeight = 3 / 4.0f;  bottomHeight = 0.0f; break;
-            case 3:  topHeight = 2 / 4.0f;  bottomHeight = 0.0f; break;
-            case 4:  topHeight = 1 / 4.0f;  bottomHeight = 0.0f; break;
-
-            case 5:  topHeight = 2 / 4.0f;  bottomHeight = 1 / 4.0f; break;
-            case 6:  topHeight = 3 / 4.0f;  bottomHeight = 2 / 4.0f; break;
-            case 7:  topHeight = 4 / 4.0f;  bottomHeight = 3 / 4.0f; break;
-
-            case 8:  topHeight = 4 / 4.0f;  bottomHeight = 2 / 4.0f; break;
-            case 9:  topHeight = 4 / 4.0f;  bottomHeight = 1 / 4.0f; break;
-            case 10: topHeight = 3 / 4.0f;  bottomHeight = 1 / 4.0f; break;
-            default: topHeight = 4 / 4.0f;  bottomHeight =     0.0f; break;
-        }
-        return { 
-            bottomHeight, topHeight 
-        };
-    }
-}
 
 /////////////
 ///  WALL  //
@@ -49,17 +18,17 @@ Mesh createMesh(const Wall& wall, const WorldTextures& wTex)
     auto geometricHeight = getWallGeometricHeight(wall);
 
     //Do some geometric calculations (maths done by Ruixel)
-    float minHeight = ((float)wall.floor + geometricHeight.bottom) / WORLD_HEIGHT;
-    float maxHeight = ((float)wall.floor + geometricHeight.top)    / WORLD_HEIGHT;
+    float minHeight = ((float)wall.floor + geometricHeight.bottom) * WORLD_HEIGHT;
+    float maxHeight = ((float)wall.floor + geometricHeight.top)    * WORLD_HEIGHT;
 
     glm::vec2 wallOrigin = { (float)wall.startPosition.x, (float)wall.startPosition.y };
     glm::vec2 wallFinish = { (float)wall.endPosition.x, (float)wall.endPosition.y };
 
     std::array<glm::vec3, 4> vertices;
-    vertices[1] = glm::vec3((wallOrigin.x) / WORLD_SIZE, maxHeight, (wallOrigin.y) / WORLD_SIZE);
-    vertices[2] = glm::vec3((wallFinish.x) / WORLD_SIZE, maxHeight, (wallFinish.y) / WORLD_SIZE);
-    vertices[3] = glm::vec3((wallFinish.x) / WORLD_SIZE, minHeight, (wallFinish.y) / WORLD_SIZE);
-    vertices[0] = glm::vec3((wallOrigin.x) / WORLD_SIZE, minHeight, (wallOrigin.y) / WORLD_SIZE);
+    vertices[1] = glm::vec3((wallOrigin.x) / WORLD_SIZE, maxHeight / WORLD_SIZE, (wallOrigin.y) / WORLD_SIZE);
+    vertices[2] = glm::vec3((wallFinish.x) / WORLD_SIZE, maxHeight / WORLD_SIZE, (wallFinish.y) / WORLD_SIZE);
+    vertices[3] = glm::vec3((wallFinish.x) / WORLD_SIZE, minHeight / WORLD_SIZE, (wallFinish.y) / WORLD_SIZE);
+    vertices[0] = glm::vec3((wallOrigin.x) / WORLD_SIZE, minHeight / WORLD_SIZE, (wallOrigin.y) / WORLD_SIZE);
     
     glm::vec3 normal = glm::cross(vertices[2] - vertices[1], vertices[3] - vertices[1]);
 

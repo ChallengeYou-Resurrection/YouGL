@@ -12,6 +12,7 @@
 #include "BoundingBox.h"
 #include "../Game/WorldConstants.h"
 #include "../Game/CYObjects.h"
+#include "../Game/MeshBuilder.h"
 
 /* GEO OCTREE
  * This isn't an exact Octree but one designed to suit how the geometry in
@@ -24,7 +25,7 @@
  * difference between it and a naive collision detection.
 */
 
-const int MAX_ITEMS_PER_OCTREE = 16;
+const int MAX_ITEMS_PER_OCTREE = 24;
 const int MAX_OCTREE_DEPTH     = 8;
 
 class GeoOctree
@@ -48,6 +49,8 @@ class GeoOctree
 		void drawOctree(Renderer& renderer);
 
 		int getObjectSize();
+		bool checkForCollision(const glm::vec3& start, const glm::vec3& end);
+		std::vector<std::shared_ptr<Wall>> getWallVectorNearPoint(const glm::vec3& point);
 
     protected:
 
