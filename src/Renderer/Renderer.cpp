@@ -28,7 +28,7 @@ void Renderer::initScene(const Camera& camera)
 {
 	glm::mat4 model;
 
-	model = makeModelMatrix({ { 0, 0, -5 },{ 0, 45, 0 } });
+	model = makeModelMatrix({ { 0, 0, 0 },{ 0, 0, 0 } });
 
 	m_shader.bind();
 	m_shader.setParameter("projMatrix", camera.getProjectionMatrix());

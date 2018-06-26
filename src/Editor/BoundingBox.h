@@ -5,8 +5,9 @@
 #include "../Renderer/Renderer.h"
 
 #include "glm/vec3.hpp"
+#include "../Game/WorldConstants.h"
 
-#define RENDER_BOUNDING_BOX true
+const float RENDER_BOUNDING_BOX = true;
 
 // For AABB collision
 // Used for determining what subdivision an object should go to
@@ -15,7 +16,12 @@ class BoundingBox {
 public :
 	BoundingBox(glm::vec3 min, glm::vec3 max);
 
-	bool checkAABB(const BoundingBox& obj);
+	const bool checkAABB(const BoundingBox& obj);
+	const bool checkAABB(const glm::vec3& obj_minv3, const glm::vec3& obj_maxv3);
+	const bool checkAABB(const glm::vec3& point);
+
+	const glm::vec3& getVecMin();
+	const glm::vec3& getVecMax();
 
 	void render(Renderer& renderer);
 

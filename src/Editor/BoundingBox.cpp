@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-bool BoundingBox::checkAABB(const BoundingBox& obj)
+const bool BoundingBox::checkAABB(const BoundingBox& obj)
 {
 	return (this->m_vecMax.x > obj.m_vecMin.x &&
 		this->m_vecMin.x < obj.m_vecMax.x &&
@@ -11,6 +11,37 @@ bool BoundingBox::checkAABB(const BoundingBox& obj)
 		this->m_vecMax.z > obj.m_vecMin.z &&
 		this->m_vecMin.z < obj.m_vecMax.z);
 }
+
+const bool BoundingBox::checkAABB(const glm::vec3& obj_minv3, const glm::vec3& obj_maxv3)
+{
+	return (this->m_vecMax.x > obj_minv3.x &&
+		this->m_vecMin.x < obj_maxv3.x &&
+		this->m_vecMax.y > obj_minv3.y &&
+		this->m_vecMin.y < obj_maxv3.y &&
+		this->m_vecMax.z > obj_minv3.z &&
+		this->m_vecMin.z < obj_maxv3.z);
+}
+
+const bool BoundingBox::checkAABB(const glm::vec3 & point)
+{
+	return (point.x > m_vecMin.x &&
+		point.x < m_vecMax.x &&
+		point.y > m_vecMin.y &&
+		point.y < m_vecMax.y &&
+		point.z > m_vecMin.z &&
+		point.z < m_vecMax.z);
+}
+
+const glm::vec3& BoundingBox::getVecMin()
+{
+	return m_vecMin;
+}
+
+const glm::vec3& BoundingBox::getVecMax()
+{
+	return m_vecMax;
+}
+
 
 BoundingBox::BoundingBox(glm::vec3 min, glm::vec3 max)
 	: m_vecMin(min)
@@ -24,15 +55,15 @@ BoundingBox::BoundingBox(glm::vec3 min, glm::vec3 max)
 		// Vertices (Static)
 		cubeMesh.vertices = {
 			// front
-			m_vecMin.x, m_vecMin.y,  m_vecMax.z,
-			m_vecMax.x, m_vecMin.y,  m_vecMax.z,
-			m_vecMax.x, m_vecMax.y,  m_vecMax.z,
-			m_vecMin.x, m_vecMax.y,  m_vecMax.z,
+			m_vecMin.x / WORLD_SIZE, m_vecMin.y / WORLD_SIZE,  m_vecMax.z / WORLD_SIZE,
+			m_vecMax.x / WORLD_SIZE, m_vecMin.y / WORLD_SIZE,  m_vecMax.z / WORLD_SIZE,
+			m_vecMax.x / WORLD_SIZE, m_vecMax.y / WORLD_SIZE,  m_vecMax.z / WORLD_SIZE,
+			m_vecMin.x / WORLD_SIZE, m_vecMax.y / WORLD_SIZE,  m_vecMax.z / WORLD_SIZE,
 			// back
-			m_vecMin.x, m_vecMin.y, m_vecMin.z,
-			m_vecMax.x, m_vecMin.y, m_vecMin.z,
-			m_vecMax.x, m_vecMax.y, m_vecMin.z,
-			m_vecMin.x, m_vecMax.y, m_vecMin.z,
+			m_vecMin.x / WORLD_SIZE, m_vecMin.y / WORLD_SIZE, m_vecMin.z / WORLD_SIZE,
+			m_vecMax.x / WORLD_SIZE, m_vecMin.y / WORLD_SIZE, m_vecMin.z / WORLD_SIZE,
+			m_vecMax.x / WORLD_SIZE, m_vecMax.y / WORLD_SIZE, m_vecMin.z / WORLD_SIZE,
+			m_vecMin.x / WORLD_SIZE, m_vecMax.y / WORLD_SIZE, m_vecMin.z / WORLD_SIZE
 		};
 
 		// Indices

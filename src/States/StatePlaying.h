@@ -3,6 +3,7 @@
 
 #include "StateBase.h"
 #include "../Game/CYGameLevel.h"
+#include "../Renderer/Camera.h"
 
 class Controller;
 /**
@@ -11,7 +12,7 @@ class Controller;
 class StatePlaying : public StateBase
 {
 public:
-    StatePlaying(Game& game);
+    StatePlaying(Game& game, Renderer& renderer);
 
     void handleEvent(sf::Event e) override;
     void handleInput(Controller& controller) override;
@@ -20,5 +21,6 @@ public:
     void render(Renderer& renderer) override;
 
 private:
+	Camera m_camera;
     CYGameLevel m_level;
 };
