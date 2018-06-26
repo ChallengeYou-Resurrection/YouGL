@@ -61,7 +61,7 @@ void CYGameLevel::createModels()
 		std::shared_ptr<Wall> wall_ptr = std::make_shared<Wall>(wall);
 		m_octree.insertWall(wall_ptr);
 
-        auto mesh = createMesh(wall, m_textures);
+        auto mesh = MeshBuilder::createMesh(wall, m_textures);
         masterMesh.combineWith(mesh);
        // models.emplace_back(mesh);
     }
@@ -107,7 +107,7 @@ bool CYGameLevel::cameraCollsion(Camera & camera)
 	{
 		// Reconstruct to get vertices of wall
 		// TODO: More efficient or streamlined way of doing this?
-		auto geometricHeight = getWallGeometricHeight(*wall);
+		auto geometricHeight = MeshBuilder::getWallGeometricHeight(*wall);
 		float minHeight = ((float)wall->floor + geometricHeight.bottom) * WORLD_HEIGHT;
 		float maxHeight = ((float)wall->floor + geometricHeight.top)    * WORLD_HEIGHT;
 

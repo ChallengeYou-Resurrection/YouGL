@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-bool BoundingBox::checkAABB(const BoundingBox& obj)
+const bool BoundingBox::checkAABB(const BoundingBox& obj)
 {
 	return (this->m_vecMax.x > obj.m_vecMin.x &&
 		this->m_vecMin.x < obj.m_vecMax.x &&
@@ -12,7 +12,7 @@ bool BoundingBox::checkAABB(const BoundingBox& obj)
 		this->m_vecMin.z < obj.m_vecMax.z);
 }
 
-bool BoundingBox::checkAABB(const glm::vec3& obj_minv3, const glm::vec3& obj_maxv3)
+const bool BoundingBox::checkAABB(const glm::vec3& obj_minv3, const glm::vec3& obj_maxv3)
 {
 	return (this->m_vecMax.x > obj_minv3.x &&
 		this->m_vecMin.x < obj_maxv3.x &&
@@ -22,7 +22,7 @@ bool BoundingBox::checkAABB(const glm::vec3& obj_minv3, const glm::vec3& obj_max
 		this->m_vecMin.z < obj_maxv3.z);
 }
 
-bool BoundingBox::checkAABB(const glm::vec3 & point)
+const bool BoundingBox::checkAABB(const glm::vec3 & point)
 {
 	return (point.x > m_vecMin.x &&
 		point.x < m_vecMax.x &&
@@ -32,12 +32,12 @@ bool BoundingBox::checkAABB(const glm::vec3 & point)
 		point.z < m_vecMax.z);
 }
 
-glm::vec3 BoundingBox::getVecMin()
+const glm::vec3& BoundingBox::getVecMin()
 {
 	return m_vecMin;
 }
 
-glm::vec3 BoundingBox::getVecMax()
+const glm::vec3& BoundingBox::getVecMax()
 {
 	return m_vecMax;
 }

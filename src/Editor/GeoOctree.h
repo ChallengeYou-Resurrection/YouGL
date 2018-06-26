@@ -25,7 +25,7 @@
  * difference between it and a naive collision detection.
 */
 
-const int MAX_ITEMS_PER_OCTREE = 99999;
+const int MAX_ITEMS_PER_OCTREE = 128;
 const int MAX_OCTREE_DEPTH     = 8;
 
 class GeoOctree
@@ -46,11 +46,11 @@ class GeoOctree
         // Safely dispose of contents in Octree
         void cleanOctree();
 
-		void drawOctree(Renderer& renderer);
+		void drawOctree(Renderer& renderer) const;
 
-		int getObjectSize();
-		bool checkPointInOctree(const glm::vec3& point);
-		bool checkIfTwoPointsInSameOctree(const glm::vec3& p1, const glm::vec3& p2);
+		int getObjectSize() const;
+		bool checkPointInOctree(const glm::vec3& point) const;
+		bool checkIfTwoPointsInSameOctree(const glm::vec3& p1, const glm::vec3& p2) const;
 		//bool checkForCollision(const glm::vec3& start, const glm::vec3& end);
 		std::vector<std::shared_ptr<Wall>> getWallVectorNearPoint(const glm::vec3& point);
 

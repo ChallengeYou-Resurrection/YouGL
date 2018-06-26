@@ -85,7 +85,7 @@ void GeoOctree::buildOctree() {
 	for (auto& wall : m_walls)
 	{
 		// Get AABB of the wall
-		auto geometricHeight = getWallGeometricHeight(*wall);
+		auto geometricHeight = MeshBuilder::getWallGeometricHeight(*wall);
 
 		glm::vec3 min = glm::vec3(wall->startPosition.x - 0.01f, 
 			((float)wall->floor + geometricHeight.bottom) * WORLD_HEIGHT, wall->startPosition.y - 0.01f);
@@ -117,7 +117,7 @@ void GeoOctree::cleanOctree() {
 
 }
 
-void GeoOctree::drawOctree(Renderer & renderer)
+void GeoOctree::drawOctree(Renderer & renderer) const
 {
 	m_boundingBox->render(renderer);
 
@@ -127,7 +127,7 @@ void GeoOctree::drawOctree(Renderer & renderer)
 			node->drawOctree(renderer);
 }
 
-int GeoOctree::getObjectSize()
+int GeoOctree::getObjectSize() const
 {
 	return m_walls.size();
 }
@@ -146,12 +146,12 @@ std::vector<std::shared_ptr<Wall>> GeoOctree::getWallVectorNearPoint(const glm::
 	return std::vector<std::shared_ptr<Wall>>();
 }
 
-bool GeoOctree::checkPointInOctree(const glm::vec3 & point)
+bool GeoOctree::checkPointInOctree(const glm::vec3 & point) const
 {
 	return m_boundingBox->checkAABB(point);
 }
 
-bool GeoOctree::checkIfTwoPointsInSameOctree(const glm::vec3 & p1, const glm::vec3 & p2)
+bool GeoOctree::checkIfTwoPointsInSameOctree(const glm::vec3 & p1, const glm::vec3 & p2) const
 {
 	// Base case
 	if (!subdivided)
