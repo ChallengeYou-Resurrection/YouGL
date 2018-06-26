@@ -65,7 +65,7 @@ bool GeoOctree::subdivide()
 }
 
 bool GeoOctree::checkIfWallInsideAABB(const Wall& wall, const glm::vec3& min,
-	const glm::vec3& max)
+	const glm::vec3& max) const
 {
 	return m_boundingBox->checkAABB(min, max);
 }

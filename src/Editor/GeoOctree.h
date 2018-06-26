@@ -64,7 +64,7 @@ class GeoOctree
 		std::vector<std::shared_ptr<Wall>> m_walls;
 
 		bool checkIfWallInsideAABB(const Wall& wall, const glm::vec3& min,
-			const glm::vec3& max);
+			const glm::vec3& max) const;
 
 		bool subdivide();
         bool subdivided = false;
