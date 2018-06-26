@@ -87,11 +87,11 @@ void GeoOctree::buildOctree() {
 		// Get AABB of the wall
 		auto geometricHeight = getWallGeometricHeight(*wall);
 
-		glm::vec3 min = glm::vec3(wall->startPosition.x, 
-			((float)wall->floor + geometricHeight.bottom) * WORLD_HEIGHT, wall->startPosition.y);
+		glm::vec3 min = glm::vec3(wall->startPosition.x - 0.01f, 
+			((float)wall->floor + geometricHeight.bottom) * WORLD_HEIGHT, wall->startPosition.y - 0.01f);
 
-		glm::vec3 max = glm::vec3(wall->endPosition.x, 
-			((float)wall->floor + geometricHeight.top) * WORLD_HEIGHT, wall->endPosition.y);
+		glm::vec3 max = glm::vec3(wall->endPosition.x + 0.01f, 
+			((float)wall->floor + geometricHeight.top) * WORLD_HEIGHT, wall->endPosition.y + 0.01f);
 
 		for (auto& node : m_nodes)
 		{
@@ -110,7 +110,7 @@ void GeoOctree::buildOctree() {
 	for (auto& node : m_nodes)
 		node->buildOctree();
 
-	m_walls.clear();
+	//m_walls.clear();
 }
 
 void GeoOctree::cleanOctree() {
@@ -142,7 +142,7 @@ std::vector<std::shared_ptr<Wall>> GeoOctree::getWallVectorNearPoint(const glm::
 			return node->getWallVectorNearPoint(point);
 
 	// fail safe (Caused by point outside of the octree)
-	std::cout << "Warning: Point is outside the octree\n";
+	//std::cout << "Warning: Point is outside the octree\n";
 	return std::vector<std::shared_ptr<Wall>>();
 }
 

@@ -100,6 +100,8 @@ bool CYGameLevel::cameraCollsion(Camera & camera)
 		wall_list.insert(wall_list.end(), extended_wall_list.begin(), extended_wall_list.end());
 	}
 
+	//std::cout << "vec size: " << wall_list.size() << "\n";
+
 	// Check all walls for collision
 	for (auto& wall : wall_list)
 	{

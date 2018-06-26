@@ -25,7 +25,7 @@
  * difference between it and a naive collision detection.
 */
 
-const int MAX_ITEMS_PER_OCTREE = 24;
+const int MAX_ITEMS_PER_OCTREE = 99999;
 const int MAX_OCTREE_DEPTH     = 8;
 
 class GeoOctree
