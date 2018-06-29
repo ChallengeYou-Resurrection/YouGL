@@ -20,6 +20,7 @@ class Camera
 		const glm::vec3& getVelocity() const;
 
 		void applyVelocity();
+		void setVelocity(const glm::vec3& vel);
 
     private:
         Transform m_transform;

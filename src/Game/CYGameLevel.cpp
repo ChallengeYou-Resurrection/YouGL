@@ -85,12 +85,12 @@ bool CYGameLevel::cameraCollsion(Camera & camera)
 	// TODO: Clean and move this into GeoOctree class
 	// Get start and finish for cam movement
 	const glm::vec3 cam_pos = Coordinate::WorldToLevel(camera.getPositon());
-	const glm::vec3 cam_end = Coordinate::WorldToLevel(camera.getPositon() + (camera.getVelocity() * 1.f));
-	
+	const glm::vec3 cam_end = Coordinate::WorldToLevel(camera.getPositon() + (camera.getVelocity() * 1.2f));
+
 	// If there's no velocity, skip
 	if (glm::all(glm::equal(cam_pos, cam_end)))
 		return false;
-	
+
 	std::vector<std::shared_ptr<Wall>> wall_list = m_octree.getWallVectorNearPoint(cam_pos);
 
 	// Insert more walls 
@@ -120,6 +120,8 @@ bool CYGameLevel::cameraCollsion(Camera & camera)
 		vertices[3] = glm::vec3((wallFinish.x), minHeight, (wallFinish.y));
 		vertices[0] = glm::vec3((wallOrigin.x), minHeight, (wallOrigin.y));
 
+		glm::vec3 normal = glm::cross(vertices[2] - vertices[1], vertices[3] - vertices[1]);
+
 		// Intersection test
 		//std::cout << "Triangle point: " << vertices[1].x << ", " << vertices[1].y << ", " << vertices[1].z << "\n";
 		glm::vec3 intersection;
@@ -127,20 +129,37 @@ bool CYGameLevel::cameraCollsion(Camera & camera)
 			glm::intersectLineTriangle(cam_pos, camera.getVelocity(), vertices[2], vertices[3], vertices[0], intersection))
 		{
 			//std::cout << "Collision Detected, point: " << intersection.x << ", " << intersection.y << ", " << intersection.z << "\n";
-			
-			/*
-			// GLM returns a barycentric coordinate, we need to convert to cartesian
-			// in order to calculate the distance / magnitude
-			glm::vec3 cart = intersection.x * vertices[1] + intersection.y * vertices[2] + intersection.z * vertices[0];
-			std::cout << "Collision Detected, cartesian point: " << cart.x << ", " << cart.y << ", " << cart.z << "\n";
-			*/
 
-			if (intersection.x < 200 && intersection.x > 0)
-				return true;
+			// Ref: https://mathinsight.org/distance_point_plane
+			// This is used to get the distance from the camera to closest point of the colliding mesh
+			// Normalise normal vector
+			normal = glm::normalize(normal);
+			glm::vec3 planeOrigin = vertices[0];
+
+			// Vector plane origin to camera
+			glm::vec3 v = glm::vec3(cam_end.x - planeOrigin.x, cam_end.y - planeOrigin.y,
+				cam_end.z - planeOrigin.z);
+
+			// Calculate the distance
+			float distance = glm::abs(glm::dot(v, normal));
+
+			if (distance < 1.1f)
+			{
+				glm::vec3 cameraMovement = camera.getVelocity();
+				float dotV = glm::dot(glm::normalize(cameraMovement), normal);
+				float angle = (M_PI/2.f) - acos(dotV);
+				if (dotV > 0)
+					angle = (M_PI / 2.f) + acos(dotV);
+
+				camera.setVelocity(glm::abs(cameraMovement)*cos(angle)); 
+
+				std::cout << "Dot: " << dotV << "\n";
+				std::cout << "Angle: " << angle * (180/M_PI) << "\n";
+
+				return false;
+			}
 		}
 
-		//return (glm::intersectLineTriangle(cam_pos, cam_end, vertices[1], vertices[2], vertices[0], intersection) ||
-		//	glm::intersectLineTriangle(cam_pos, cam_end, vertices[1], vertices[2], vertices[0], intersection));
 	}
 
 	return false;

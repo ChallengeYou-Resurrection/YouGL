@@ -47,6 +47,11 @@ void Camera::applyVelocity()
 	m_transform.position += m_velocity;
 }
 
+void Camera::setVelocity(const glm::vec3 & vel)
+{
+	m_velocity = vel;
+}
+
 const glm::vec3& Camera::getPositon() const
 {
     return m_transform.position;

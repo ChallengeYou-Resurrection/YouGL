@@ -1,7 +1,10 @@
 #pragma once
 
+#define _USE_MATH_DEFINES
 #include <vector>
 #include <glm/gtx/intersect.hpp>
+#include <math.h>
+
 #include "CYObjectProperties.h"
 #include "CYObjects.h"
 #include "WorldTextures.h"
