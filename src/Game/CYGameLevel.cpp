@@ -18,6 +18,9 @@ CYGameLevel::CYGameLevel()
 
 void CYGameLevel::loadFromOldFormat(int gameNumber)
 {
+	// Use a clock to determine the speed it takes to load a level
+	sf::Clock timer;
+
     auto gameCode = OldFormat::loadFromWebsite(gameNumber);
     if (!gameCode) {
         std::cout << "Unable to load level " << gameNumber << '\n';
@@ -35,23 +38,30 @@ void CYGameLevel::loadFromOldFormat(int gameNumber)
     for (int i = 0; i < m_header.floorCount; i++) {
         m_floorModels.emplace_back();
     }
+
+	std::cout << "Level #" << gameNumber << " loaded in " << timer.getElapsedTime().asSeconds() << "s\n" << std::endl;
 }
 
 void CYGameLevel::load(const std::string & fileName)
 {
-    std::ifstream inFile("cy_files/binary/" + fileName);
+	// Use a clock to determine the speed it takes to load a level
+	sf::Clock timer;
+
+    std::ifstream inFile("cy_files/binary/" + fileName, std::ios::binary);
     cereal::BinaryInputArchive archive(inFile);
 
-    archive(m_header, m_walls);
+    archive(*this);
 
     std::cout << "Game    " << m_header.gameName << '\n';
     std::cout << "Author: " << m_header.gameAuthor << '\n';
     std::cout << "Floors:  " << m_header.floorCount << '\n';
-    std::cout << "Walls: " << m_walls.size() << '\n\n';
+    std::cout << "Walls: " << m_walls.size() << "\n\n";
 
     for (int i = 0; i < m_header.floorCount; i++) {
         m_floorModels.emplace_back();
     }
+
+	std::cout << "Level " << fileName << " loaded in " << timer.getElapsedTime().asSeconds() << "s\n" << std::endl;
 }
 
 void CYGameLevel::saveLevel(const std::string & fileName)
