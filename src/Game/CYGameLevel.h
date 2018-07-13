@@ -4,6 +4,8 @@
 #include <vector>
 #include <glm/gtx/intersect.hpp>
 #include <math.h>
+#include <cereal/archives/binary.hpp>
+#include <cereal/types/vector.hpp>
 
 #include "CYObjectProperties.h"
 #include "CYObjects.h"
@@ -25,7 +27,16 @@ class CYGameLevel
         void createModels();
         void renderFloors(Renderer& renderer);
 
+		void saveLevel(const std::string& fileName);
+
 		bool cameraCollsion(Camera& camera);
+
+		// For saving/loading binary files
+		template <typename Archive>
+		void serialize(Archive& archive)
+		{
+			archive(m_header, m_walls);
+		}
 
     private:
         std::vector<Model> m_floorModels;

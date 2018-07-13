@@ -30,7 +30,7 @@ void CYGameLevel::loadFromOldFormat(int gameNumber)
     std::cout << "Game    " << m_header.gameName << '\n';
     std::cout << "Author: " << m_header.gameAuthor << '\n';
     std::cout << "Floors:  " << m_header.floorCount << '\n';
-    std::cout << "Walls: " << m_walls.size() << '\n';
+    std::cout << "Walls: " << m_walls.size() << '\n\n';
 
     for (int i = 0; i < m_header.floorCount; i++) {
         m_floorModels.emplace_back();
@@ -47,15 +47,33 @@ void CYGameLevel::load(const std::string & fileName)
     std::cout << "Game    " << m_header.gameName << '\n';
     std::cout << "Author: " << m_header.gameAuthor << '\n';
     std::cout << "Floors:  " << m_header.floorCount << '\n';
-    std::cout << "Walls: " << m_walls.size() << '\n';
+    std::cout << "Walls: " << m_walls.size() << '\n\n';
 
     for (int i = 0; i < m_header.floorCount; i++) {
         m_floorModels.emplace_back();
     }
 }
 
+void CYGameLevel::saveLevel(const std::string & fileName)
+{
+	try {
+		// Create output stream for cereal to use
+		std::ofstream os("cy_files/binary/" + fileName, std::ios::binary);
+		cereal::BinaryOutputArchive archive(os);
+
+		archive(*this);
+
+		std::cout << "Saved as " << fileName << "\n";
+	}
+	catch (cereal::Exception& e) {
+		std::cout << "Error saving: " << e.what() << std::endl;
+	}
+}
+
 void CYGameLevel::createModels()
 {
+	std::cout << "Constructing geometry\n";
+
     Mesh masterMesh;
     for (auto& wall : m_walls) {
 		std::shared_ptr<Wall> wall_ptr = std::make_shared<Wall>(wall);
