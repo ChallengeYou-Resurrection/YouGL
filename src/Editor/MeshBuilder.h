@@ -1,8 +1,8 @@
 #pragma once
 
 #include "../Renderer/Mesh.h"
-#include "WorldTextures.h"
-#include "CYObjects.h"
+#include "../Game/WorldTextures.h"
+#include "CYObjects\CYMiscObjects.h"
 
 struct Wall;
 

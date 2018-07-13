@@ -7,13 +7,12 @@
 #include <cereal/archives/binary.hpp>
 #include <cereal/types/vector.hpp>
 
-#include "CYObjectProperties.h"
-#include "CYObjects.h"
+#include "../Editor/CYObjects/CYObjectProperties.h"
+#include "../Editor/CYObjects/CYMiscObjects.h"
 #include "WorldTextures.h"
 #include "../Editor/GeoOctree.h"
 #include "../Renderer/Model.h"
 #include "../Renderer/Camera.h"
-#include "CYObjects.h"
 
 class Renderer;
 

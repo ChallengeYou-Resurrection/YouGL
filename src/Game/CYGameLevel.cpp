@@ -9,8 +9,8 @@
 #include "../Renderer/OpenGLErrorCheck.h"
 #include "../Renderer/Mesh.h"
 #include "../Renderer/Renderer.h"
-#include "OldFormat/OldFormatUtil.h"
-#include "MeshBuilder.h"
+#include "../Editor/OldFormat/OldFormatUtil.h"
+#include "../Editor/MeshBuilder.h"
 
 CYGameLevel::CYGameLevel()
 	: m_octree(512)

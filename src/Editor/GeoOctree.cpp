@@ -76,7 +76,7 @@ void GeoOctree::insertWall(std::shared_ptr<Wall> wall_ptr)
 }
 
 void GeoOctree::buildOctree() {
-	std::cout << "Current node has " << m_walls.size() << " walls\n";
+	//std::cout << "Current node has " << m_walls.size() << " walls\n";
 
 	if (!subdivide())
 		return;
@@ -103,8 +103,8 @@ void GeoOctree::buildOctree() {
 	}
 
 	// For debugging
-	for (auto& node : m_nodes)
-		std::cout << "Node: " << m_walls.size() << " - > " << node->getObjectSize() << "\n";
+	//for (auto& node : m_nodes)
+		//std::cout << "Node: " << m_walls.size() << " - > " << node->getObjectSize() << "\n";
 
 	// Recursive
 	for (auto& node : m_nodes)

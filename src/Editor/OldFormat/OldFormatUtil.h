@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "../Game/CYObjects.h"
+#include "../CYObjects/CYMiscObjects.h"
 
 namespace OldFormat
 {

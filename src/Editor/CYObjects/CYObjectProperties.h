@@ -1,6 +1,6 @@
 #pragma once
 
-#include "WorldTextures.h"
+#include "../../Game/WorldTextures.h"
 #include <SFML/Graphics.hpp>
 #include "../Util/Types.h"
 

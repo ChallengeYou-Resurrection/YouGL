@@ -5,8 +5,8 @@
 #include <iomanip>
 
 #include "../Maths/GlmCommon.h"
-#include "CYObjects.h"
-#include "WorldConstants.h"
+#include "CYObjects\CYMiscObjects.h"
+#include "../Game/WorldConstants.h"
 
 
 /////////////
