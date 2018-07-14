@@ -1,10 +1,10 @@
 #pragma once
 #include "glm/vec3.hpp"
 
-const float WORLD_SIZE = 30.0f;
-const float WORLD_HEIGHT = 12.f;
+const float WORLD_SIZE = 25.0f;
+const float WORLD_HEIGHT = 10.f;
 
-const float TEXTURE_SIZE = 5. / 4.f;
+const float TEXTURE_SIZE = 5. / 2.f;
 
 namespace Coordinate
 {

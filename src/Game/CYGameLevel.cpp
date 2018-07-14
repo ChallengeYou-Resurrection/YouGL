@@ -10,7 +10,7 @@
 #include "../Renderer/Mesh.h"
 #include "../Renderer/Renderer.h"
 #include "../Editor/OldFormat/OldFormatUtil.h"
-#include "../Editor/MeshBuilder.h"
+#include "../Editor/CYObjects/MeshBuilder.h"
 
 CYGameLevel::CYGameLevel()
 	: m_octree(512)

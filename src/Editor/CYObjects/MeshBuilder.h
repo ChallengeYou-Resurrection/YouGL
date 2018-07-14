@@ -2,7 +2,7 @@
 
 #include "../Renderer/Mesh.h"
 #include "../Game/WorldTextures.h"
-#include "CYObjects\CYMiscObjects.h"
+#include "CYMiscObjects.h"
 
 struct Wall;
 

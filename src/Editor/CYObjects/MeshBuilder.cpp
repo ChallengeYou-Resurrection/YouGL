@@ -5,7 +5,7 @@
 #include <iomanip>
 
 #include "../Maths/GlmCommon.h"
-#include "CYObjects\CYMiscObjects.h"
+#include "CYMiscObjects.h"
 #include "../Game/WorldConstants.h"
 
 
@@ -59,10 +59,10 @@ namespace MeshBuilder
 		float x_2d = length / WORLD_SIZE;
 		const sf::Vector2f tSize = wTex.getTextureScale(wall.frontMaterial.textureId);
 
-		mesh.texCoords.insert(mesh.texCoords.end(), { 0 * TEXTURE_SIZE * tSize.x, vertices[2].y *TEXTURE_SIZE * tSize.y, (float)wall.frontMaterial.textureId });
-		mesh.texCoords.insert(mesh.texCoords.end(), { x_2d		  *TEXTURE_SIZE * tSize.x, vertices[2].y *TEXTURE_SIZE * tSize.y, (float)wall.frontMaterial.textureId });
-		mesh.texCoords.insert(mesh.texCoords.end(), { x_2d		  *TEXTURE_SIZE * tSize.x, vertices[0].y *TEXTURE_SIZE * tSize.y, (float)wall.frontMaterial.textureId });
-		mesh.texCoords.insert(mesh.texCoords.end(), { 0 * TEXTURE_SIZE * tSize.x, vertices[0].y *TEXTURE_SIZE * tSize.y, (float)wall.frontMaterial.textureId });
+		mesh.texCoords.insert(mesh.texCoords.end(), { 0		* TEXTURE_SIZE * tSize.x, vertices[2].y *TEXTURE_SIZE * tSize.y, (float)wall.frontMaterial.textureId });
+		mesh.texCoords.insert(mesh.texCoords.end(), { x_2d	* TEXTURE_SIZE * tSize.x, vertices[2].y *TEXTURE_SIZE * tSize.y, (float)wall.frontMaterial.textureId });
+		mesh.texCoords.insert(mesh.texCoords.end(), { x_2d	* TEXTURE_SIZE * tSize.x, vertices[0].y *TEXTURE_SIZE * tSize.y, (float)wall.frontMaterial.textureId });
+		mesh.texCoords.insert(mesh.texCoords.end(), { 0		* TEXTURE_SIZE * tSize.x, vertices[0].y *TEXTURE_SIZE * tSize.y, (float)wall.frontMaterial.textureId });
 
 		mesh.indices = {
 			0, 1, 3, 1, 2, 3

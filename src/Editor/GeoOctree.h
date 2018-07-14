@@ -11,8 +11,8 @@
 //#include "EditorObject.h"
 #include "BoundingBox.h"
 #include "../Game/WorldConstants.h"
-#include "CYObjects\CYMiscObjects.h"
-#include "MeshBuilder.h"
+#include "CYObjects/CYMiscObjects.h"
+#include "CYObjects/MeshBuilder.h"
 
 /* GEO OCTREE
  * This isn't an exact Octree but one designed to suit how the geometry in
