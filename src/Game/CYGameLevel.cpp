@@ -27,13 +27,12 @@ void CYGameLevel::loadFromOldFormat(int gameNumber)
         std::cin.ignore();
     }
     auto gameCodeTable  = OldFormat::getObjectTable(*gameCode);
-    m_header            = OldFormat::extractHeader(*gameCode);
-    m_walls             = OldFormat::extractWalls(gameCodeTable.at("walls"));
+	m_header			= OldFormat::extractHeader(*gameCode);
+	m_geometry			= OldFormat::extractGeometry(gameCodeTable);
 
     std::cout << "Game    " << m_header.gameName << '\n';
     std::cout << "Author: " << m_header.gameAuthor << '\n';
-    std::cout << "Floors:  " << m_header.floorCount << '\n';
-    std::cout << "Walls: " << m_walls.size() << '\n\n';
+	std::cout << "Floors:  " << m_header.floorCount << "\n\n";
 
     for (int i = 0; i < m_header.floorCount; i++) {
         m_floorModels.emplace_back();
@@ -54,8 +53,7 @@ void CYGameLevel::load(const std::string & fileName)
 
     std::cout << "Game    " << m_header.gameName << '\n';
     std::cout << "Author: " << m_header.gameAuthor << '\n';
-    std::cout << "Floors:  " << m_header.floorCount << '\n';
-    std::cout << "Walls: " << m_walls.size() << "\n\n";
+	std::cout << "Floors:  " << m_header.floorCount << "\n\n";
 
     for (int i = 0; i < m_header.floorCount; i++) {
         m_floorModels.emplace_back();
@@ -85,11 +83,13 @@ void CYGameLevel::createModels()
 	std::cout << "Constructing geometry\n";
 
     Mesh masterMesh;
-    for (auto& wall : m_walls) {
-		std::shared_ptr<Wall> wall_ptr = std::make_shared<Wall>(wall);
-		m_octree.insertWall(wall_ptr);
+    for (auto& obj : m_geometry) {
+		//std::shared_ptr<Wall> wall_ptr = std::make_shared<Wall>(wall);
+		//m_octree.insertWall(wall_ptr);
 
-        auto mesh = MeshBuilder::createMesh(wall, m_textures);
+        //auto mesh = MeshBuilder::createMesh(wall, m_textures);
+		obj->createMesh(m_textures);
+		auto mesh = obj->getMesh();
         masterMesh.combineWith(mesh);
        // models.emplace_back(mesh);
     }
@@ -115,7 +115,7 @@ bool CYGameLevel::cameraCollsion(Camera & camera)
 	const glm::vec3 cam_pos = Coordinate::WorldToLevel(camera.getPositon());
 	const glm::vec3 cam_end = Coordinate::WorldToLevel(camera.getPositon() + (camera.getVelocity() * 1.2f));
 
-	// If there's no velocity, skip
+	/*// If there's no velocity, skip
 	if (glm::all(glm::equal(cam_pos, cam_end)))
 		return false;
 
@@ -188,7 +188,7 @@ bool CYGameLevel::cameraCollsion(Camera & camera)
 			}
 		}
 
-	}
+	}*/
 
 	return false;
 }

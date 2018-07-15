@@ -1,12 +1,11 @@
+#include "OldFormatExtractor.h"
 #include "OldFormatUtil.h"
 
 #include <regex>
 #include <iostream>
 
-namespace
+namespace RegexExtractor
 {
-    const Property::Colour WHITE = { 255, 255, 255 };
-
     Property::Colour stringToColour(const std::string& colourString)
     {
         size_t valueEnd;
@@ -48,10 +47,15 @@ namespace
         else {  //Texture
 			auto tex_id = WorldTextures::getWallTexture(std::stoi(match[firstIndex + 1].str()));
             material.textureId = tex_id;
-            material.colour = WHITE;
+            material.colour = RegexExtractor::WHITE;
         }
         return material;
     }
+
+	u8 extractIntAsByte(const std::smatch& match, int firstIndex)
+	{
+		return (u8)std::stoi(match[firstIndex].str());
+	}
 }
 
 namespace OldFormat
@@ -74,48 +78,46 @@ namespace OldFormat
         return header;
     }
 
-    std::vector<Wall> extractWalls(std::string& wallData)
+	std::vector<std::shared_ptr<CYGeneric>> extractGeometry(std::unordered_map<std::string, std::string>& table)
+	{
+		std::vector<std::shared_ptr<CYGeneric>> objs;
+		std::smatch matchGroups;
+
+		// Walls (convert to lambda)
+		std::string wallData = table["walls"];
+		std::regex wallRegex("\\[(-?\\d+), (-?\\d+), (-?\\d+), (-?\\d+), \\[(c[^\\)]*\\))?(\\d+)?, (c[^\\)]*\\))?(\\d+)?\\]?, (\\d+)\\],? ?(\\d+)?");
+		while (std::regex_search(wallData, matchGroups, wallRegex))
+		{
+			std::shared_ptr<CYWall> wall = std::make_shared<CYWall>(matchGroups);
+			objs.emplace_back(std::move(wall));
+
+			wallData = matchGroups.suffix();
+		}
+
+		return objs;
+	}
+
+    /*std::vector<Wall> extractWalls(std::string& wallData)
     {
-        std::vector<Wall> walls;
+        std::vector<CYWall> walls;
         std::smatch matchGroups;
         std::regex wallRegex("\\[(-?\\d+), (-?\\d+), (-?\\d+), (-?\\d+), \\[(c[^\\)]*\\))?(\\d+)?, (c[^\\)]*\\))?(\\d+)?\\]?, (\\d+)\\],? ?(\\d+)?");
         while (std::regex_search(wallData, matchGroups, wallRegex))
         {
-            Wall wall;
-            //Wall position
-            auto displacement = extractVector(matchGroups, 1);
-            wall.startPosition = extractVector(matchGroups, 3);
-            wall.endPosition = { displacement.x + wall.startPosition.x,
-                displacement.y + wall.startPosition.y };
-
-            //Texture
-            wall.frontMaterial = extractMaterial(matchGroups, 5);
-            wall.backMaterial = extractMaterial(matchGroups, 7);
-
-            //Height and floor
-            if (matchGroups[10] != "") {
-                wall.height = (u8)std::stoi(matchGroups[9].str());
-                wall.floor  = (u8)std::stoi(matchGroups[10].str());
-            }
-            else {//Old versions have no wall height
-                wall.height = 1;
-                wall.floor = (u8)std::stoi(matchGroups[9].str());
-            }
+			auto wall = CYWall(matchGroups);
             walls.push_back(wall);
             wallData = matchGroups.suffix();
-
-
         }
         return walls;
-    }
+    }*/
 
-    std::vector<Platform> extractPlatforms(std::string& platformData)
+    /*std::vector<Platform> extractPlatforms(std::string& platformData)
     {
         std::vector<Platform> platforms;
         //std::smatch matchGroups;
         //std::regex reg_plats("\\[\\[([\\d\\.]+), ([\\d\\.]+)\\], \\[(\\d+),? ?(c[^\\)]*\\))?(\\d+)?,? ?(\\d+)?\\], (\\d+)");
         return platforms;
-    }
+    }*/
 }
 
 /*

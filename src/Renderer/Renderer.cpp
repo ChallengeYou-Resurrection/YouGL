@@ -61,12 +61,12 @@ void Renderer::renderScene(const Camera& camera)
     }
 
     //Draw SFML
-    prepareSfmlDraw();
+    /*prepareSfmlDraw();
     for (auto drawable : m_sfDraws) {
         m_window.draw(*drawable);
     }
 
-    endSfmlDraw();
+    endSfmlDraw();*/
     //Clear the draw buffers
     m_sfDraws.clear();
     m_renderData.clear();
@@ -123,6 +123,9 @@ void Renderer::initGL()
     //Additional OpenGL setup things
     glViewport(0, 0, m_window.getSize().x, m_window.getSize().y);
     glEnable(GL_DEPTH_TEST);
+
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
 }
 
 void Renderer::prepareSfmlDraw()

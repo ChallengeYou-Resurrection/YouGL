@@ -14,6 +14,7 @@ namespace Benchmark
 	constexpr int
 		TheMouseReturns = 158209,
 		WillyWonka = 127388,
+		CYHQ = 51450,
 		GrandTheftAuto = 36321,
 		PenguinPixel = 145505,
 		XMasCabin = 155913,
@@ -23,8 +24,8 @@ namespace Benchmark
 StatePlaying::StatePlaying(Game& game, Renderer& renderer)
 :   StateBase   (game)
 {
-    //m_level.loadFromOldFormat(Benchmark::TheMouseReturns);
-    m_level.load("tmr.bcy");
+    m_level.loadFromOldFormat(Benchmark::CYHQ);
+    //m_level.load("tmr.bcy");
 
 	//m_level.saveLevel("tmr.bcy");
 

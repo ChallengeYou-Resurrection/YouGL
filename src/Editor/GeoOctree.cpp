@@ -85,7 +85,7 @@ void GeoOctree::buildOctree() {
 	for (auto& wall : m_walls)
 	{
 		// Get AABB of the wall
-		auto geometricHeight = MeshBuilder::getWallGeometricHeight(*wall);
+		/*auto geometricHeight = MeshBuilder::getWallGeometricHeight(*wall);
 
 		glm::vec3 min = glm::vec3(wall->startPosition.x - 0.01f, 
 			((float)wall->floor + geometricHeight.bottom) * WORLD_HEIGHT, wall->startPosition.y - 0.01f);
@@ -99,7 +99,7 @@ void GeoOctree::buildOctree() {
 			{
 				node->insertWall(wall);
 			}
-		}
+		}*/
 	}
 
 	// For debugging

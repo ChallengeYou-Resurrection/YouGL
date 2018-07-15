@@ -13,7 +13,7 @@ namespace MeshBuilder {
 		float top;
 	};
 
-	Mesh createMesh(const Wall& wall, const WorldTextures& wTex);
+	//Mesh createMesh(const Wall& wall, const WorldTextures& wTex);
 
-	WallHeight getWallGeometricHeight(const Wall& wall);
+	WallHeight getWallGeometricHeight(const u8 zIndex);
 }

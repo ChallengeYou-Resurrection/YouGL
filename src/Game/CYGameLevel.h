@@ -8,7 +8,7 @@
 #include <cereal/types/vector.hpp>
 
 #include "../Editor/CYObjects/CYObjectProperties.h"
-#include "../Editor/CYObjects/CYMiscObjects.h"
+#include "../Editor/CYObjects/CYGeneric.h"
 #include "WorldTextures.h"
 #include "../Editor/GeoOctree.h"
 #include "../Renderer/Model.h"
@@ -34,7 +34,7 @@ class CYGameLevel
 		template <typename Archive>
 		void serialize(Archive& archive)
 		{
-			archive(m_header, m_walls);
+			archive(m_header); // , m_walls);
 		}
 
     private:
@@ -44,5 +44,5 @@ class CYGameLevel
         LevelHeader m_header;
 
 		WorldTextures m_textures;
-        std::vector<Wall> m_walls;
+		std::vector<std::shared_ptr<CYGeneric>> m_geometry;
 };

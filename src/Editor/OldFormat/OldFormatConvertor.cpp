@@ -17,7 +17,7 @@ namespace OldFormat {
         {
             auto table = getObjectTable(dataBuffer);
             auto header = extractHeader(dataBuffer);
-            auto walls = extractWalls(table["walls"]);
+			auto walls = std::vector<Wall>();//extractWalls(table["walls"]);
 
             std::ofstream outFile(newFilePath, std::ios::binary);
             cereal::BinaryOutputArchive archive(outFile);

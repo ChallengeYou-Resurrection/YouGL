@@ -31,5 +31,5 @@ glm::mat4 makeViewMatrix(const Camera& camera)
 
 glm::mat4 makeProjectionMatrix()
 {;
-    return glm::perspective(glm::radians(90.0f), 1280.0f / 720.0f, 0.01f, 256.0f);
+    return glm::perspective(glm::radians(50.0f), 1280.0f / 720.0f, 0.01f, 256.0f);
 }
