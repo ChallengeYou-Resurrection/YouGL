@@ -42,11 +42,12 @@ void CYWall::createMesh(const WorldTextures& wTex)
 
 	glm::vec3 normal = glm::cross(vertices[2] - vertices[1], vertices[3] - vertices[1]);
 
+	// FRONT FACE
 	//Vertices
-	mesh.vertices.insert(mesh.vertices.end(), { vertices[1].x, vertices[1].y, vertices[1].z });
-	mesh.vertices.insert(mesh.vertices.end(), { vertices[2].x, vertices[2].y, vertices[2].z });
-	mesh.vertices.insert(mesh.vertices.end(), { vertices[3].x, vertices[3].y, vertices[3].z });
 	mesh.vertices.insert(mesh.vertices.end(), { vertices[0].x, vertices[0].y, vertices[0].z });
+	mesh.vertices.insert(mesh.vertices.end(), { vertices[3].x, vertices[3].y, vertices[3].z });
+	mesh.vertices.insert(mesh.vertices.end(), { vertices[2].x, vertices[2].y, vertices[2].z });
+	mesh.vertices.insert(mesh.vertices.end(), { vertices[1].x, vertices[1].y, vertices[1].z });
 
 	//Normals
 	for (int i = 0; i < 4; i++) {
@@ -65,15 +66,45 @@ void CYWall::createMesh(const WorldTextures& wTex)
 	//Textre Coords
 	float length = sqrt(pow(wallFinish.y - wallOrigin.y, 2) + pow(wallFinish.x - wallOrigin.x, 2));
 	float x_2d = length / WORLD_SIZE;
-	const sf::Vector2f tSize = wTex.getTextureScale(frontMaterial.textureId);
+	sf::Vector2f tSize = wTex.getTextureScale(frontMaterial.textureId);
 
 	mesh.texCoords.insert(mesh.texCoords.end(), { 0		* TEXTURE_SIZE * tSize.x, vertices[2].y *TEXTURE_SIZE * tSize.y, (float)frontMaterial.textureId });
 	mesh.texCoords.insert(mesh.texCoords.end(), { x_2d	* TEXTURE_SIZE * tSize.x, vertices[2].y *TEXTURE_SIZE * tSize.y, (float)frontMaterial.textureId });
 	mesh.texCoords.insert(mesh.texCoords.end(), { x_2d	* TEXTURE_SIZE * tSize.x, vertices[0].y *TEXTURE_SIZE * tSize.y, (float)frontMaterial.textureId });
 	mesh.texCoords.insert(mesh.texCoords.end(), { 0		* TEXTURE_SIZE * tSize.x, vertices[0].y *TEXTURE_SIZE * tSize.y, (float)frontMaterial.textureId });
 
+
+	// BACK FACE
+	//Vertices
+	mesh.vertices.insert(mesh.vertices.end(), { vertices[1].x, vertices[1].y, vertices[1].z });
+	mesh.vertices.insert(mesh.vertices.end(), { vertices[2].x, vertices[2].y, vertices[2].z });
+	mesh.vertices.insert(mesh.vertices.end(), { vertices[3].x, vertices[3].y, vertices[3].z });
+	mesh.vertices.insert(mesh.vertices.end(), { vertices[0].x, vertices[0].y, vertices[0].z });
+
+	//Normals
+	normal = -normal;
+	for (int i = 0; i < 4; i++) {
+		mesh.normals.insert(mesh.normals.end(), { normal.x, normal.y, normal.z });
+	}
+
+	//Colours
+	for (int i = 0; i < 4; i++) {
+		mesh.colour.insert(mesh.colour.end(), {
+			(float)backMaterial.colour.r / 255.0f,
+			(float)backMaterial.colour.g / 255.0f,
+			(float)backMaterial.colour.b / 255.0f
+			});
+	}
+
+	//Texutre Coords
+	tSize = wTex.getTextureScale(backMaterial.textureId);
+	mesh.texCoords.insert(mesh.texCoords.end(), { 0		* TEXTURE_SIZE * tSize.x, vertices[2].y *TEXTURE_SIZE * tSize.y, (float)backMaterial.textureId });
+	mesh.texCoords.insert(mesh.texCoords.end(), { x_2d	* TEXTURE_SIZE * tSize.x, vertices[2].y *TEXTURE_SIZE * tSize.y, (float)backMaterial.textureId });
+	mesh.texCoords.insert(mesh.texCoords.end(), { x_2d	* TEXTURE_SIZE * tSize.x, vertices[0].y *TEXTURE_SIZE * tSize.y, (float)backMaterial.textureId });
+	mesh.texCoords.insert(mesh.texCoords.end(), { 0		* TEXTURE_SIZE * tSize.x, vertices[0].y *TEXTURE_SIZE * tSize.y, (float)backMaterial.textureId });
+
 	mesh.indices = {
-		0, 1, 3, 1, 2, 3
+		0, 1, 3, 1, 2, 3, 4, 5, 7, 5, 6, 7
 	};
 
 	this->geometryMesh = std::move(mesh);
