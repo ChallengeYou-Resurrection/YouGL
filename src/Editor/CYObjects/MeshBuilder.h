@@ -1,8 +1,16 @@
 #pragma once
 
-#include "../Renderer/Mesh.h"
-#include "../Game/WorldTextures.h"
+#include <array>
+#include <iostream>
+#include <iomanip>
+#include <algorithm>
+
+#include "../Maths/GlmCommon.h"
 #include "CYMiscObjects.h"
+#include "../Game/WorldConstants.h"
+#include "../Renderer/Mesh.h"
+#include "CYMiscObjects.h"
+#include "../Game/WorldTextures.h"
 
 struct Wall;
 
@@ -13,7 +21,8 @@ namespace MeshBuilder {
 		float top;
 	};
 
-	//Mesh createMesh(const Wall& wall, const WorldTextures& wTex);
+	void addQuadToMesh(Mesh& mesh, const std::array<glm::vec3, 4>& vertices, 
+		const Property::Material& mat, const WorldTextures& wTex);
 
 	WallHeight getWallGeometricHeight(const u8 zIndex);
 
