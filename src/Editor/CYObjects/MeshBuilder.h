@@ -25,6 +25,8 @@ namespace MeshBuilder {
 		const Property::Material& mat);
 
 	WallHeight getWallGeometricHeight(const u8 zIndex);
+	void applyWallTextureCoords(Mesh& mesh, const std::array<glm::vec3, 4>& vertices,
+		float wallLength, const Property::Material& mat, const WorldTextures& wTex);
 
 	float getPlatGeometricHeight(const u8 zIndex);
 	short getPlatGeometricSize(const u8 size);

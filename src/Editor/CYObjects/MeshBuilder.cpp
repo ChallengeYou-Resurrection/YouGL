@@ -91,10 +91,22 @@ namespace MeshBuilder
 	{
 		sf::Vector2f tSize = wTex.getTextureScale(mat.textureId);
 
-		mesh.texCoords.insert(mesh.texCoords.end(), { vertices[0].x * TEXTURE_SIZE * tSize.x, vertices[0].z *TEXTURE_SIZE * tSize.y, (float)mat.textureId });
-		mesh.texCoords.insert(mesh.texCoords.end(), { vertices[3].x	* TEXTURE_SIZE * tSize.x, vertices[3].z *TEXTURE_SIZE * tSize.y, (float)mat.textureId });
-		mesh.texCoords.insert(mesh.texCoords.end(), { vertices[2].x	* TEXTURE_SIZE * tSize.x, vertices[2].z *TEXTURE_SIZE * tSize.y, (float)mat.textureId });
-		mesh.texCoords.insert(mesh.texCoords.end(), { vertices[1].x * TEXTURE_SIZE * tSize.x, vertices[1].z *TEXTURE_SIZE * tSize.y, (float)mat.textureId });
+		mesh.texCoords.insert(mesh.texCoords.end(), { vertices[0].x * TEXTURE_SIZE * tSize.x, vertices[0].z * TEXTURE_SIZE * tSize.y, (float)mat.textureId });
+		mesh.texCoords.insert(mesh.texCoords.end(), { vertices[3].x	* TEXTURE_SIZE * tSize.x, vertices[3].z * TEXTURE_SIZE * tSize.y, (float)mat.textureId });
+		mesh.texCoords.insert(mesh.texCoords.end(), { vertices[2].x	* TEXTURE_SIZE * tSize.x, vertices[2].z * TEXTURE_SIZE * tSize.y, (float)mat.textureId });
+		mesh.texCoords.insert(mesh.texCoords.end(), { vertices[1].x * TEXTURE_SIZE * tSize.x, vertices[1].z * TEXTURE_SIZE * tSize.y, (float)mat.textureId });
 
+	}
+
+	void applyWallTextureCoords(Mesh& mesh, const std::array<glm::vec3, 4>& vertices,
+		float wallLength, const Property::Material& mat, const WorldTextures& wTex)
+	{
+		float x_2d = wallLength / WORLD_SIZE;
+		sf::Vector2f tSize = wTex.getTextureScale(mat.textureId);
+
+		mesh.texCoords.insert(mesh.texCoords.end(), { 0		* TEXTURE_SIZE * tSize.x, vertices[2].y * TEXTURE_SIZE * tSize.y, (float)mat.textureId });
+		mesh.texCoords.insert(mesh.texCoords.end(), { x_2d	* TEXTURE_SIZE * tSize.x, vertices[2].y * TEXTURE_SIZE * tSize.y, (float)mat.textureId });
+		mesh.texCoords.insert(mesh.texCoords.end(), { x_2d	* TEXTURE_SIZE * tSize.x, vertices[0].y * TEXTURE_SIZE * tSize.y, (float)mat.textureId });
+		mesh.texCoords.insert(mesh.texCoords.end(), { 0		* TEXTURE_SIZE * tSize.x, vertices[0].y * TEXTURE_SIZE * tSize.y, (float)mat.textureId });
 	}
 }
