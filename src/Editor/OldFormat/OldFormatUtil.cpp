@@ -51,7 +51,7 @@ namespace OldFormat
 		// Setup request
 		sf::Http::Request request;
 		request.setMethod(sf::Http::Request::Get);
-		std::string uri = "maze.php";// +std::to_string(gameNumber);
+		std::string uri = "maze.php?game_number=" +std::to_string(gameNumber);
 		request.setUri(uri);
 		std::cout << "Sending request to game number #" << gameNumber << '\n';
 
