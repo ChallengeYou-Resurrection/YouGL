@@ -16,4 +16,7 @@ namespace MeshBuilder {
 	//Mesh createMesh(const Wall& wall, const WorldTextures& wTex);
 
 	WallHeight getWallGeometricHeight(const u8 zIndex);
+
+	float getPlatGeometricHeight(const u8 zIndex);
+	short getPlatGeometricSize(const u8 size);
 }

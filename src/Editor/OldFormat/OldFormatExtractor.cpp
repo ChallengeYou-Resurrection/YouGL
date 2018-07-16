@@ -94,6 +94,17 @@ namespace OldFormat
 			wallData = matchGroups.suffix();
 		}
 
+		// Plats (convert to lambda)
+		std::string platData = table["Plat"];
+		std::regex platRegex("\\[\\[([\\d\\.]+), ([\\d\\.]+)\\], \\[(\\d+),? ?(c[^\\)]*\\))?(\\d+)?,? ?(\\d+)?\\], (\\d+)");
+		while (std::regex_search(platData, matchGroups, platRegex))
+		{
+			std::shared_ptr<CYPlat> plat = std::make_shared<CYPlat>(matchGroups);
+			objs.emplace_back(std::move(plat));
+
+			platData = matchGroups.suffix();
+		}
+
 		return objs;
 	}
 

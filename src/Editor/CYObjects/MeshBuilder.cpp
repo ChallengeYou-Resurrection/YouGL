@@ -37,4 +37,22 @@ namespace MeshBuilder
 			bottomHeight, topHeight
 		};
 	}
+
+	float getPlatGeometricHeight(const u8 zIndex)
+	{
+		// Plat is offseted by a small amount so it doesn't z-fight with the terrain
+		return ((zIndex - 1.f) / 4) + 0.001f;
+	}
+
+	short getPlatGeometricSize(const u8 size)
+	{
+		switch (size)
+		{
+		case 1:	 return 10; 
+		case 2:  return 20; 
+		case 3:  return 40; 
+		case 4:  return 80; 
+		default: return size * 10;
+		}
+	}
 }

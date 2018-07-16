@@ -2,6 +2,7 @@
 
 #include "OldFormatUtil.h"
 #include "../CYObjects/CYWall.h"
+#include "../CYObjects/CYPlat.h"
 
 #include <regex>
 #include <iostream>
