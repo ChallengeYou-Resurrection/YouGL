@@ -11,7 +11,9 @@ public:
 	CYPlat(std::smatch& matchGroups);
 
 	virtual void createMesh(const WorldTextures& wTex);
+
 	virtual Mesh& getMesh();
+	virtual MinBoundingBox& getAABB();
 
 	// For serializing
 	template <typename Archive>

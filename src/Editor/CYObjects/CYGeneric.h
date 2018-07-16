@@ -30,18 +30,20 @@ public:
 
 	// Mesh Generation
 	virtual void createMesh(const WorldTextures& wTex) = 0;
+
 	virtual Mesh& getMesh() = 0;
+	virtual MinBoundingBox& getAABB() = 0;
 
 protected:
 	CYObject type = CYObject::CYGeneric;
 
 	// Used to create models 
-	Mesh geometryMesh;
+	Mesh m_geometryMesh;
 
 	// Player collision
-	std::vector<CPolygon> collisionMesh;
+	std::vector<CPolygon> m_collisionMesh;
 
 	// For octree placement
-	// BoundingBox objectAABB;
+	MinBoundingBox m_objectAABB;
 };
 

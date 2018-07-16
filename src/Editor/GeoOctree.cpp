@@ -24,7 +24,7 @@ bool GeoOctree::subdivide()
 		return false;
 
 	// Check if theres enough items for subdivision to be worth it
-	if (m_walls.size() < MAX_ITEMS_PER_OCTREE)
+	if (m_objects.size() < MAX_ITEMS_PER_OCTREE)
 		return false;
 
 	// Check if we can subdivide further (no decimal)
@@ -64,15 +64,15 @@ bool GeoOctree::subdivide()
 	return true;
 }
 
-bool GeoOctree::checkIfWallInsideAABB(const Wall& wall, const glm::vec3& min,
-	const glm::vec3& max) const
+bool GeoOctree::checkIfObjectInsideAABB(const std::shared_ptr<CYGeneric> obj, 
+	const glm::vec3& min, const glm::vec3& max) const
 {
 	return m_boundingBox->checkAABB(min, max);
 }
 
-void GeoOctree::insertWall(std::shared_ptr<Wall> wall_ptr)
+void GeoOctree::insertGeometry(std::shared_ptr<CYGeneric> obj_ptr)
 {
-	m_walls.push_back(wall_ptr);
+	m_objects.push_back(obj_ptr);
 }
 
 void GeoOctree::buildOctree() {
@@ -82,9 +82,11 @@ void GeoOctree::buildOctree() {
 		return;
 
 	// Check if each wall can fit into each node
-	for (auto& wall : m_walls)
+	for (auto& obj : m_objects)
 	{
-		// Get AABB of the wall
+		// Get AABB of the object
+		auto objAABB = obj->getAABB();
+
 		/*auto geometricHeight = MeshBuilder::getWallGeometricHeight(*wall);
 
 		glm::vec3 min = glm::vec3(wall->startPosition.x - 0.01f, 
@@ -92,14 +94,15 @@ void GeoOctree::buildOctree() {
 
 		glm::vec3 max = glm::vec3(wall->endPosition.x + 0.01f, 
 			((float)wall->floor + geometricHeight.top) * WORLD_HEIGHT, wall->endPosition.y + 0.01f);
+			*/
 
 		for (auto& node : m_nodes)
 		{
-			if (node->checkIfWallInsideAABB(*wall, min, max))
+			if (node->checkIfObjectInsideAABB(obj, objAABB.m_vecMin, objAABB.m_vecMax))
 			{
-				node->insertWall(wall);
+				node->insertGeometry(obj);
 			}
-		}*/
+		}
 	}
 
 	// For debugging
@@ -110,7 +113,7 @@ void GeoOctree::buildOctree() {
 	for (auto& node : m_nodes)
 		node->buildOctree();
 
-	//m_walls.clear();
+	m_objects.clear();
 }
 
 void GeoOctree::cleanOctree() {
@@ -129,12 +132,12 @@ void GeoOctree::drawOctree(Renderer & renderer) const
 
 int GeoOctree::getObjectSize() const
 {
-	return m_walls.size();
+	return m_objects.size();
 }
 
 std::vector<std::shared_ptr<Wall>> GeoOctree::getWallVectorNearPoint(const glm::vec3& point)
 {
-	if (!subdivided)
+	/*if (!subdivided)
 		return m_walls;
 
 	for (auto& node : m_nodes)
@@ -143,7 +146,7 @@ std::vector<std::shared_ptr<Wall>> GeoOctree::getWallVectorNearPoint(const glm::
 
 	// fail safe (Caused by point outside of the octree)
 	//std::cout << "Warning: Point is outside the octree\n";
-	return std::vector<std::shared_ptr<Wall>>();
+	return std::vector<std::shared_ptr<Wall>>();*/
 }
 
 bool GeoOctree::checkPointInOctree(const glm::vec3 & point) const

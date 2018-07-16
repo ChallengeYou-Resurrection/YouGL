@@ -50,10 +50,23 @@ void CYWall::createMesh(const WorldTextures& wTex)
 	MeshBuilder::addQuadToMesh(mesh, bVertices, backMaterial);
 	MeshBuilder::applyWallTextureCoords(mesh, bVertices, length, backMaterial, wTex);
 
-	this->geometryMesh = std::move(mesh);
+	glm::vec3 min = glm::vec3(startPosition.x - 0.01f,
+		((float)floor + geometricHeight.bottom) * WORLD_HEIGHT, startPosition.y - 0.01f);
+
+	glm::vec3 max = glm::vec3(endPosition.x + 0.01f,
+		((float)floor + geometricHeight.top) * WORLD_HEIGHT, endPosition.y + 0.01f);
+
+	m_objectAABB = { min, max };
+
+	m_geometryMesh = std::move(mesh);
 }
 
 Mesh& CYWall::getMesh()
 {
-	return geometryMesh;
+	return m_geometryMesh;
 };
+
+MinBoundingBox& CYWall::getAABB()
+{
+	return m_objectAABB;
+}

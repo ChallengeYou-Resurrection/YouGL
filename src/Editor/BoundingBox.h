@@ -12,6 +12,19 @@ const float RENDER_BOUNDING_BOX = true;
 // For AABB collision
 // Used for determining what subdivision an object should go to
 
+// Very basic bounding box, contains no functions
+struct MinBoundingBox {
+	glm::vec3 m_vecMin;
+	glm::vec3 m_vecMax;
+
+	// Creation
+	MinBoundingBox() {};
+	MinBoundingBox(glm::vec3 min, glm::vec3 max)
+		: m_vecMin(min)
+		, m_vecMax(max)
+	{}
+};
+
 class BoundingBox {
 public :
 	BoundingBox(glm::vec3 min, glm::vec3 max);

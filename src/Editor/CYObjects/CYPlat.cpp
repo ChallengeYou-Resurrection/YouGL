@@ -51,10 +51,18 @@ void CYPlat::createMesh(const WorldTextures& wTex)
 	MeshBuilder::addQuadToMesh(mesh, bVertices, material);
 	MeshBuilder::applyPlatTextureCoords(mesh, bVertices, material, wTex);
 
-	geometryMesh = std::move(mesh);
+	m_geometryMesh = std::move(mesh);
+
+	// Create AABB for octree placement
+	m_objectAABB = { {platMin.x, pHeight, platMin.y }, { platMax.x, pHeight, platMax.y } };
 }
 
 Mesh& CYPlat::getMesh()
 {
-	return geometryMesh;
+	return m_geometryMesh;
 };
+
+MinBoundingBox& CYPlat::getAABB()
+{
+	return m_objectAABB;
+}

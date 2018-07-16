@@ -11,7 +11,7 @@
 //#include "EditorObject.h"
 #include "BoundingBox.h"
 #include "../Game/WorldConstants.h"
-#include "CYObjects/CYMiscObjects.h"
+#include "CYObjects/CYGeneric.h"
 #include "CYObjects/MeshBuilder.h"
 
 /* GEO OCTREE
@@ -25,7 +25,7 @@
  * difference between it and a naive collision detection.
 */
 
-const int MAX_ITEMS_PER_OCTREE = 128;
+const int MAX_ITEMS_PER_OCTREE = 48;
 const int MAX_OCTREE_DEPTH     = 8;
 
 class GeoOctree
@@ -37,7 +37,7 @@ class GeoOctree
 
         // Add geometry to octree
         //void insertGeometry(std::unique_ptr<EditorObject> obj);
-		void insertWall(std::shared_ptr<Wall> wall_ptr);
+		void insertGeometry(std::shared_ptr<CYGeneric> obj_ptr);
 
         // Build Octree
         // To be called after all objects have been inserted
@@ -61,10 +61,10 @@ class GeoOctree
 		glm::vec3 m_origin;
 
         //std::vector<std::shared_ptr<EditorObject>> m_objects;
-		std::vector<std::shared_ptr<Wall>> m_walls;
+		std::vector<std::shared_ptr<CYGeneric>> m_objects;
 
-		bool checkIfWallInsideAABB(const Wall& wall, const glm::vec3& min,
-			const glm::vec3& max) const;
+		bool checkIfObjectInsideAABB(const std::shared_ptr<CYGeneric> obj,
+			const glm::vec3& min, const glm::vec3& max) const;
 
 		bool subdivide();
         bool subdivided = false;

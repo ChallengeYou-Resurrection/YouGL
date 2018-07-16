@@ -85,7 +85,7 @@ void CYGameLevel::createModels()
     Mesh masterMesh;
     for (auto& obj : m_geometry) {
 		//std::shared_ptr<Wall> wall_ptr = std::make_shared<Wall>(wall);
-		//m_octree.insertWall(wall_ptr);
+		m_octree.insertGeometry(obj);
 
         //auto mesh = MeshBuilder::createMesh(wall, m_textures);
 		obj->createMesh(m_textures);
