@@ -22,10 +22,12 @@ namespace MeshBuilder {
 	};
 
 	void addQuadToMesh(Mesh& mesh, const std::array<glm::vec3, 4>& vertices, 
-		const Property::Material& mat, const WorldTextures& wTex);
+		const Property::Material& mat);
 
 	WallHeight getWallGeometricHeight(const u8 zIndex);
 
 	float getPlatGeometricHeight(const u8 zIndex);
 	short getPlatGeometricSize(const u8 size);
+	void applyPlatTextureCoords(Mesh& mesh, const std::array<glm::vec3, 4>& vertices,
+		const Property::Material& mat, const WorldTextures& wTex);
 }

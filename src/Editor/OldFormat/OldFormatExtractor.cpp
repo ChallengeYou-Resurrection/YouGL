@@ -36,7 +36,7 @@ namespace RegexExtractor
         return vector;
     }
 
-    Property::Material extractMaterial(const std::smatch& match, int firstIndex)
+    Property::Material extractMaterial(const std::smatch& match, int firstIndex, TextureType type)
     {
         Property::Material material;
 
@@ -45,7 +45,12 @@ namespace RegexExtractor
             material.colour = stringToColour(match[firstIndex].str());
         }
         else {  //Texture
-			auto tex_id = WorldTextures::getWallTexture(std::stoi(match[firstIndex + 1].str()));
+			TextureID tex_id;
+			if (type == TextureType::WallTex)
+				tex_id = WorldTextures::getWallTexture(std::stoi(match[firstIndex + 1].str()));
+			else 
+				tex_id = WorldTextures::getPlatTexture(std::stoi(match[firstIndex + 1].str()));
+
             material.textureId = tex_id;
             material.colour = RegexExtractor::WHITE;
         }

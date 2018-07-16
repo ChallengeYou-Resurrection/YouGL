@@ -123,6 +123,28 @@ TextureID WorldTextures::getWallTexture(int id)
 	}
 }
 
+TextureID WorldTextures::getPlatTexture(int id)
+{
+	switch (id) // WALLS
+	{
+	case 1: return  TextureID::Grass;
+	case 2: return  TextureID::Stucco;
+	case 3: return  TextureID::Brick;
+	case 4: return  TextureID::Stone;
+	case 5: return  TextureID::Wood;
+	case 6: return  TextureID::Happy;
+	case 7: return  TextureID::Egypt;
+	case 8: return  TextureID::Glass;
+	case 9: return  TextureID::Bark;
+	case 10: return TextureID::Scifi;
+	case 11: return TextureID::Tile;
+	case 13: return TextureID::Rock;
+	case 14: return TextureID::Parquet;
+
+	default: return TextureID::Color;
+	}
+}
+
 void WorldTextures::bindTextureArray()
 {
 	glBindTexture(GL_TEXTURE_2D_ARRAY, this->textureArrayID);

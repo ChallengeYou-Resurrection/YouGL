@@ -42,6 +42,7 @@ class WorldTextures
 	    GLuint getTexID();
 
 	    static TextureID getWallTexture(int id);
+		static TextureID getPlatTexture(int id);
 
 	    const sf::Vector2f& getTextureScale(TextureID tex) const;
 

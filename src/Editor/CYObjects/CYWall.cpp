@@ -8,8 +8,8 @@ CYWall::CYWall(std::smatch & matchGroups)
 		displacement.y + startPosition.y };
 
 	//Texture
-	frontMaterial = RegexExtractor::extractMaterial(matchGroups, 5);
-	backMaterial = RegexExtractor::extractMaterial(matchGroups, 7);
+	frontMaterial = RegexExtractor::extractMaterial(matchGroups, 5, RegexExtractor::TextureType::WallTex);
+	backMaterial = RegexExtractor::extractMaterial(matchGroups, 7, RegexExtractor::TextureType::WallTex);
 
 	//Height and floor
 	if (matchGroups[10] != "") {

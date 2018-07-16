@@ -52,7 +52,7 @@ namespace MeshBuilder
 
 	// Mesh Building
 	void addQuadToMesh(Mesh& mesh, const std::array<glm::vec3, 4>& vertices, 
-		const Property::Material& mat, const WorldTextures& wTex)
+		const Property::Material& mat)
 	{
 		// Create normal
 		glm::vec3 normal = glm::cross(vertices[2] - vertices[1], vertices[3] - vertices[1]);
@@ -84,5 +84,17 @@ namespace MeshBuilder
 		
 		mesh.indices.insert(mesh.indices.end(), {max_index + 1, max_index + 2, max_index + 4, 
 			max_index + 2, max_index + 3, max_index + 4 });
+	}
+
+	void applyPlatTextureCoords(Mesh& mesh, const std::array<glm::vec3, 4>& vertices, 
+		const Property::Material& mat, const WorldTextures& wTex)
+	{
+		sf::Vector2f tSize = wTex.getTextureScale(mat.textureId);
+
+		mesh.texCoords.insert(mesh.texCoords.end(), { vertices[0].x * TEXTURE_SIZE * tSize.x, vertices[0].z *TEXTURE_SIZE * tSize.y, (float)mat.textureId });
+		mesh.texCoords.insert(mesh.texCoords.end(), { vertices[3].x	* TEXTURE_SIZE * tSize.x, vertices[3].z *TEXTURE_SIZE * tSize.y, (float)mat.textureId });
+		mesh.texCoords.insert(mesh.texCoords.end(), { vertices[2].x	* TEXTURE_SIZE * tSize.x, vertices[2].z *TEXTURE_SIZE * tSize.y, (float)mat.textureId });
+		mesh.texCoords.insert(mesh.texCoords.end(), { vertices[1].x * TEXTURE_SIZE * tSize.x, vertices[1].z *TEXTURE_SIZE * tSize.y, (float)mat.textureId });
+
 	}
 }
