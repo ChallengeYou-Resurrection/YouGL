@@ -23,5 +23,6 @@ public:
 
 private:
 	struct nk_context *ctx;
+	struct nk_colorf bg;
 };
 

@@ -17,7 +17,7 @@ StatePlaying::StatePlaying(Game& game, Renderer& renderer)
 :   StateBase   (game)
 ,	m_gui(renderer.getWindow())
 {
-    m_level.loadFromOldFormat(88080);
+    m_level.loadFromOldFormat(76953);
     //m_level.load("tmr.bcy");
 
 	//m_level.saveLevel("tmr.bcy");
