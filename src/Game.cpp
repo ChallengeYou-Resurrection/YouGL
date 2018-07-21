@@ -1,13 +1,5 @@
 #include "Game.h"
 
-
-
-#include <glad.h>
-#include <iostream>
-
-#include "States/StatePlaying.h"
-#include "Input/KeyboardController.h"
-
 Game::Game()
 {
     m_controller = std::make_unique<KeyboardController>(m_renderer.m_window);
@@ -37,6 +29,7 @@ void Game::run()
 
         //Real time update
         state.handleInput(*m_controller);
+		handleEvent();
         state.update(elapsed);
         counter.update();
 
@@ -53,8 +46,8 @@ void Game::run()
         counter.draw(m_renderer);
      
 
-        //Handle window events
-        handleEvent();
+		//Handle GUI/Window events
+		
         tryPop();
     }
 }
@@ -83,10 +76,9 @@ void Game::tryPop()
 void Game::handleEvent()
 {
     sf::Event event;
-
+	getCurrentState().preWindowEventPoll();
 
     while (m_renderer.pollEvent(event)) {
-        getCurrentState().handleEvent(event);
         switch (event.type) {
             case sf::Event::Closed:
                 m_renderer.closeWindow();
@@ -96,7 +88,10 @@ void Game::handleEvent()
                 break;
 
         }
+
+		getCurrentState().handleEvent(event);
     }
+	getCurrentState().postWindowEventPoll();
 }
 
 //Returns a reference to the current game state
@@ -124,7 +119,7 @@ void Game::exitGame()
 
 
 //on tin
-const sf::RenderWindow& Game::getWindow() const
+sf::RenderWindow& Game::getWindow()
 {
     return m_renderer.getWindow();
 }

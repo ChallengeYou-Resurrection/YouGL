@@ -147,6 +147,7 @@ std::vector<std::shared_ptr<Wall>> GeoOctree::getWallVectorNearPoint(const glm::
 	// fail safe (Caused by point outside of the octree)
 	//std::cout << "Warning: Point is outside the octree\n";
 	return std::vector<std::shared_ptr<Wall>>();*/
+	return {};
 }
 
 bool GeoOctree::checkPointInOctree(const glm::vec3 & point) const

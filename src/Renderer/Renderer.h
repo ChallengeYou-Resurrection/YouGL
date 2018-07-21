@@ -9,6 +9,7 @@
 #include "../Game/WorldTextures.h"
 #include "RenderData.h"
 #include "Shader/Shader.h"
+#include "../GUI/EditorGUI.h"
 
 class Model;
 class RenderData;
@@ -22,10 +23,12 @@ class Renderer
 
         void draw(const Model& model);
         void draw(const sf::Drawable& drawable);
+		void draw(const EditorGUI& gui);
+
 		void initScene(const Camera& camera);
         void renderScene(const Camera& camera);
 
-        const sf::RenderWindow& getWindow() const;
+        sf::RenderWindow& getWindow();
         bool pollEvent(sf::Event& event);
         void closeWindow();
 
@@ -39,6 +42,7 @@ class Renderer
         sf::RenderWindow m_window;
         std::vector<const sf::Drawable*> m_sfDraws;
         std::vector<const RenderData* > m_renderData;
+		std::vector<const EditorGUI* > m_guiData;
 
         Shader m_shader;
 };

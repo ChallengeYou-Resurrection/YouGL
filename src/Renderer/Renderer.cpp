@@ -24,6 +24,11 @@ void Renderer::draw(const sf::Drawable& drawable)
     m_sfDraws.push_back(&drawable);
 }
 
+void Renderer::draw(const EditorGUI& gui)
+{
+	m_guiData.push_back(&gui);
+}
+
 void Renderer::initScene(const Camera& camera)
 {
 	glm::mat4 model;
@@ -61,20 +66,29 @@ void Renderer::renderScene(const Camera& camera)
     }
 
     //Draw SFML
-    /*prepareSfmlDraw();
-    for (auto drawable : m_sfDraws) {
+    //prepareSfmlDraw();
+    /*for (auto drawable : m_sfDraws) {
         m_window.draw(*drawable);
-    }
+    }*/
+	// Draw the Nuklear GUIs
+	for (auto gui : m_guiData)
+	{
+		gui->render();
+	}
 
-    endSfmlDraw();*/
+    //endSfmlDraw();
+
+	
+
     //Clear the draw buffers
     m_sfDraws.clear();
     m_renderData.clear();
+	m_guiData.clear();
     
     m_window.display();
 }
 
-const sf::RenderWindow& Renderer::getWindow() const
+sf::RenderWindow& Renderer::getWindow()
 {
     return m_window;
 }

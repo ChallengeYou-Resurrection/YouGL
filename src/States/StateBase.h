@@ -17,11 +17,15 @@ class StateBase : public NonCopyable
 
         virtual ~StateBase() = default;
 
-        virtual void handleEvent(sf::Event e) {}
+        virtual void handleEvent(sf::Event& e) {}
         virtual void handleInput(Controller& controller) = 0;
         virtual void update(sf::Time deltaTime) {}
         virtual void fixedUpdate(sf::Time deltaTime) {}
         virtual void render(Renderer& renderer) = 0;
+
+		// For Nuklear (needs pre/post event polling functions)
+		virtual void preWindowEventPoll() {}
+		virtual void postWindowEventPoll() {}
 
     protected:
         Game* m_pGame;

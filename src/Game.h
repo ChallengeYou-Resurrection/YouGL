@@ -3,14 +3,19 @@
 #include <memory>
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <glad.h>
+#include <iostream>
 
+#include "States/StatePlaying.h"
 #include "States/StateBase.h"
 #include "Util/NonMoveable.h"
 #include "Util/FPSCounter.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Camera.h"
+#include "GUI/NuklearContext.h"
 
 #include "Input/Controller.h"
+#include "Input/KeyboardController.h"
 
 /**
     Main controlling class of the game.
@@ -32,7 +37,7 @@ class Game : public NonCopyable, public NonMovable
         template<typename T, typename... Args>
         void changeState(Args&&... args);
 
-        const sf::RenderWindow& getWindow() const;
+        sf::RenderWindow& getWindow();
 		void initRendererScene();
 
     private:
@@ -42,6 +47,7 @@ class Game : public NonCopyable, public NonMovable
         StateBase& getCurrentState();
 
         Renderer m_renderer;
+		NuklearContext m_nkctx;
         std::unique_ptr<Controller> m_controller;
 
         std::unique_ptr<StateBase> m_change;
