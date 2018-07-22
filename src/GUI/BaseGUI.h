@@ -13,9 +13,6 @@ class BaseGUI
 public:
 	// Define standard functions for creation and drawing
 	void init(nk_context *g_ctx) { this->ctx = g_ctx; }
-	void render() const { 
-		nk_sfml_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER); 
-	}
 
 	// Virtual functions for every GUI
 	virtual void update(float deltaTime) = 0;

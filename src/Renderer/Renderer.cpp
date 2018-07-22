@@ -66,10 +66,7 @@ void Renderer::renderScene(const Camera& camera)
     }
 
 	// Draw the Nuklear GUIs
-	for (auto gui : m_guiData)
-	{
-		gui->render();
-	}
+	nk_sfml_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
 
     //Clear the draw buffers
     m_sfDraws.clear();
