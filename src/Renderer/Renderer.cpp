@@ -24,7 +24,7 @@ void Renderer::draw(const sf::Drawable& drawable)
     m_sfDraws.push_back(&drawable);
 }
 
-void Renderer::draw(const EditorGUI& gui)
+void Renderer::draw(const BaseGUI& gui)
 {
 	m_guiData.push_back(&gui);
 }
@@ -65,26 +65,18 @@ void Renderer::renderScene(const Camera& camera)
         //std::cout << "Call: " << drawCalls++ << " Indices: " << renderData->getIndicesCount() << '\n';
     }
 
-    //Draw SFML
-    //prepareSfmlDraw();
-    /*for (auto drawable : m_sfDraws) {
-        m_window.draw(*drawable);
-    }*/
 	// Draw the Nuklear GUIs
 	for (auto gui : m_guiData)
 	{
 		gui->render();
 	}
 
-    //endSfmlDraw();
-
-	
-
     //Clear the draw buffers
     m_sfDraws.clear();
     m_renderData.clear();
 	m_guiData.clear();
     
+	// Display result to the user
     m_window.display();
 }
 
@@ -115,7 +107,7 @@ void Renderer::initWindow()
     m_window.create({ 1280, 720 }, "YouGL", sf::Style::Close, settings);
 
     //m_window.setVerticalSyncEnabled(true);
-	m_window.setFramerateLimit(60);
+	m_window.setFramerateLimit(120);
 }
 
 void Renderer::initGL()

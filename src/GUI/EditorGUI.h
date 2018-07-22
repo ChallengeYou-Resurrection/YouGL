@@ -1,28 +1,23 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include "BaseGUI.h"
 #include <iostream>
 
-#include "nuklear.h"
-#include "nuklear_sfml_gl3.h"
+#include "../Game/WorldTextures.h"
 
-#define MAX_VERTEX_BUFFER 512 * 1024
-#define MAX_ELEMENT_BUFFER 128 * 1024
 
-class EditorGUI
+class EditorGUI : virtual public BaseGUI
 {
 public:
-	EditorGUI(sf::RenderWindow& win);
+	EditorGUI();
 
 	void inputStart();
 	void inputHandle(sf::Event& evt);
 	void inputFinish();
 
-	void update();
-	void render() const;
+	virtual void update(float deltaTime);
 
 private:
-	struct nk_context *ctx;
 	struct nk_colorf bg;
 };
 

@@ -80,6 +80,7 @@ void CYGameLevel::saveLevel(const std::string & fileName)
 
 void CYGameLevel::createModels()
 {
+	sf::Clock timer;
 	std::cout << "Constructing geometry\n";
 
     Mesh masterMesh;
@@ -93,6 +94,8 @@ void CYGameLevel::createModels()
         masterMesh.combineWith(mesh);
        // models.emplace_back(mesh);
     }
+
+	std::cout << "Geometry created in " << timer.getElapsedTime().asSeconds() << "s\n" << std::endl;
 
 	std::cout << "Vertices : " << masterMesh.vertices.size() << "\n";
 	std::cout << "Indices : " << masterMesh.indices.size() << "\n";

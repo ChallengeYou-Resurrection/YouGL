@@ -13,9 +13,16 @@
 #include "../Game/CYGameLevel.h"
 #include "../Renderer/Camera.h"
 #include "../GUI/EditorGUI.h"
+#include "../GUI/DebugLogGUI.h"
 
 #include "../Renderer/Model.h"
 #include "../Renderer/Mesh.h"
+
+#include "../GUI/nuklear.h"
+#include "../GUI/nuklear_sfml_gl3.h"
+
+#define MAX_VERTEX_BUFFER 512 * 1024
+#define MAX_ELEMENT_BUFFER 128 * 1024
 
 
 class Controller;
@@ -41,5 +48,8 @@ private:
 	Camera m_camera;
     CYGameLevel m_level;
 
+	// GUI
+	struct nk_context *ctx;
 	EditorGUI m_gui;
+	DebugLogGUI m_debug;
 };

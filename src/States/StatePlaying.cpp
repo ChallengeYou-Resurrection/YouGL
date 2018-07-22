@@ -15,10 +15,19 @@ namespace Benchmark
 
 StatePlaying::StatePlaying(Game& game, Renderer& renderer)
 :   StateBase   (game)
-,	m_gui(renderer.getWindow())
 {
     m_level.loadFromOldFormat(76953);
     //m_level.load("tmr.bcy");
+
+	// Setup GUI Context
+	ctx = nk_sfml_init(&renderer.getWindow());
+	struct nk_font_atlas *atlas;
+	nk_sfml_font_stash_begin(&atlas);
+	nk_sfml_font_stash_end();
+
+	// Initialize GUI Components
+	m_gui.init(ctx);
+	m_debug.init(ctx);
 
 	//m_level.saveLevel("tmr.bcy");
 
@@ -33,10 +42,8 @@ StatePlaying::StatePlaying(Game& game, Renderer& renderer)
 void StatePlaying::preWindowEventPoll() { m_gui.inputStart(); }
 void StatePlaying::postWindowEventPoll() { m_gui.inputFinish(); }
 
-void StatePlaying::handleEvent(sf::Event& e)
-{
-	m_gui.inputHandle(e);
-}
+// Handle GUI/Misc input 
+void StatePlaying::handleEvent(sf::Event& e) { m_gui.inputHandle(e); }
 
 void StatePlaying::handleInput(Controller& controller)
 {
@@ -47,7 +54,8 @@ void StatePlaying::handleInput(Controller& controller)
 
 void StatePlaying::update(sf::Time deltaTime)
 {
-	m_gui.update();
+	m_gui.update(deltaTime.asSeconds());
+	m_debug.update(deltaTime.asSeconds());
 	m_camera.update(deltaTime.asSeconds());
 	
 
@@ -64,6 +72,7 @@ void StatePlaying::render(Renderer& renderer)
 {
 	m_level.renderFloors(renderer); // Draw entire level (TODO: Split up)
 	renderer.draw(m_gui); // Draw GUI
+	renderer.draw(m_debug);
 
 	renderer.renderScene(m_camera); // Finalise render
 }

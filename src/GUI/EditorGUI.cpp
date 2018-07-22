@@ -1,13 +1,7 @@
 #include "EditorGUI.h"
 
-EditorGUI::EditorGUI(sf::RenderWindow& win)
+EditorGUI::EditorGUI()
 {
-	ctx = nk_sfml_init(&win);
-
-	struct nk_font_atlas *atlas;
-	nk_sfml_font_stash_begin(&atlas);
-	nk_sfml_font_stash_end();
-
 	bg.r = 1.0f, bg.g = 1.f, bg.b = 1.f, bg.a = 1.0f;
 }
 
@@ -26,9 +20,9 @@ void EditorGUI::inputFinish()
 	nk_input_end(ctx);
 }
 
-void EditorGUI::update()
+void EditorGUI::update(float deltaTime)
 {
-	if (nk_begin(ctx, "Wall", nk_rect(50, 50, 230, 250),
+	if (nk_begin(ctx, "Wall", nk_rect(1000, 420, 230, 250),
 		NK_WINDOW_BORDER | NK_WINDOW_MOVABLE |
 		NK_WINDOW_MINIMIZABLE | NK_WINDOW_TITLE))
 	{
@@ -63,9 +57,4 @@ void EditorGUI::update()
 		nk_layout_space_end(ctx);
 	}
 	nk_end(ctx);
-}
-
-void EditorGUI::render() const
-{
-	nk_sfml_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
 }
