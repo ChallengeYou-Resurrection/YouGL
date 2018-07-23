@@ -20,6 +20,7 @@ void DebugLogGUI::update(float deltaTime)
 	// Display the FPS
 	std::string fps_string = "FPS: " + std::to_string(fps);
 
+	// Draw GUI
 	nk_style_push_color(ctx, &ctx->style.window.background, nk_rgb(255, 25, 255));
 	nk_style_push_style_item(ctx, &ctx->style.window.fixed_background, nk_style_item_color(nk_rgba(0, 0, 0, 0)));
 	if (nk_begin(ctx, "Debug", nk_rect(0, 0, 300, 200),
@@ -27,8 +28,22 @@ void DebugLogGUI::update(float deltaTime)
 	{
 		nk_layout_row_dynamic(ctx, 20, 1);
 		nk_label(ctx, fps_string.c_str(), NK_TEXT_LEFT);
+
+		for (auto msg : m_messages)
+		{
+			nk_layout_row_dynamic(ctx, 20, 1);
+			nk_label(ctx, msg.c_str(), NK_TEXT_LEFT);
+		}
 	}
 	nk_style_pop_color(ctx);
 	nk_style_pop_style_item(ctx);
 	nk_end(ctx);
+
+	// Clear messages
+	m_messages.clear();
+}
+
+void DebugLogGUI::addMessage(const std::string& str)
+{
+	m_messages.push_back(str);
 }

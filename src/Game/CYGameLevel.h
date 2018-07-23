@@ -37,6 +37,9 @@ class CYGameLevel
 			archive(m_header); // , m_walls);
 		}
 
+		// Misc functions
+		//int getObjectSize(); // Return how many objects there are in the world
+
     private:
         std::vector<Model> m_floorModels;
 		GeoOctree m_octree;
