@@ -19,6 +19,11 @@
 
 class Renderer;
 
+struct Floor {
+	Model opaqueMesh;
+	Model transparentMesh;
+};
+
 class CYGameLevel
 {
    public:
@@ -54,7 +59,7 @@ class CYGameLevel
 
     private:
 		// Level Data
-        std::vector<Model> m_floorModels;
+        std::vector<Floor> m_floorModels;
 		std::vector<std::shared_ptr<CYGeneric>> m_geometry;
 		GeoOctree m_octree;
 

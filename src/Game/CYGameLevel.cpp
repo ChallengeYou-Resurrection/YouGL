@@ -98,7 +98,8 @@ void CYGameLevel::createModels()
 	// Separate mesh for each floor
 	for (int f = 0; f < m_header.floorCount; f++)
 	{
-		Mesh floorMesh;
+		Mesh oFloorMesh;
+		Mesh tFloorMesh;
 		for (auto& obj : m_geometry) {
 			if (obj->getLevel() == (f + 1))
 			{
@@ -108,10 +109,10 @@ void CYGameLevel::createModels()
 				
 				// Combine
 				auto mesh = obj->getMesh();
-				floorMesh.combineWith(mesh);
+				oFloorMesh.combineWith(mesh);
 			}
 		}
-		m_floorModels[f].create(floorMesh, m_textures.getTexID());
+		m_floorModels[f].opaqueMesh.create(oFloorMesh, m_textures.getTexID());
 	}
 
 	std::cout << "Geometry created in " << timer.getElapsedTime().asSeconds() << "s\n" << std::endl;
@@ -128,7 +129,7 @@ void CYGameLevel::createModels()
 void CYGameLevel::renderFloors(Renderer & renderer)
 {
 	for (int f = 0; f < m_header.floorCount; f++)
-		renderer.draw(m_floorModels[f]); renderer.draw(m_floorModels[0]);
+		renderer.draw(m_floorModels[f].opaqueMesh);
 
 	m_octree.drawOctree(renderer);
 }
@@ -137,7 +138,7 @@ void CYGameLevel::renderFloors(Renderer & renderer)
 void CYGameLevel::partiallyRenderFloors(Renderer & renderer)
 {
 	for (int f = 0; f < m_floor; f++)
-		renderer.draw(m_floorModels[f]);
+		renderer.draw(m_floorModels[f].opaqueMesh);
 
 	m_octree.drawOctree(renderer);
 }
