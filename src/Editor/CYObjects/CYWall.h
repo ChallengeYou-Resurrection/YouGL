@@ -23,6 +23,9 @@ public:
 			frontMaterial, backMaterial, height);
 	}
 
+	// Return property data
+	virtual u8 getLevel() { return floor; };
+
 protected:
 	CYObject type = CYObject::CYWall;
 

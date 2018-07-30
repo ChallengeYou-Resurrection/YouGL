@@ -12,8 +12,6 @@
 #include "StateBase.h"
 #include "../Game/CYGameLevel.h"
 #include "../Renderer/Camera.h"
-#include "../GUI/EditorGUI.h"
-#include "../GUI/DebugLogGUI.h"
 
 #include "../Renderer/Model.h"
 #include "../Renderer/Mesh.h"
@@ -50,6 +48,4 @@ private:
 
 	// GUI
 	struct nk_context *ctx;
-	EditorGUI m_gui;
-	DebugLogGUI m_debug;
 };

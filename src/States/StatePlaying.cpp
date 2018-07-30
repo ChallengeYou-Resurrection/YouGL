@@ -25,9 +25,7 @@ StatePlaying::StatePlaying(Game& game, Renderer& renderer)
 	nk_sfml_font_stash_begin(&atlas);
 	nk_sfml_font_stash_end();
 
-	// Initialize GUI Components
-	m_gui.init(ctx);
-	m_debug.init(ctx);
+	m_level.initGUI(ctx);
 
 	//m_level.saveLevel("tmr.bcy");
 
@@ -39,11 +37,11 @@ StatePlaying::StatePlaying(Game& game, Renderer& renderer)
 
 // The functions are to avoid nuklear from thinking holding the 
 // mouse button counts as multiple clicks.
-void StatePlaying::preWindowEventPoll() { m_gui.inputStart(); }
-void StatePlaying::postWindowEventPoll() { m_gui.inputFinish(); }
+void StatePlaying::preWindowEventPoll() { nk_input_begin(ctx); }
+void StatePlaying::postWindowEventPoll() { nk_input_end(ctx); }
 
 // Handle GUI/Misc input 
-void StatePlaying::handleEvent(sf::Event& e) { m_gui.inputHandle(e); }
+void StatePlaying::handleEvent(sf::Event& e) { nk_sfml_handle_event(&e); }
 
 void StatePlaying::handleInput(Controller& controller)
 {
@@ -54,12 +52,11 @@ void StatePlaying::handleInput(Controller& controller)
 
 void StatePlaying::update(sf::Time deltaTime)
 {
-	m_gui.update(deltaTime.asSeconds());
-	m_debug.update(deltaTime.asSeconds());
+	m_level.update(deltaTime.asSeconds());
 	m_camera.update(deltaTime.asSeconds());
 	
-
-	if (!m_level.cameraCollsion(m_camera))
+	// TODO: Replace
+	if (!m_level.cameraCollision(m_camera))
 		m_camera.applyVelocity();
 }
 
@@ -70,9 +67,8 @@ void StatePlaying::fixedUpdate(sf::Time deltaTime)
 
 void StatePlaying::render(Renderer& renderer)
 {
-	m_level.renderFloors(renderer); // Draw entire level (TODO: Split up)
-	renderer.draw(m_gui); // Draw GUI
-	renderer.draw(m_debug);
+	m_level.partiallyRenderFloors(renderer); // Draw entire level (TODO: Split up)
+	m_level.renderGUIs(renderer);
 
 	renderer.renderScene(m_camera); // Finalise render
 }

@@ -12,10 +12,19 @@
 #include "../Editor/OldFormat/OldFormatUtil.h"
 #include "../Editor/CYObjects/MeshBuilder.h"
 
+// Constructor / Init Objects
 CYGameLevel::CYGameLevel()
 	: m_octree(512)
-{ }
+	, m_editorGui(&m_floor)
+{}
 
+void CYGameLevel::initGUI(nk_context * ctx)
+{
+	m_editorGui.init(ctx);
+	m_debug.init(ctx);
+}
+
+// Load from the Old CY Format (REGEX) from local server
 void CYGameLevel::loadFromOldFormat(int gameNumber)
 {
 	// Use a clock to determine the speed it takes to load a level
@@ -32,7 +41,7 @@ void CYGameLevel::loadFromOldFormat(int gameNumber)
 
     std::cout << "Game    " << m_header.gameName << '\n';
     std::cout << "Author: " << m_header.gameAuthor << '\n';
-	std::cout << "Floors:  " << m_header.floorCount << "\n\n";
+	std::cout << "Floors: " << std::to_string(m_header.floorCount) << "\n\n";
 
     for (int i = 0; i < m_header.floorCount; i++) {
         m_floorModels.emplace_back();
@@ -41,6 +50,7 @@ void CYGameLevel::loadFromOldFormat(int gameNumber)
 	std::cout << "Level #" << gameNumber << " loaded in " << timer.getElapsedTime().asSeconds() << "s\n" << std::endl;
 }
 
+// Load the level using the Cereal Library (Much faster)
 void CYGameLevel::load(const std::string & fileName)
 {
 	// Use a clock to determine the speed it takes to load a level
@@ -53,7 +63,7 @@ void CYGameLevel::load(const std::string & fileName)
 
     std::cout << "Game    " << m_header.gameName << '\n';
     std::cout << "Author: " << m_header.gameAuthor << '\n';
-	std::cout << "Floors:  " << m_header.floorCount << "\n\n";
+	std::cout << "Floors: " << std::to_string(m_header.floorCount) << "\n\n";
 
     for (int i = 0; i < m_header.floorCount; i++) {
         m_floorModels.emplace_back();
@@ -62,6 +72,7 @@ void CYGameLevel::load(const std::string & fileName)
 	std::cout << "Level " << fileName << " loaded in " << timer.getElapsedTime().asSeconds() << "s\n" << std::endl;
 }
 
+// Save level using the Cereal Library
 void CYGameLevel::saveLevel(const std::string & fileName)
 {
 	try {
@@ -78,40 +89,78 @@ void CYGameLevel::saveLevel(const std::string & fileName)
 	}
 }
 
+// Contruct all floors
 void CYGameLevel::createModels()
 {
 	sf::Clock timer;
 	std::cout << "Constructing geometry\n";
 
-    Mesh masterMesh;
-    for (auto& obj : m_geometry) {
-		//std::shared_ptr<Wall> wall_ptr = std::make_shared<Wall>(wall);
-		m_octree.insertGeometry(obj);
-
-        //auto mesh = MeshBuilder::createMesh(wall, m_textures);
-		obj->createMesh(m_textures);
-		auto mesh = obj->getMesh();
-        masterMesh.combineWith(mesh);
-       // models.emplace_back(mesh);
-    }
+	// Separate mesh for each floor
+	for (int f = 0; f < m_header.floorCount; f++)
+	{
+		Mesh floorMesh;
+		for (auto& obj : m_geometry) {
+			if (obj->getLevel() == (f + 1))
+			{
+				// Generate Mesh
+				obj->createMesh(m_textures);
+				m_octree.insertGeometry(obj);
+				
+				// Combine
+				auto mesh = obj->getMesh();
+				floorMesh.combineWith(mesh);
+			}
+		}
+		m_floorModels[f].create(floorMesh, m_textures.getTexID());
+	}
 
 	std::cout << "Geometry created in " << timer.getElapsedTime().asSeconds() << "s\n" << std::endl;
 
-	std::cout << "Vertices : " << masterMesh.vertices.size() << "\n";
-	std::cout << "Indices : " << masterMesh.indices.size() << "\n";
+	//std::cout << "Vertices : " << masterMesh.vertices.size() << "\n";
+	//::cout << "Indices : " << masterMesh.indices.size() << "\n";
 
 	std::cout << "\nConstructing Octree\n";
 	m_octree.buildOctree();
-    m_floorModels[0].create(masterMesh, m_textures.getTexID());
+    
 }
 
+// Render all floors
 void CYGameLevel::renderFloors(Renderer & renderer)
 {
-    renderer.draw(m_floorModels[0]);
+	for (int f = 0; f < m_header.floorCount; f++)
+		renderer.draw(m_floorModels[f]); renderer.draw(m_floorModels[0]);
+
 	m_octree.drawOctree(renderer);
 }
 
-bool CYGameLevel::cameraCollsion(Camera & camera)
+// Renders floors from 0 to a the current floor
+void CYGameLevel::partiallyRenderFloors(Renderer & renderer)
+{
+	for (int f = 0; f < m_floor; f++)
+		renderer.draw(m_floorModels[f]);
+
+	m_octree.drawOctree(renderer);
+}
+
+// Render the Editor GUIs
+void CYGameLevel::renderGUIs(Renderer & renderer)
+{
+	renderer.draw(m_editorGui); // Draw GUI
+	renderer.draw(m_debug);
+}
+
+// Update all variables/data every frame
+void CYGameLevel::update(float deltaTime)
+{
+	m_editorGui.update(deltaTime);
+	m_debug.update(deltaTime);
+
+	// Clamp important variables
+	m_floor = std::clamp(m_floor, (u8)0, m_header.floorCount);
+}
+
+// Deprecated Function, to be replaced with MUCH better collision detection
+bool CYGameLevel::cameraCollision(Camera & camera)
 {
 	// TODO: Clean and move this into GeoOctree class
 	// Get start and finish for cam movement

@@ -66,3 +66,4 @@ MinBoundingBox& CYPlat::getAABB()
 {
 	return m_objectAABB;
 }
+

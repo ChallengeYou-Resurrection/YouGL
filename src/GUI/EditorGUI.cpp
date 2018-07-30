@@ -1,28 +1,15 @@
 #include "EditorGUI.h"
 
-EditorGUI::EditorGUI()
+EditorGUI::EditorGUI(u8* cFloor)
+	: m_currentFloor(cFloor)
 {
 	bg.r = 1.0f, bg.g = 1.f, bg.b = 1.f, bg.a = 1.0f;
 }
 
-void EditorGUI::inputStart()
-{
-	nk_input_begin(ctx);
-}
-
-void EditorGUI::inputHandle(sf::Event& evt)
-{
-	nk_sfml_handle_event(&evt);
-}
-
-void EditorGUI::inputFinish()
-{
-	nk_input_end(ctx);
-}
-
 void EditorGUI::update(float deltaTime)
 {
-	if (nk_begin(ctx, "Wall", nk_rect(1000, 420, 230, 250),
+	// Object Property Editor 
+	if (nk_begin(ctx, "Wall", nk_rect(1020, 30, 230, 250),
 		NK_WINDOW_BORDER | NK_WINDOW_MOVABLE |
 		NK_WINDOW_MINIMIZABLE | NK_WINDOW_TITLE))
 	{
@@ -55,6 +42,29 @@ void EditorGUI::update(float deltaTime)
 		if (nk_button_label(ctx, "Set as Default"))
 			fprintf(stdout, "button pressed\n");
 		nk_layout_space_end(ctx);
+	}
+	nk_end(ctx);
+
+	// Floor Change (bottom right: 1070, 650)
+	if (nk_begin(ctx, "Floor", nk_rect(1020-180-30, 30, 180, 37),
+		NK_WINDOW_BORDER | NK_WINDOW_NO_SCROLLBAR))
+	{
+		std::string floorText = "Floor: " + std::to_string(*m_currentFloor);
+
+		nk_layout_row_begin(ctx, NK_STATIC, 25, 12);
+
+		nk_layout_row_push(ctx, 25);
+		if (nk_button_symbol(ctx, NK_SYMBOL_TRIANGLE_UP))
+			(*m_currentFloor)++;
+
+		nk_layout_row_push(ctx, 100);
+		nk_label(ctx, floorText.c_str(), NK_TEXT_CENTERED);
+
+		nk_layout_row_push(ctx, 25);
+		if (nk_button_symbol(ctx, NK_SYMBOL_TRIANGLE_DOWN))
+			(*m_currentFloor)--;
+
+		nk_layout_row_end(ctx);
 	}
 	nk_end(ctx);
 }

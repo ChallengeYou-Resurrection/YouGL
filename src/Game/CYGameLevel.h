@@ -14,21 +14,21 @@
 #include "../Renderer/Model.h"
 #include "../Renderer/Camera.h"
 
+#include "../GUI/EditorGUI.h"
+#include "../GUI/DebugLogGUI.h"
+
 class Renderer;
 
 class CYGameLevel
 {
    public:
         CYGameLevel();
+		void initGUI(nk_context *ctx);
 
+		// Serializing Functions
         void loadFromOldFormat(int gameNumber);
         void load(const std::string& fileName);
-        void createModels();
-        void renderFloors(Renderer& renderer);
-
 		void saveLevel(const std::string& fileName);
-
-		bool cameraCollsion(Camera& camera);
 
 		// For saving/loading binary files
 		template <typename Archive>
@@ -37,15 +37,34 @@ class CYGameLevel
 			archive(m_header); // , m_walls);
 		}
 
-		// Misc functions
+		// Update functions
+		void update(float deltaTime);
+
+		// Geometry Creation
+        void createModels();
+
+		// Rendering Functions
+        void renderFloors(Renderer& renderer);
+		void partiallyRenderFloors(Renderer & renderer);
+		void renderGUIs(Renderer& renderer);
+		
+		// Misc ?
+		bool cameraCollision(Camera& camera);
 		//int getObjectSize(); // Return how many objects there are in the world
 
     private:
+		// Level Data
         std::vector<Model> m_floorModels;
+		std::vector<std::shared_ptr<CYGeneric>> m_geometry;
 		GeoOctree m_octree;
 
         LevelHeader m_header;
-
 		WorldTextures m_textures;
-		std::vector<std::shared_ptr<CYGeneric>> m_geometry;
+
+		// GUI
+		EditorGUI m_editorGui;
+		DebugLogGUI m_debug;
+
+		// Editor Variables
+		u8 m_floor = (u8)0;
 };

@@ -22,6 +22,9 @@ public:
 		archive(floor, position, material, height);
 	}
 
+	// Return property data
+	virtual u8 getLevel() { return floor; };
+
 protected:
 	CYObject type = CYObject::CYPlat;
 

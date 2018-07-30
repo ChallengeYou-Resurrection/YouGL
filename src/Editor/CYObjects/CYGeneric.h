@@ -34,6 +34,9 @@ public:
 	virtual Mesh& getMesh() = 0;
 	virtual MinBoundingBox& getAABB() = 0;
 
+	// Properties
+	virtual u8 getLevel() = 0;
+
 protected:
 	CYObject type = CYObject::CYGeneric;
 
