@@ -162,14 +162,15 @@ void CYGameLevel::input(Controller & controller)
 {
 	// Move camera according to player input
 	m_camera.input(controller);
+
+	m_mousePosition = controller.getMousePositionRelativeToWindow();
 }
 
 // Update all variables/data every frame
 void CYGameLevel::update(float deltaTime)
 {
 	// Mouse Ray (test)
-	sf::Vector2i mPos = sf::Mouse::getPosition();
-	MouseRay::Ray mRay = MouseRay::calculateMouseRay(mPos, m_screenRes, m_camera);
+	MouseRay::Ray mRay = MouseRay::calculateMouseRay(m_mousePosition, m_screenRes, m_camera);
 	m_debug.add3DVector("Ray Origin", mRay.origin);
 	m_debug.add3DVector("Ray Direction", mRay.direction);
 

@@ -105,6 +105,11 @@ glm::vec3 KeyboardController::getLookChange() const
     };
 }
 
+sf::Vector2i KeyboardController::getMousePositionRelativeToWindow() const
+{
+	return sf::Mouse::getPosition(*m_pWindow);
+}
+
 bool KeyboardController::isPressed(Controller::Input input) const
 {
     //if (!m_pWindow->hasFocus()) return false;

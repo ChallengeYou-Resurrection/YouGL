@@ -10,6 +10,7 @@
 #include "../Editor/CYObjects/CYObjectProperties.h"
 #include "../Editor/CYObjects/CYGeneric.h"
 #include "WorldTextures.h"
+#include "../Input/Controller.h"
 #include "../Editor/GeoOctree.h"
 #include "../Util/MouseRay.h"
 #include "../Renderer/Model.h"
@@ -84,4 +85,5 @@ class CYGameLevel
 
 		// Misc
 		sf::Vector2u m_screenRes;
+		sf::Vector2i m_mousePosition;
 };

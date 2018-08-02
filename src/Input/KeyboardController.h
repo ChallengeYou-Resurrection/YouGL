@@ -21,6 +21,8 @@ class KeyboardController : public Controller
 
         glm::vec3 getLookChange() const;
 
+		virtual sf::Vector2i getMousePositionRelativeToWindow() const;
+
     private:
         bool isPressed(Controller::Input input) const;
 

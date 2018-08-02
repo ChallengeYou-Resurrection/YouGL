@@ -58,6 +58,7 @@ class GeoOctree
 		// Ray Casting
 		bool checkIfRayIntersectsOctree(const MouseRay::Ray& mRay);
 
+
     protected:
 
     private:

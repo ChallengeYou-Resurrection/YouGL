@@ -18,6 +18,8 @@ class Controller
         virtual glm::vec3 getLookChange() const = 0;
         virtual void tryToggleLookLock() = 0;
 
+		virtual sf::Vector2i getMousePositionRelativeToWindow() const = 0;
+
     protected:
         enum class Input
         {
