@@ -11,6 +11,7 @@
 #include "../Editor/CYObjects/CYGeneric.h"
 #include "WorldTextures.h"
 #include "../Editor/GeoOctree.h"
+#include "../Util/MouseRay.h"
 #include "../Renderer/Model.h"
 #include "../Renderer/Camera.h"
 
@@ -27,8 +28,9 @@ struct Floor {
 class CYGameLevel
 {
    public:
-        CYGameLevel();
+        CYGameLevel(sf::Vector2u screenResolution);
 		void initGUI(nk_context *ctx);
+		void initCamera(Renderer& renderer);
 
 		// Serializing Functions
         void loadFromOldFormat(int gameNumber);
@@ -43,6 +45,7 @@ class CYGameLevel
 		}
 
 		// Update functions
+		void input(Controller& controller);
 		void update(float deltaTime);
 
 		// Geometry Creation
@@ -57,7 +60,13 @@ class CYGameLevel
 		bool cameraCollision(Camera& camera);
 		//int getObjectSize(); // Return how many objects there are in the world
 
+		// Getter functions
+		Camera& getCamera();
+
     private:
+		// Editor 
+		Camera m_camera;
+
 		// Level Data
         std::vector<Floor> m_floorModels;
 		std::vector<std::shared_ptr<CYGeneric>> m_geometry;
@@ -72,4 +81,7 @@ class CYGameLevel
 
 		// Editor Variables
 		u8 m_floor = (u8)0;
+
+		// Misc
+		sf::Vector2u m_screenRes;
 };

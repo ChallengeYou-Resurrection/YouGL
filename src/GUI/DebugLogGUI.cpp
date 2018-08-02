@@ -31,7 +31,7 @@ void DebugLogGUI::update(float deltaTime)
 
 		for (auto msg : m_messages)
 		{
-			nk_layout_row_dynamic(ctx, 20, 1);
+			nk_layout_row_dynamic(ctx, 10, 1);
 			nk_label(ctx, msg.c_str(), NK_TEXT_LEFT);
 		}
 	}
@@ -47,3 +47,14 @@ void DebugLogGUI::addMessage(const std::string& str)
 {
 	m_messages.push_back(str);
 }
+
+void DebugLogGUI::add3DVector(const std::string& name, const glm::vec3 & vec)
+{
+	std::stringstream sstr;
+	sstr << name << ": " << std::to_string(vec.x).substr(0, 5) 
+				 << ", " << std::to_string(vec.y).substr(0, 5)
+				 << ", " << std::to_string(vec.z).substr(0, 5);
+
+	m_messages.push_back(sstr.str());
+}
+

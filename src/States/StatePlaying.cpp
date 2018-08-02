@@ -15,6 +15,7 @@ namespace Benchmark
 
 StatePlaying::StatePlaying(Game& game, Renderer& renderer)
 :   StateBase   (game)
+,	m_level(renderer.getWindow().getSize())
 {
     m_level.loadFromOldFormat(76953);
     //m_level.load("tmr.bcy");
@@ -32,7 +33,7 @@ StatePlaying::StatePlaying(Game& game, Renderer& renderer)
     m_level.createModels();
 	//game.initRendererScene();
 
-	renderer.initScene(m_camera);
+	m_level.initCamera(renderer);
 }
 
 // The functions are to avoid nuklear from thinking holding the 
@@ -47,17 +48,12 @@ void StatePlaying::handleInput(Controller& controller)
 {
     controller.tryToggleLookLock();
 
-	m_camera.input(controller);
+	m_level.input(controller);
 }
 
 void StatePlaying::update(sf::Time deltaTime)
 {
 	m_level.update(deltaTime.asSeconds());
-	m_camera.update(deltaTime.asSeconds());
-	
-	// TODO: Replace
-	if (!m_level.cameraCollision(m_camera))
-		m_camera.applyVelocity();
 }
 
 void StatePlaying::fixedUpdate(sf::Time deltaTime)
@@ -70,5 +66,5 @@ void StatePlaying::render(Renderer& renderer)
 	m_level.partiallyRenderFloors(renderer); // Draw entire level (TODO: Split up)
 	m_level.renderGUIs(renderer);
 
-	renderer.renderScene(m_camera); // Finalise render
+	renderer.renderScene(m_level.getCamera()); // Finalise render
 }

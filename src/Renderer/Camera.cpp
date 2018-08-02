@@ -39,7 +39,7 @@ void Camera::input(const Controller& controller)
 
 void Camera::update(float dt)
 {
-
+	m_viewMatrix = makeViewMatrix(*this);
 }
 
 void Camera::applyVelocity()
@@ -70,4 +70,9 @@ const glm::vec3& Camera::getRotation() const
 const glm::mat4& Camera::getProjectionMatrix() const
 {
     return m_projectionMatrix;
+}
+
+const glm::mat4& Camera::getViewMatrix() const
+{
+	return m_viewMatrix;
 }

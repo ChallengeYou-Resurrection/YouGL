@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "../Maths/Matrix.h"
 #include "../Maths/GlmCommon.h"
 #include "Transform.h"
 
@@ -16,8 +17,9 @@ class Camera
 
         const glm::vec3& getPositon() const;
         const glm::vec3& getRotation() const;
-        const glm::mat4& getProjectionMatrix() const;
 		const glm::vec3& getVelocity() const;
+        const glm::mat4& getProjectionMatrix() const;
+		const glm::mat4& getViewMatrix() const;
 
 		void applyVelocity();
 		void setVelocity(const glm::vec3& vel);
@@ -27,4 +29,5 @@ class Camera
 		glm::vec3 m_velocity;
 
         glm::mat4 m_projectionMatrix;
+		glm::mat4 m_viewMatrix;
 };

@@ -51,11 +51,7 @@ void Renderer::renderScene(const Camera& camera)
 
     m_shader.bind();
 
-    /*TEMP STUFF*/
-    glm::mat4 view = makeViewMatrix(camera);
-    /*TEMP END*/
-
-    m_shader.setParameter("viewMatrix", view);
+    m_shader.setParameter("viewMatrix", camera.getViewMatrix());
 
     //Draw OpenGL
     int drawCalls = 0;

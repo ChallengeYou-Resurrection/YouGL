@@ -13,15 +13,21 @@
 #include "../Editor/CYObjects/MeshBuilder.h"
 
 // Constructor / Init Objects
-CYGameLevel::CYGameLevel()
+CYGameLevel::CYGameLevel(sf::Vector2u screenResolution)
 	: m_octree(512)
 	, m_editorGui(&m_floor)
+	, m_screenRes(screenResolution)
 {}
 
 void CYGameLevel::initGUI(nk_context * ctx)
 {
 	m_editorGui.init(ctx);
 	m_debug.init(ctx);
+}
+
+void CYGameLevel::initCamera(Renderer & renderer)
+{
+	renderer.initScene(m_camera);
 }
 
 // Load from the Old CY Format (REGEX) from local server
@@ -98,8 +104,10 @@ void CYGameLevel::createModels()
 	// Separate mesh for each floor
 	for (int f = 0; f < m_header.floorCount; f++)
 	{
+		// Keep opaque & transparent meshes apart
 		Mesh oFloorMesh;
 		Mesh tFloorMesh;
+
 		for (auto& obj : m_geometry) {
 			if (obj->getLevel() == (f + 1))
 			{
@@ -150,14 +158,35 @@ void CYGameLevel::renderGUIs(Renderer & renderer)
 	renderer.draw(m_debug);
 }
 
+void CYGameLevel::input(Controller & controller)
+{
+	// Move camera according to player input
+	m_camera.input(controller);
+}
+
 // Update all variables/data every frame
 void CYGameLevel::update(float deltaTime)
 {
+	// Mouse Ray (test)
+	sf::Vector2i mPos = sf::Mouse::getPosition();
+	MouseRay::Ray mRay = MouseRay::calculateMouseRay(mPos, m_screenRes, m_camera);
+	m_debug.add3DVector("Ray Origin", mRay.origin);
+	m_debug.add3DVector("Ray Direction", mRay.direction);
+
+	// GUI Update
 	m_editorGui.update(deltaTime);
 	m_debug.update(deltaTime);
 
 	// Clamp important variables
 	m_floor = std::clamp(m_floor, (u8)0, m_header.floorCount);
+
+	// Collision Detection & Response
+	// TODO: Replace w/ better algorithm
+	if (!cameraCollision(m_camera))
+		m_camera.applyVelocity();
+
+	// Update camera after applying calculations to get accurate view matrix
+	m_camera.update(deltaTime);
 }
 
 // Deprecated Function, to be replaced with MUCH better collision detection
@@ -244,4 +273,9 @@ bool CYGameLevel::cameraCollision(Camera & camera)
 	}*/
 
 	return false;
+}
+
+Camera & CYGameLevel::getCamera()
+{
+	return m_camera;
 }

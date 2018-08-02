@@ -43,7 +43,6 @@ public:
 	void postWindowEventPoll() override;
 
 private:
-	Camera m_camera;
     CYGameLevel m_level;
 
 	// GUI
