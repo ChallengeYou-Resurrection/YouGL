@@ -4,6 +4,7 @@
 
 #include "glm\common.hpp"
 #include "SFML\Graphics.hpp"
+#include <iostream>
 
 /* Calcuates an origin and direction vector for a ray from the screen to where the mouse
  * is pointing given a mouse position and the screen resolution

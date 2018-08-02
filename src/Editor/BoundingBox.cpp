@@ -32,6 +32,63 @@ const bool BoundingBox::checkAABB(const glm::vec3 & point)
 		point.z < m_vecMax.z);
 }
 
+const bool BoundingBox::checkRayCast(const MouseRay::Ray & ray, float t0, float t1)
+{
+	// ???
+	glm::vec3 min = m_vecMin / WORLD_SIZE;
+	glm::vec3 max = m_vecMax / WORLD_SIZE;
+
+	// Using Smits' Method 
+	// Ref: https://people.csail.mit.edu/amy/papers/box-jgt.pdf
+	float tmin, tmax, tymin, tymax, tzmin, tzmax;
+
+	// Initialize tmin/max (x axis) & tymin/max (y axis)
+	if (ray.direction.x >= 0) {
+		tmin = (min.x - ray.origin.x) / ray.direction.x;
+		tmax = (max.x - ray.origin.x) / ray.direction.x;
+	}
+	else {
+		tmin = (max.x - ray.origin.x) / ray.direction.x;
+		tmax = (min.x - ray.origin.x) / ray.direction.x;
+	}
+
+	if (ray.direction.y >= 0) {
+		tymin = (min.y - ray.origin.y) / ray.direction.y;
+		tymax = (max.y - ray.origin.y) / ray.direction.y;
+	}
+	else {
+		tymin = (max.y - ray.origin.y) / ray.direction.y;
+		tymax = (min.y - ray.origin.y) / ray.direction.y;
+	}
+
+	if ((tmin > tymax) || (tymin > tmax))
+		return false;
+
+	if (tymin > tmin)
+		tmin = tymin;
+	if (tymax < tmax)
+		tmax = tymax;
+
+	if (ray.direction.z >= 0) {
+		tzmin = (min.z - ray.origin.z) / ray.direction.z;
+		tzmax = (max.z - ray.origin.z) / ray.direction.z;
+	}
+	else {
+		tzmin = (max.z - ray.origin.z) / ray.direction.z;
+		tzmax = (min.z - ray.origin.z) / ray.direction.z;
+	}
+
+	if ((tmin > tzmax) || (tzmin > tmax))
+		return false;
+
+	if (tzmin > tmin)
+		tmin = tzmin;
+	if (tzmax < tmax)
+		tmax = tzmax;
+
+	return ((tmin < t1) && (tmax > t0));
+}
+
 const glm::vec3& BoundingBox::getVecMin()
 {
 	return m_vecMin;
@@ -50,6 +107,7 @@ BoundingBox::BoundingBox(glm::vec3 min, glm::vec3 max)
 	// If rendering the boxes then create a model for it
 	if (RENDER_BOUNDING_BOX)
 	{
+		// TODO: Create a namespace for quickly creating primitive shapes
 		Mesh cubeMesh;
 
 		// Vertices (Static)

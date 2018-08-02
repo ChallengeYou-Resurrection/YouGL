@@ -6,6 +6,7 @@
 
 #include "glm/vec3.hpp"
 #include "../Game/WorldConstants.h"
+#include "../Util/MouseRay.h"
 
 const float RENDER_BOUNDING_BOX = true;
 
@@ -32,6 +33,8 @@ public :
 	const bool checkAABB(const BoundingBox& obj);
 	const bool checkAABB(const glm::vec3& obj_minv3, const glm::vec3& obj_maxv3);
 	const bool checkAABB(const glm::vec3& point);
+
+	const bool checkRayCast(const MouseRay::Ray& ray, float t0, float t1);
 
 	const glm::vec3& getVecMin();
 	const glm::vec3& getVecMax();

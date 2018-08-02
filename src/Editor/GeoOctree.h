@@ -10,6 +10,7 @@
 
 //#include "EditorObject.h"
 #include "BoundingBox.h"
+#include "../Util/MouseRay.h"
 #include "../Game/WorldConstants.h"
 #include "CYObjects/CYGeneric.h"
 #include "CYObjects/MeshBuilder.h"
@@ -53,6 +54,9 @@ class GeoOctree
 		bool checkIfTwoPointsInSameOctree(const glm::vec3& p1, const glm::vec3& p2) const;
 		//bool checkForCollision(const glm::vec3& start, const glm::vec3& end);
 		std::vector<std::shared_ptr<Wall>> getWallVectorNearPoint(const glm::vec3& point);
+
+		// Ray Casting
+		bool checkIfRayIntersectsOctree(const MouseRay::Ray& mRay);
 
     protected:
 

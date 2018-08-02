@@ -150,6 +150,11 @@ std::vector<std::shared_ptr<Wall>> GeoOctree::getWallVectorNearPoint(const glm::
 	return {};
 }
 
+bool GeoOctree::checkIfRayIntersectsOctree(const MouseRay::Ray & mRay)
+{
+	return this->m_boundingBox->checkRayCast(mRay, 0.f, 50.f);
+}
+
 bool GeoOctree::checkPointInOctree(const glm::vec3 & point) const
 {
 	return m_boundingBox->checkAABB(point);
