@@ -34,31 +34,36 @@ const bool BoundingBox::checkAABB(const glm::vec3 & point)
 
 const bool BoundingBox::checkRayCast(const MouseRay::Ray & ray, float t0, float t1)
 {
-	// ???
+	// ??? // Not sure why it requires to be changed to Editor coordinates
+	// Need to be more careful with how coordinates are treated in this game
 	glm::vec3 min = m_vecMin / WORLD_SIZE;
 	glm::vec3 max = m_vecMax / WORLD_SIZE;
 
-	// Using Smits' Method 
+	// Using an improved version Smits' algorithm as shown in the reference
 	// Ref: https://people.csail.mit.edu/amy/papers/box-jgt.pdf
 	float tmin, tmax, tymin, tymax, tzmin, tzmax;
 
 	// Initialize tmin/max (x axis) & tymin/max (y axis)
-	if (ray.direction.x >= 0) {
-		tmin = (min.x - ray.origin.x) / ray.direction.x;
-		tmax = (max.x - ray.origin.x) / ray.direction.x;
+	// The improved variant opts for 1 divide & 2 multiplication functions 
+	float divx = 1 / ray.direction.x;
+	if (divx >= 0) {
+		tmin = (min.x - ray.origin.x) * divx;
+		tmax = (max.x - ray.origin.x) * divx;
 	}
 	else {
-		tmin = (max.x - ray.origin.x) / ray.direction.x;
-		tmax = (min.x - ray.origin.x) / ray.direction.x;
+		tmin = (max.x - ray.origin.x) * divx;
+		tmax = (min.x - ray.origin.x) * divx;
 	}
 
-	if (ray.direction.y >= 0) {
-		tymin = (min.y - ray.origin.y) / ray.direction.y;
-		tymax = (max.y - ray.origin.y) / ray.direction.y;
+	// Y -coord
+	float divy = 1 / ray.direction.y;
+	if (divy >= 0) {
+		tymin = (min.y - ray.origin.y) * divy;
+		tymax = (max.y - ray.origin.y) * divy;
 	}
 	else {
-		tymin = (max.y - ray.origin.y) / ray.direction.y;
-		tymax = (min.y - ray.origin.y) / ray.direction.y;
+		tymin = (max.y - ray.origin.y) * divy;
+		tymax = (min.y - ray.origin.y) * divy;
 	}
 
 	if ((tmin > tymax) || (tymin > tmax))
@@ -69,13 +74,15 @@ const bool BoundingBox::checkRayCast(const MouseRay::Ray & ray, float t0, float 
 	if (tymax < tmax)
 		tmax = tymax;
 
-	if (ray.direction.z >= 0) {
-		tzmin = (min.z - ray.origin.z) / ray.direction.z;
-		tzmax = (max.z - ray.origin.z) / ray.direction.z;
+	// Z-coord
+	float divz = 1 / ray.direction.z;
+	if (divz >= 0) {
+		tzmin = (min.z - ray.origin.z) * divz;
+		tzmax = (max.z - ray.origin.z) * divz;
 	}
 	else {
-		tzmin = (max.z - ray.origin.z) / ray.direction.z;
-		tzmax = (min.z - ray.origin.z) / ray.direction.z;
+		tzmin = (max.z - ray.origin.z) * divz;
+		tzmax = (min.z - ray.origin.z) * divz;
 	}
 
 	if ((tmin > tzmax) || (tzmin > tmax))
