@@ -3,6 +3,7 @@
 #include "../Renderer/Model.h"
 #include "../Renderer/Mesh.h"
 #include "../Renderer/Renderer.h"
+#include "../Renderer/Primitives.h"
 
 #include "glm/vec3.hpp"
 #include "../Game/WorldConstants.h"

@@ -23,10 +23,18 @@ Model::Model(Model&& model)
 
 Model& Model::operator=(Model&& model)
 {
-    m_renderData.vao = model.m_renderData.vao;
+	m_renderData.vao			= model.m_renderData.vao;
+	m_renderData.indicesCount	= model.m_renderData.indicesCount;
+	m_renderData.textureID		= model.m_renderData.textureID;
+	m_renderData.m_mode			= model.m_renderData.m_mode;
+
     m_buffers = std::move(model.m_buffers);
 
     model.m_renderData.vao = 0;
+	model.m_renderData.indicesCount = 0;
+	model.m_renderData.textureID = 0;
+	model.m_renderData.m_mode = GL_POLYGON;
+
     return *this;
 }
 

@@ -20,7 +20,6 @@ namespace MouseRay {
 	glm::vec2 getNormalizedDeviceCoordinates(sf::Vector2i mouseCoordinates,
 		sf::Vector2u screenResolution)
 	{
-		std::cout << "Mouse: " << mouseCoordinates.x << ", " << mouseCoordinates.y << "\n";
 		float x = (2.f * mouseCoordinates.x) / screenResolution.x - 1.f;
 		float y = (2.f * mouseCoordinates.y) / screenResolution.y - 1.f;
 		return glm::vec2(x, -y);
