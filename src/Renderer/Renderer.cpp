@@ -65,7 +65,7 @@ void Renderer::renderScene(const Camera& camera)
 	nk_sfml_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
 
     //Clear the draw buffers
-    m_sfDraws.clear();
+    //m_sfDraws.clear();
     m_renderData.clear();
 	m_guiData.clear();
     

@@ -86,4 +86,6 @@ class CYGameLevel
 		// Misc
 		sf::Vector2u m_screenRes;
 		sf::Vector2i m_mousePosition;
+
+		Model sphere;
 };

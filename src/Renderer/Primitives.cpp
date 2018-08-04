@@ -41,7 +41,7 @@ namespace Primitives
 			// top
 			3, 2, 6,
 			6, 7, 3,
-
+			// extra indices for proper wireframe
 			5, 6, 2,
 			6, 2, 1
 		};
@@ -58,5 +58,46 @@ namespace Primitives
 		modelBox.setMode(mode);
 
 		return std::move(modelBox);
+	}
+
+	Model createSphere(glm::vec3 origin, float radius, GLint textureID, GLenum mode)
+	{
+		Mesh sphereMesh;
+		Model modelSphere;
+
+		unsigned int index = 0;
+
+		auto createVertex = [&](Mesh& m, int a, int b)
+		{
+			// Create vertex
+			m.vertices.push_back(radius * sin((a) / 180.f * M_PI) * sin((b) / 180.f * M_PI) - origin.x);
+			m.vertices.push_back(radius * cos((a) / 180.f * M_PI) * sin((b) / 180.f * M_PI) + origin.y);
+			m.vertices.push_back(radius * cos((b) / 180.f * M_PI) - origin.z);
+
+			// Unnecessary info 
+			m.texCoords.insert(m.texCoords.end(), { 0.0f, 0.0f, 1.0f });
+			m.normals.insert(m.normals.end(), { 1.0f, 0.0f, 0.0f });
+			m.colour.insert(m.colour.end(), { 1.0f, 0.0f, 0.0f });
+		};
+	
+		for (int b = 0; b <= 180 - sphereSpace; b += sphereSpace)
+		{
+			for (int a = 0; a <= 360 - sphereSpace; a += sphereSpace)
+			{
+				createVertex(sphereMesh, a,				  b);
+				createVertex(sphereMesh, a + sphereSpace, b);
+				createVertex(sphereMesh, a,				  b + sphereSpace);
+				createVertex(sphereMesh, a + sphereSpace, b + sphereSpace);
+
+				sphereMesh.indices.insert(sphereMesh.indices.end(), { index + 2, index + 3, index + 1,
+					index + 0 });
+				index += 4;
+			}
+		}
+
+		modelSphere.create(sphereMesh, textureID);
+		modelSphere.setMode(mode);
+
+		return std::move(modelSphere);
 	}
 }

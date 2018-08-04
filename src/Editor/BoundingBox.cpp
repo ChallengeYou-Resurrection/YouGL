@@ -115,9 +115,8 @@ BoundingBox::BoundingBox(glm::vec3 min, glm::vec3 max)
 	// If rendering the boxes then create a model for it
 	if (RENDER_BOUNDING_BOX)
 	{
-		// TODO: Create a namespace for quickly creating primitive shapes
-		m_staticBox = Primitives::createCube(m_vecMin / WORLD_SIZE, m_vecMax / WORLD_SIZE,
-			GL_LINES);
+		// TODO: Create a namespace for quickly creating primitive shapes DONE
+		m_staticBox = Primitives::createCube(m_vecMin / WORLD_SIZE, m_vecMax / WORLD_SIZE, GL_LINES);
 	}
 }
 

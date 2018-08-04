@@ -17,7 +17,10 @@ CYGameLevel::CYGameLevel(sf::Vector2u screenResolution)
 	: m_octree(512)
 	, m_editorGui(&m_floor)
 	, m_screenRes(screenResolution)
-{}
+{
+	// Test the sphere primitive (TEMP)
+	sphere = Primitives::createSphere(glm::vec3(0, 0, 0), 1, m_textures.getTexID());
+}
 
 void CYGameLevel::initGUI(nk_context * ctx)
 {
@@ -147,6 +150,8 @@ void CYGameLevel::partiallyRenderFloors(Renderer & renderer)
 {
 	for (int f = 0; f < m_floor; f++)
 		renderer.draw(m_floorModels[f].opaqueMesh);
+
+	renderer.draw(sphere);
 
 	m_octree.drawOctree(renderer);
 }
