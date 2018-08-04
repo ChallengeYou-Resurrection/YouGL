@@ -17,7 +17,7 @@ StatePlaying::StatePlaying(Game& game, Renderer& renderer)
 :   StateBase   (game)
 ,	m_level(renderer.getWindow().getSize())
 {
-    m_level.loadFromOldFormat(153804);
+    m_level.loadFromOldFormat(162608);
     //m_level.load("tmr.bcy");
 
 	// Setup GUI Context
@@ -63,7 +63,7 @@ void StatePlaying::fixedUpdate(sf::Time deltaTime)
 
 void StatePlaying::render(Renderer& renderer)
 {
-	m_level.partiallyRenderFloors(renderer); // Draw entire level (TODO: Split up)
+	m_level.partiallyRenderFloors(renderer); 
 	m_level.renderGUIs(renderer);
 
 	renderer.renderScene(m_level.getCamera()); // Finalise render

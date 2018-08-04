@@ -59,6 +59,13 @@ void CYWall::createMesh(const WorldTextures& wTex)
 	m_objectAABB = { min, max };
 
 	m_geometryMesh = std::move(mesh);
+
+	// Generate new collision mesh
+	CPolygon c_front1({ fVertices[0], fVertices[1], fVertices[3] });
+	CPolygon c_front2({ fVertices[1], fVertices[2], fVertices[3] });
+
+	m_collisionMesh.push_back(std::move(c_front1));
+	m_collisionMesh.push_back(std::move(c_front2));
 }
 
 Mesh& CYWall::getMesh()

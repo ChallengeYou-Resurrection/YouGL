@@ -6,6 +6,7 @@
 #include <array>
 
 #include <SFML/Graphics.hpp>
+#include <glm/gtx/intersect.hpp>
 #include "glm/vec3.hpp"
 
 //#include "EditorObject.h"
@@ -50,6 +51,7 @@ class GeoOctree
 		void drawOctree(Renderer& renderer) const;
 
 		int getObjectSize() const;
+		int getTotalObjectSize() const;
 		bool checkPointInOctree(const glm::vec3& point) const;
 		bool checkIfTwoPointsInSameOctree(const glm::vec3& p1, const glm::vec3& p2) const;
 		//bool checkForCollision(const glm::vec3& start, const glm::vec3& end);
@@ -62,6 +64,8 @@ class GeoOctree
 
 		typedef std::pair<float, GeoOctree*> NodeDistance;
 		std::vector<NodeDistance> getNodesIntersectingRayOrdered(const MouseRay::Ray& mRay);
+
+		std::optional<std::shared_ptr<CYGeneric>> getObjectClosestToRay(const MouseRay::Ray& mRay);
 
     protected:
 

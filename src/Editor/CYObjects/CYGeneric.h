@@ -21,6 +21,11 @@ enum class CYObject {
 struct CPolygon {
 	glm::vec3 vertex[3];
 	glm::vec3 normal;
+	CPolygon(std::vector<glm::vec3>&& v)
+	{
+		vertex[0] = v.at(0); vertex[1] = v.at(1); vertex[2] = v.at(2);
+		normal = glm::cross(v[1] - v[0], v[2] - v[0]);
+	}
 };
 
 class CYGeneric
@@ -33,6 +38,7 @@ public:
 
 	virtual Mesh& getMesh() = 0;
 	virtual MinBoundingBox& getAABB() = 0;
+	const std::vector<CPolygon>& getCollisionMesh() { return m_collisionMesh; };
 
 	// Properties
 	virtual u8 getLevel() = 0;

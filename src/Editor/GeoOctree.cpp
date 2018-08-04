@@ -135,6 +135,22 @@ int GeoOctree::getObjectSize() const
 	return m_objects.size();
 }
 
+int GeoOctree::getTotalObjectSize() const
+{
+	if (subdivided)
+	{
+		// Step case
+		int objCount = 0;
+		for (auto& node : m_nodes)
+			objCount += node->getTotalObjectSize();
+		return objCount;
+	}
+	else {
+		// Base case
+		return this->getObjectSize();
+	}
+}
+
 std::vector<std::shared_ptr<Wall>> GeoOctree::getWallVectorNearPoint(const glm::vec3& point)
 {
 	/*if (!subdivided)
@@ -236,6 +252,38 @@ void GeoOctree::getNodesIntersectingRay(const MouseRay::Ray& mRay, std::vector<G
 	}
 
 	return;
+}
+
+std::optional<std::shared_ptr<CYGeneric>> GeoOctree::getObjectClosestToRay(const MouseRay::Ray & mRay)
+{
+	// If it's subdivided then it will not have any objects
+	if (subdivided)
+		return std::nullopt;
+
+	for (auto& obj : m_objects)
+	{
+		const auto& c_mesh = obj->getCollisionMesh();
+		if (c_mesh.size() > 0)
+		{
+			for (auto& c_poly : c_mesh)
+			{
+				glm::vec3 b_pos;
+
+				// Use built-in GLM's Ray vs Triangle detection
+				if (glm::intersectRayTriangle(mRay.origin, mRay.direction, c_poly.vertex[0],
+					c_poly.vertex[1], c_poly.vertex[2], b_pos))
+				{
+					// Convert barycentric coordinates to cartesian
+					glm::vec3 c_pos = (b_pos.x * c_poly.vertex[0]) + (b_pos.y * c_poly.vertex[1])
+						+ (b_pos.z * c_poly.vertex[2]);
+
+					std::cout << "Wall detected at " << c_pos.x << ", " << c_pos.y << ", " << c_pos.z << "\n";
+				}
+			}
+		}
+	}
+
+	return std::nullopt;
 }
 
 /*bool GeoOctree::checkForCollision(const glm::vec3& start, const glm::vec3& end)

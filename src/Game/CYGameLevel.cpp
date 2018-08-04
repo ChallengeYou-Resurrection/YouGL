@@ -183,8 +183,17 @@ void CYGameLevel::update(float deltaTime)
 	m_debug.addMessage("You are looking at " + std::to_string(n) + " nodes");
 
 	std::vector<GeoOctree::NodeDistance> rayNodes = m_octree.getNodesIntersectingRayOrdered(mRay);
+	
+	// TODO: Put in separate function?
+	int objCount = 0;
 	for (auto& node : rayNodes)
-		m_debug.addMessage("node at: " + std::to_string(std::get<0>(node)));
+	{
+		objCount += node.second->getObjectSize();
+		std::optional<std::shared_ptr<CYGeneric>> obj = node.second->getObjectClosestToRay(mRay);
+	}
+
+	m_debug.addMessage(std::to_string(objCount) + " objects out of " + std::to_string(m_octree.getTotalObjectSize()) + " checked.");
+
 
 	// GUI Update
 	m_editorGui.update(deltaTime);
