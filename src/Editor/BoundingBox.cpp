@@ -93,7 +93,7 @@ const bool BoundingBox::checkRayCast(const MouseRay::Ray & ray, float t0, float 
 	if (tzmax < tmax)
 		tmax = tzmax;
 
-	std::cout << "tmin: " << tmin << ", tmax: " << tmax << "\n";
+	//std::cout << "tmin: " << tmin << ", tmax: " << tmax << "\n";
 	return ((tmin < t1) && (tmax > t0));
 }
 

@@ -175,6 +175,28 @@ bool GeoOctree::checkIfTwoPointsInSameOctree(const glm::vec3 & p1, const glm::ve
 	return true;
 }
 
+int GeoOctree::nodesIntersectingRay(const MouseRay::Ray& mRay)
+{
+	// If there's not intersection, then ignore
+	if (!checkIfRayIntersectsOctree(mRay))
+		return 0;
+
+	if (subdivided)
+	{
+		// Step case
+		// If it's a parent node, add up the results of the nodes
+		int nodeCount = 0;
+		for (auto& node : m_nodes)
+			nodeCount += node->nodesIntersectingRay(mRay); 
+
+		return nodeCount;
+	}
+	else {
+		// If child node, then represent it as 1
+		return 1;
+	}
+}
+
 /*bool GeoOctree::checkForCollision(const glm::vec3& start, const glm::vec3& end)
 {
 	return false;

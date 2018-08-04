@@ -179,8 +179,8 @@ void CYGameLevel::update(float deltaTime)
 	m_debug.add3DVector("Ray Origin", mRay.origin);
 	m_debug.add3DVector("Ray Direction", mRay.direction);
 
-	if (m_octree.checkIfRayIntersectsOctree(mRay))
-		m_debug.addMessage("Player is looking at octree");
+	int n = m_octree.nodesIntersectingRay(mRay);
+	m_debug.addMessage("You are looking at " + std::to_string(n) + " nodes");
 
 	// GUI Update
 	m_editorGui.update(deltaTime);
