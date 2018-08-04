@@ -32,7 +32,7 @@ const bool BoundingBox::checkAABB(const glm::vec3 & point)
 		point.z < m_vecMax.z);
 }
 
-const bool BoundingBox::checkRayCast(const MouseRay::Ray & ray, float t0, float t1)
+const std::optional<float> BoundingBox::checkRayCast(const MouseRay::Ray & ray, float t0, float t1)
 {
 	// ??? // Not sure why it requires to be changed to Editor coordinates
 	// Need to be more careful with how coordinates are treated in this game
@@ -67,7 +67,7 @@ const bool BoundingBox::checkRayCast(const MouseRay::Ray & ray, float t0, float 
 	}
 
 	if ((tmin > tymax) || (tymin > tmax))
-		return false;
+		return std::nullopt;
 
 	if (tymin > tmin)
 		tmin = tymin;
@@ -86,7 +86,7 @@ const bool BoundingBox::checkRayCast(const MouseRay::Ray & ray, float t0, float 
 	}
 
 	if ((tmin > tzmax) || (tzmin > tmax))
-		return false;
+		return std::nullopt;
 
 	if (tzmin > tmin)
 		tmin = tzmin;
@@ -94,7 +94,8 @@ const bool BoundingBox::checkRayCast(const MouseRay::Ray & ray, float t0, float 
 		tmax = tzmax;
 
 	//std::cout << "tmin: " << tmin << ", tmax: " << tmax << "\n";
-	return ((tmin < t1) && (tmax > t0));
+	if ((tmin < t1) && (tmax > t0))
+		return std::optional<float>{(tmin > 0) ? tmin : 0.f};
 }
 
 const glm::vec3& BoundingBox::getVecMin()

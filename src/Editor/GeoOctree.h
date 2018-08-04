@@ -57,7 +57,11 @@ class GeoOctree
 
 		// Ray Casting
 		bool checkIfRayIntersectsOctree(const MouseRay::Ray& mRay);
+		float rayDistanceToNode(const MouseRay::Ray& mRay); // -1.0 if no intersection
 		int nodesIntersectingRay(const MouseRay::Ray& mRay);
+
+		typedef std::pair<float, GeoOctree*> NodeDistance;
+		std::vector<NodeDistance> getNodesIntersectingRayOrdered(const MouseRay::Ray& mRay);
 
     protected:
 
@@ -76,6 +80,9 @@ class GeoOctree
 		std::unique_ptr<BoundingBox> m_boundingBox;
         std::vector<BoundingBox> m_subdivisionBB;
         std::array<std::unique_ptr<GeoOctree>, 8> m_nodes;
+
+		// Ray Casting
+		void getNodesIntersectingRay(const MouseRay::Ray& mRay, std::vector<GeoOctree::NodeDistance>& nodes);
 };
 
 #endif // GEOOCTREE_H

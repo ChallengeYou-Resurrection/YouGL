@@ -182,6 +182,10 @@ void CYGameLevel::update(float deltaTime)
 	int n = m_octree.nodesIntersectingRay(mRay);
 	m_debug.addMessage("You are looking at " + std::to_string(n) + " nodes");
 
+	std::vector<GeoOctree::NodeDistance> rayNodes = m_octree.getNodesIntersectingRayOrdered(mRay);
+	for (auto& node : rayNodes)
+		m_debug.addMessage("node at: " + std::to_string(std::get<0>(node)));
+
 	// GUI Update
 	m_editorGui.update(deltaTime);
 	m_debug.update(deltaTime);

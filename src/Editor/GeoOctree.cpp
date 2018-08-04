@@ -152,7 +152,13 @@ std::vector<std::shared_ptr<Wall>> GeoOctree::getWallVectorNearPoint(const glm::
 
 bool GeoOctree::checkIfRayIntersectsOctree(const MouseRay::Ray & mRay)
 {
-	return this->m_boundingBox->checkRayCast(mRay, 0.f, 50.f);
+	return (this->m_boundingBox->checkRayCast(mRay, 0.f, 50.f).has_value() ? true : false);
+}
+
+// Note, this returns a negative number if there's no intersection
+float GeoOctree::rayDistanceToNode(const MouseRay::Ray& mRay)
+{
+	return this->m_boundingBox->checkRayCast(mRay, 0.f, 50.f).value_or(-1.f);
 }
 
 bool GeoOctree::checkPointInOctree(const glm::vec3 & point) const
@@ -195,6 +201,41 @@ int GeoOctree::nodesIntersectingRay(const MouseRay::Ray& mRay)
 		// If child node, then represent it as 1
 		return 1;
 	}
+}
+
+std::vector<GeoOctree::NodeDistance> 
+GeoOctree::getNodesIntersectingRayOrdered(const MouseRay::Ray& mRay)
+{
+	// Error check
+	if (!checkIfRayIntersectsOctree(mRay) )
+		return {};
+
+	// Generate a vector containing all nodes intersecting with ray along with distance to each node
+	std::vector<GeoOctree::NodeDistance> unorderedNodes;
+	this->getNodesIntersectingRay(mRay, unorderedNodes);
+
+	// Sort them
+	std::sort(unorderedNodes.begin(), unorderedNodes.end());
+
+	return std::move(unorderedNodes);
+}
+
+void GeoOctree::getNodesIntersectingRay(const MouseRay::Ray& mRay, std::vector<GeoOctree::NodeDistance>& nodes)
+{
+	// Get distance & return if it's -1
+	float dist = rayDistanceToNode(mRay);
+	if (dist < 0)
+		return;
+
+	if (subdivided) {
+		for (auto& node : m_nodes)
+			node->getNodesIntersectingRay(mRay, nodes);
+	}
+	else {
+		nodes.push_back(std::make_pair(dist, this));
+	}
+
+	return;
 }
 
 /*bool GeoOctree::checkForCollision(const glm::vec3& start, const glm::vec3& end)
