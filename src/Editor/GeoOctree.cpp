@@ -168,13 +168,15 @@ std::vector<std::shared_ptr<Wall>> GeoOctree::getWallVectorNearPoint(const glm::
 
 bool GeoOctree::checkIfRayIntersectsOctree(const MouseRay::Ray & mRay)
 {
-	return (this->m_boundingBox->checkRayCast(mRay, 0.f, 50.f).has_value() ? true : false);
+	std::optional<float> d = this->m_boundingBox->checkRayCast(mRay, 0.f, 50.f);
+	return (d.has_value() ? true : false);
 }
 
 // Note, this returns a negative number if there's no intersection
 float GeoOctree::rayDistanceToNode(const MouseRay::Ray& mRay)
 {
-	return this->m_boundingBox->checkRayCast(mRay, 0.f, 50.f).value_or(-1.f);
+	std::optional<float> d = this->m_boundingBox->checkRayCast(mRay, 0.f, 50.f);
+	return d.value_or(-1.f);
 }
 
 bool GeoOctree::checkPointInOctree(const glm::vec3 & point) const
@@ -260,6 +262,8 @@ std::optional<std::shared_ptr<CYGeneric>> GeoOctree::getObjectClosestToRay(const
 	if (subdivided)
 		return std::nullopt;
 
+	float distToClosestObject = INFINITE;
+	std::shared_ptr<CYGeneric> closestObject;
 	for (auto& obj : m_objects)
 	{
 		const auto& c_mesh = obj->getCollisionMesh();
@@ -273,15 +277,21 @@ std::optional<std::shared_ptr<CYGeneric>> GeoOctree::getObjectClosestToRay(const
 				if (glm::intersectRayTriangle(mRay.origin, mRay.direction, c_poly.vertex[0],
 					c_poly.vertex[1], c_poly.vertex[2], b_pos))
 				{
-					// Convert barycentric coordinates to cartesian
-					glm::vec3 c_pos = (b_pos.x * c_poly.vertex[0]) + (b_pos.y * c_poly.vertex[1])
-						+ (b_pos.z * c_poly.vertex[2]);
+					// Get point of intersection, b_pos.z is the distance from the origin of the ray
+					// glm::vec3 c_pos = mRay.origin + mRay.direction * b_pos.z;
 
-					std::cout << "Wall detected at " << c_pos.x << ", " << c_pos.y << ", " << c_pos.z << "\n";
+					if (b_pos.z < distToClosestObject)
+					{
+						distToClosestObject = b_pos.z;
+						closestObject = obj;
+					}
 				}
 			}
 		}
 	}
+
+	if (closestObject != nullptr)
+		return closestObject;
 
 	return std::nullopt;
 }

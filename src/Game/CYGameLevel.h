@@ -67,6 +67,7 @@ class CYGameLevel
     private:
 		// Editor 
 		Camera m_camera;
+		std::shared_ptr<CYGeneric> m_selectedObject;
 
 		// Level Data
         std::vector<Floor> m_floorModels;

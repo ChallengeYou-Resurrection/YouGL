@@ -178,7 +178,7 @@ void CYGameLevel::update(float deltaTime)
 	MouseRay::Ray mRay = MouseRay::calculateMouseRay(m_mousePosition, m_screenRes, m_camera);
 	m_debug.add3DVector("Ray Origin", mRay.origin);
 	m_debug.add3DVector("Ray Direction", mRay.direction);
-
+	
 	int n = m_octree.nodesIntersectingRay(mRay);
 	m_debug.addMessage("You are looking at " + std::to_string(n) + " nodes");
 
@@ -189,7 +189,14 @@ void CYGameLevel::update(float deltaTime)
 	for (auto& node : rayNodes)
 	{
 		objCount += node.second->getObjectSize();
+
 		std::optional<std::shared_ptr<CYGeneric>> obj = node.second->getObjectClosestToRay(mRay);
+		if (obj != std::nullopt)
+		{
+			m_selectedObject = obj.value();
+			m_debug.addMessage("Selected object is in the " + std::to_string(m_selectedObject->getLevel()) + " floor.");
+			break;
+		}
 	}
 
 	m_debug.addMessage(std::to_string(objCount) + " objects out of " + std::to_string(m_octree.getTotalObjectSize()) + " checked.");
