@@ -209,35 +209,42 @@ void CYGameLevel::update(float deltaTime)
 	
 	// TODO: Put in separate function?
 	int objCount = 0;
+	std::optional<std::shared_ptr<CYGeneric>> obj;
 	for (auto& node : rayNodes)
 	{
 		objCount += node.second->getObjectSize();
 
-		std::optional<std::shared_ptr<CYGeneric>> obj = node.second->getObjectClosestToRay(mRay);
+		obj = node.second->getObjectClosestToRay(mRay);
 		if (obj != std::nullopt)
 		{
-			// If the new object is on another floor, rebuild the previous floor 
-			if (m_selectedObject != nullptr && 
-				obj.value()->getLevel() != m_selectedObject->getLevel())
+			if (obj.value() != m_selectedObject)
 			{
-				int lvl = m_selectedObject->getLevel();
-				m_selectedObject = nullptr;
-				this->buildFloor(lvl - 1);
+				// If the new object is on another floor, rebuild the previous floor 
+				if (m_selectedObject != nullptr &&
+					obj.value()->getLevel() != m_selectedObject->getLevel())
+				{
+					int lvl = m_selectedObject->getLevel();
+					m_selectedObject = nullptr;
+					this->buildFloor(lvl - 1);
+				}
+
+				m_selectedObject = obj.value();
+				m_debug.addMessage("Selected object is in the " + std::to_string(m_selectedObject->getLevel()) + " floor.");
+
+				this->buildFloor(m_selectedObject->getLevel() - 1);
 			}
 
-			m_selectedObject = obj.value();
-			m_debug.addMessage("Selected object is in the " + std::to_string(m_selectedObject->getLevel()) + " floor.");
-			
-			this->buildFloor(m_selectedObject->getLevel()-1);
-			
 			break;
 		}
 		else {
-			if (m_selectedObject != nullptr)
+			if (&node == &rayNodes.back())
 			{
-				int lvl = m_selectedObject->getLevel();
-				m_selectedObject = nullptr;
-				this->buildFloor(lvl - 1);
+				if (m_selectedObject != nullptr)
+				{
+					int lvl = m_selectedObject->getLevel();
+					m_selectedObject = nullptr;
+					this->buildFloor(lvl - 1);
+				}
 			}
 		}
 	}

@@ -10,14 +10,15 @@ namespace Benchmark
 		GrandTheftAuto = 36321,
 		PenguinPixel = 145505,
 		XMasCabin = 155913,
-        PacMania = 255;
+        PacMania = 255,
+		Valynstad = 162608;
 }
 
 StatePlaying::StatePlaying(Game& game, Renderer& renderer)
 :   StateBase   (game)
 ,	m_level(renderer.getWindow().getSize())
 {
-    m_level.loadFromOldFormat(162608);
+    m_level.loadFromOldFormat(Benchmark::Valynstad);
     //m_level.load("tmr.bcy");
 
 	// Setup GUI Context
