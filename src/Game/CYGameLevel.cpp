@@ -242,8 +242,7 @@ void CYGameLevel::update(float deltaTime)
 		}
 	}
 
-	m_debug.addMessage(std::to_string(objCount) + " objects out of " + std::to_string(m_octree.getTotalObjectSize()) + " checked.");
-
+	//m_debug.addMessage(std::to_string(objCount) + " objects out of " + std::to_string(m_octree.getTotalObjectSize()) + " checked.");
 
 	// GUI Update
 	m_editorGui.update(deltaTime);
