@@ -69,6 +69,8 @@ class CYGameLevel
 		Camera m_camera;
 		std::shared_ptr<CYGeneric> m_selectedObject;
 
+		void buildFloor(int floor);
+
 		// Level Data
         std::vector<Floor> m_floorModels;
 		std::vector<std::shared_ptr<CYGeneric>> m_geometry;

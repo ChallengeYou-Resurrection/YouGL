@@ -24,6 +24,8 @@ class Model : public NonCopyable
 
 		void setMode(GLenum m);
 
+		void destroyModel();
+
     private:
         RenderData m_renderData;
         std::array<GLuint, 5> m_buffers;

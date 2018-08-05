@@ -117,12 +117,13 @@ void CYGameLevel::createModels()
 				// Generate Mesh
 				obj->createMesh(m_textures);
 				m_octree.insertGeometry(obj);
-				
+
 				// Combine
 				auto mesh = obj->getMesh();
 				oFloorMesh.combineWith(mesh);
 			}
 		}
+
 		m_floorModels[f].opaqueMesh.create(oFloorMesh, m_textures.getTexID());
 	}
 
@@ -134,6 +135,28 @@ void CYGameLevel::createModels()
 	std::cout << "\nConstructing Octree\n";
 	m_octree.buildOctree();
     
+}
+
+void CYGameLevel::buildFloor(int floor)
+{
+	// Keep opaque & transparent meshes apart
+	Mesh oFloorMesh;
+	Mesh tFloorMesh;
+
+	for (auto& obj : m_geometry) {
+		if (obj->getLevel() == (floor + 1) && obj != m_selectedObject)
+		{
+			// Generate Mesh
+			obj->createMesh(m_textures);
+
+			// Combine
+			auto mesh = obj->getMesh();
+			oFloorMesh.combineWith(mesh);
+		}
+	}
+
+	m_floorModels[floor].opaqueMesh.destroyModel();
+	m_floorModels[floor].opaqueMesh.create(oFloorMesh, m_textures.getTexID());
 }
 
 // Render all floors
@@ -193,9 +216,29 @@ void CYGameLevel::update(float deltaTime)
 		std::optional<std::shared_ptr<CYGeneric>> obj = node.second->getObjectClosestToRay(mRay);
 		if (obj != std::nullopt)
 		{
+			// If the new object is on another floor, rebuild the previous floor 
+			if (m_selectedObject != nullptr && 
+				obj.value()->getLevel() != m_selectedObject->getLevel())
+			{
+				int lvl = m_selectedObject->getLevel();
+				m_selectedObject = nullptr;
+				this->buildFloor(lvl - 1);
+			}
+
 			m_selectedObject = obj.value();
 			m_debug.addMessage("Selected object is in the " + std::to_string(m_selectedObject->getLevel()) + " floor.");
+			
+			this->buildFloor(m_selectedObject->getLevel()-1);
+			
 			break;
+		}
+		else {
+			if (m_selectedObject != nullptr)
+			{
+				int lvl = m_selectedObject->getLevel();
+				m_selectedObject = nullptr;
+				this->buildFloor(lvl - 1);
+			}
 		}
 	}
 

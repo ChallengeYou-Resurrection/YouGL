@@ -46,6 +46,18 @@ Model::~Model()
     }
 }
 
+void Model::destroyModel()
+{
+	if (m_renderData.vao) {
+		glDeleteVertexArrays(1, &m_renderData.vao);
+		glDeleteBuffers(m_buffers.size(), m_buffers.data());
+	}
+
+	m_renderData.vao = 0;
+	m_renderData.indicesCount = 0;
+	m_renderData.textureID = 0;
+}
+
 void Model::create(Mesh& mesh)
 {
     auto createBuffer = [this](int index, int numDataPerPoint, const std::vector<GLfloat>& data)
