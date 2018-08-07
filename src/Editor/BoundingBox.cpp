@@ -32,6 +32,16 @@ const bool BoundingBox::checkPoint(const glm::vec3 & point)
 		point.z < m_vecMax.z);
 }
 
+const bool BoundingBox::checkIfPointNear(const glm::vec3 & point, float leniency)
+{
+	return ((point.x + leniency) > m_vecMin.x &&
+		(point.x - leniency) < m_vecMax.x &&
+		(point.y + leniency) > m_vecMin.y &&
+		(point.y - leniency) < m_vecMax.y &&
+		(point.z + leniency) > m_vecMin.z &&
+		(point.z - leniency) < m_vecMax.z);
+}
+
 const std::optional<float> BoundingBox::checkRayCast(const MouseRay::Ray & ray, float t0, float t1)
 {
 	// ??? // Not sure why it requires to be changed to Editor coordinates

@@ -184,6 +184,11 @@ bool GeoOctree::checkPointInOctree(const glm::vec3 & point) const
 	return m_boundingBox->checkPoint(point);
 }
 
+bool GeoOctree::checkPointNearOctree(const glm::vec3 & point, float margin) const
+{
+	return m_boundingBox->checkIfPointNear(point, margin);
+}
+
 bool GeoOctree::checkIfTwoPointsInSameOctree(const glm::vec3 & p1, const glm::vec3 & p2) const
 {
 	// Base case
@@ -288,7 +293,7 @@ std::optional<std::shared_ptr<CYGeneric>> GeoOctree::getObjectClosestToRay(const
 						// ignore closer items in a later octree (due to overlapping elements)
 						glm::vec3 poi = (mRay.origin + mRay.direction * b_pos.z) * WORLD_SIZE;
 
-						if (this->checkPointInOctree(poi))
+						if (this->checkPointNearOctree(poi, 0.1f))
 						{
 							distToClosestObject = b_pos.z;
 							closestObject = obj;
