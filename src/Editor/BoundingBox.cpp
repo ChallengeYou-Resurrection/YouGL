@@ -22,7 +22,7 @@ const bool BoundingBox::checkAABB(const glm::vec3& obj_minv3, const glm::vec3& o
 		this->m_vecMin.z < obj_maxv3.z);
 }
 
-const bool BoundingBox::checkAABB(const glm::vec3 & point)
+const bool BoundingBox::checkPoint(const glm::vec3 & point)
 {
 	return (point.x > m_vecMin.x &&
 		point.x < m_vecMax.x &&

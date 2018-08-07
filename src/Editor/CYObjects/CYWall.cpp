@@ -50,13 +50,23 @@ void CYWall::createMesh(const WorldTextures& wTex)
 	MeshBuilder::addQuadToMesh(mesh, bVertices, backMaterial);
 	MeshBuilder::applyWallTextureCoords(mesh, bVertices, length, backMaterial, wTex);
 
-	glm::vec3 min = glm::vec3(startPosition.x - 0.01f,
-		((float)floor + geometricHeight.bottom) * WORLD_HEIGHT, startPosition.y - 0.01f);
+	glm::vec3 min = glm::vec3(startPosition.x + 0.01f,
+		((float)floor + geometricHeight.bottom) * WORLD_HEIGHT, startPosition.y + 0.01f);
 
-	glm::vec3 max = glm::vec3(endPosition.x + 0.01f,
-		((float)floor + geometricHeight.top) * WORLD_HEIGHT, endPosition.y + 0.01f);
+	glm::vec3 max = glm::vec3(endPosition.x - 0.01f,
+		((float)floor + geometricHeight.top) * WORLD_HEIGHT, endPosition.y - 0.01f);
 
-	m_objectAABB = { min, max };
+	//if ((endPosition.x - startPosition.x) < 0 || (endPosition.y - startPosition.y) < 0)
+	//if (   (startPosition.x == endPosition.x) && (endPosition.y < startPosition.y)
+	//	|| (startPosition.y == endPosition.y) && (endPosition.x < startPosition.x))
+	int x = 0;
+	(endPosition.x > startPosition.x) ? x++ : x--;
+	(endPosition.y > startPosition.y) ? x++ : x--;
+	if (x < 0)
+		m_objectAABB = { max, min };
+	else
+		m_objectAABB = { min, max };
+		
 
 	m_geometryMesh = std::move(mesh);
 

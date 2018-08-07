@@ -181,14 +181,14 @@ float GeoOctree::rayDistanceToNode(const MouseRay::Ray& mRay)
 
 bool GeoOctree::checkPointInOctree(const glm::vec3 & point) const
 {
-	return m_boundingBox->checkAABB(point);
+	return m_boundingBox->checkPoint(point);
 }
 
 bool GeoOctree::checkIfTwoPointsInSameOctree(const glm::vec3 & p1, const glm::vec3 & p2) const
 {
 	// Base case
 	if (!subdivided)
-		return (m_boundingBox->checkAABB(p1) && m_boundingBox->checkAABB(p2));
+		return (m_boundingBox->checkPoint(p1) && m_boundingBox->checkPoint(p2));
 
 	// Step Case (Find octree with point p1)
 	for (auto& node : m_nodes)
@@ -266,6 +266,7 @@ std::optional<std::shared_ptr<CYGeneric>> GeoOctree::getObjectClosestToRay(const
 	std::shared_ptr<CYGeneric> closestObject;
 	for (auto& obj : m_objects)
 	{
+		// Get the collision mesh of the object & check it's not empty
 		const auto& c_mesh = obj->getCollisionMesh();
 		if (c_mesh.size() > 0)
 		{
@@ -278,18 +279,27 @@ std::optional<std::shared_ptr<CYGeneric>> GeoOctree::getObjectClosestToRay(const
 					c_poly.vertex[1], c_poly.vertex[2], b_pos))
 				{
 					// Get point of intersection, b_pos.z is the distance from the origin of the ray
-					// glm::vec3 c_pos = mRay.origin + mRay.direction * b_pos.z;
+					//glm::vec3 c_pos = glm::vec3(3,3,3);
 
 					if (b_pos.z < distToClosestObject)
 					{
-						distToClosestObject = b_pos.z;
-						closestObject = obj;
+						// Due to the nature of the octree, there needs to be a check
+						// that the point of intersection is inside the node or else it may 
+						// ignore closer items in a later octree (due to overlapping elements)
+						glm::vec3 poi = (mRay.origin + mRay.direction * b_pos.z) * WORLD_SIZE;
+
+						if (this->checkPointInOctree(poi))
+						{
+							distToClosestObject = b_pos.z;
+							closestObject = obj;
+						}
 					}
 				}
 			}
 		}
 	}
 
+	// Return the closest object found
 	if (closestObject != nullptr)
 		return closestObject;
 

@@ -229,8 +229,7 @@ void CYGameLevel::update(float deltaTime)
 				}
 
 				m_selectedObject = obj.value();
-				m_debug.addMessage("Selected object is in the " + std::to_string(m_selectedObject->getLevel()) + " floor.");
-
+	
 				this->buildFloor(m_selectedObject->getLevel() - 1);
 			}
 
@@ -249,7 +248,11 @@ void CYGameLevel::update(float deltaTime)
 		}
 	}
 
-	//m_debug.addMessage(std::to_string(objCount) + " objects out of " + std::to_string(m_octree.getTotalObjectSize()) + " checked.");
+	if (m_selectedObject != nullptr)
+		m_debug.addMessage("Selected object is in the " + std::to_string(m_selectedObject->getLevel()) + " floor.");
+
+
+	m_debug.addMessage(std::to_string(objCount) + " objects out of " + std::to_string(m_octree.getTotalObjectSize()) + " checked.");
 
 	// GUI Update
 	m_editorGui.update(deltaTime);
