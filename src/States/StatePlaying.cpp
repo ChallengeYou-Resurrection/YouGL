@@ -18,7 +18,7 @@ StatePlaying::StatePlaying(Game& game, Renderer& renderer)
 :   StateBase   (game)
 ,	m_level(renderer.getWindow().getSize())
 {
-    m_level.loadFromOldFormat(Benchmark::Valynstad);
+    m_level.loadFromOldFormat(Benchmark::TheMouseReturns);
     //m_level.load("tmr.bcy");
 
 	// Setup GUI Context

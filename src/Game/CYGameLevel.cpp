@@ -137,7 +137,7 @@ void CYGameLevel::createModels()
     
 }
 
-void CYGameLevel::buildFloor(int floor)
+void CYGameLevel::buildFloor(int floor, bool cacheMesh)
 {
 	// Keep opaque & transparent meshes apart
 	Mesh oFloorMesh;
@@ -155,8 +155,52 @@ void CYGameLevel::buildFloor(int floor)
 		}
 	}
 
+	if (cacheMesh)
+		cached_FloorMesh = oFloorMesh;
+
 	m_floorModels[floor].opaqueMesh.destroyModel();
 	m_floorModels[floor].opaqueMesh.create(oFloorMesh, m_textures.getTexID());
+}
+
+void CYGameLevel::rebuildWithoutReMeshing(int floor, bool cacheMesh)
+{
+	// Keep opaque & transparent meshes apart
+	Mesh oFloorMesh;
+	Mesh tFloorMesh;
+
+	for (auto& obj : m_geometry) {
+		if (obj->getLevel() == (floor + 1) && obj != m_selectedObject)
+		{
+			// Combine (don't create them)
+			auto mesh = obj->getMesh();
+			oFloorMesh.combineWith(mesh);
+		}
+	}
+
+	if (cacheMesh)
+		cached_FloorMesh = oFloorMesh;
+
+	m_floorModels[floor].opaqueMesh.destroyModel();
+	m_floorModels[floor].opaqueMesh.create(oFloorMesh, m_textures.getTexID());
+}
+
+bool CYGameLevel::rebuildFromCache(int floor)
+{
+	// Make sure the mesh exists
+	if (cached_FloorMesh.indices.size() == 0)
+		return false; 
+
+	// This function appends the selected items into the cached mesh for much faster mesh gen
+	m_selectedObject->createMesh(m_textures);
+	cached_FloorMesh.combineWith(m_selectedObject->getMesh());
+
+	m_floorModels[floor].opaqueMesh.destroyModel();
+	m_floorModels[floor].opaqueMesh.create(cached_FloorMesh, m_textures.getTexID());
+
+	// Not needed anymore, clear for later use
+	cached_FloorMesh.clearData();
+
+	return true;
 }
 
 // Render all floors
@@ -214,23 +258,36 @@ void CYGameLevel::update(float deltaTime)
 	{
 		objCount += node.second->getObjectSize();
 
+		// Get closest object that intersects with the mouse 
 		obj = node.second->getObjectClosestToRay(mRay);
 		if (obj != std::nullopt)
 		{
+			// If the object exists, make sure it's not the same as the one chosen
 			if (obj.value() != m_selectedObject)
 			{
+				// If there was a previous chosen object, remesh it
+				if (m_selectedObject != nullptr)
+					m_selectedObject->createMesh(m_textures);
+
 				// If the new object is on another floor, rebuild the previous floor 
 				if (m_selectedObject != nullptr &&
 					obj.value()->getLevel() != m_selectedObject->getLevel())
 				{
 					int lvl = m_selectedObject->getLevel();
-					m_selectedObject = nullptr;
-					this->buildFloor(lvl - 1);
+					if (rebuildFromCache(lvl - 1))
+					{
+						m_selectedObject = nullptr;
+					}
+					else {
+						m_selectedObject = nullptr;
+						this->buildFloor(lvl - 1);
+					}
 				}
 
 				m_selectedObject = obj.value();
 	
-				this->buildFloor(m_selectedObject->getLevel() - 1);
+				//this->buildFloor(m_selectedObject->getLevel() - 1, true);
+				this->rebuildWithoutReMeshing(m_selectedObject->getLevel() - 1, true);
 			}
 
 			break;

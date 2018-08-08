@@ -69,12 +69,15 @@ class CYGameLevel
 		Camera m_camera;
 		std::shared_ptr<CYGeneric> m_selectedObject;
 
-		void buildFloor(int floor);
+		void buildFloor(int floor, bool cacheMesh = false);
+		void rebuildWithoutReMeshing(int floor, bool cacheMesh = false);
+		bool rebuildFromCache(int floor);
 
 		// Level Data
         std::vector<Floor> m_floorModels;
 		std::vector<std::shared_ptr<CYGeneric>> m_geometry;
 		GeoOctree m_octree;
+		Mesh cached_FloorMesh;
 
         LevelHeader m_header;
 		WorldTextures m_textures;
