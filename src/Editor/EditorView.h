@@ -17,5 +17,11 @@ public:
 	void inputGridview(const Controller& controller);
 
 	void updateGridview(float dt, u8 floor);
+
+private:
+	// Mouse Drag
+	bool m_grid_m2Down = false;
+	sf::Vector2i m_grid_startPos;
+	glm::vec3 m_grid_dragStartVec;
 };
 

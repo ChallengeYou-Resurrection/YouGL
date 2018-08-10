@@ -74,5 +74,28 @@ void EditorView::inputGridview(const Controller & controller)
 		m_velocity.z += glm::sin(glm::radians(m_transform.rotation.y)) * speed;
 	}
 
+	if (controller.mouse2Down())
+	{
+		float mouseDragSpeed = 600.f;
+		if (m_grid_m2Down == false)
+		{
+			m_grid_m2Down = true;
+			m_grid_startPos = controller.getMousePositionRelativeToWindow();
+			m_grid_dragStartVec = m_transform.position;
+		}
+		sf::Vector2i mouseDiff = m_grid_startPos - controller.getMousePositionRelativeToWindow();
+		glm::vec3 newPos = m_grid_dragStartVec;
+		newPos.x += glm::cos(glm::radians(m_transform.rotation.y)) * mouseDiff.x / mouseDragSpeed;
+		newPos.x += glm::cos(glm::radians(m_transform.rotation.y + 90)) * mouseDiff.y / mouseDragSpeed;
+
+		newPos.z += glm::sin(glm::radians(m_transform.rotation.y)) * mouseDiff.x / mouseDragSpeed;
+		newPos.z += glm::sin(glm::radians(m_transform.rotation.y + 90)) * mouseDiff.y / mouseDragSpeed;
+
+		m_transform.position = newPos;
+	}
+	else {
+		m_grid_m2Down = false;
+	}
+
 	m_transform.rotation += controller.getLookChange();
 }

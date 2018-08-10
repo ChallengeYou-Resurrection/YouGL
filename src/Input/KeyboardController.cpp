@@ -53,6 +53,27 @@ bool KeyboardController::firePressed() const
     return isPressed(Controller::Input::Fire);
 }
 
+// Left Mouse Button
+bool KeyboardController::mouse1Down() const
+{
+	return sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
+}
+
+// Right Mouse Button
+bool KeyboardController::mouse2Down() const
+{
+	return sf::Mouse::isButtonPressed(sf::Mouse::Button::Right);
+}
+
+// Scroll Wheel
+bool KeyboardController::mouse3Down() const
+{
+	return sf::Mouse::isButtonPressed(sf::Mouse::Button::Middle);
+}
+
+
+
+
 void KeyboardController::tryToggleLookLock()
 {
    // if (!m_pWindow->hasFocus()) return;

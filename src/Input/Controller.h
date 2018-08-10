@@ -15,6 +15,10 @@ class Controller
         virtual bool downPressed() const = 0;
         virtual bool firePressed() const = 0;
 
+		virtual bool mouse1Down() const = 0;
+		virtual bool mouse2Down() const = 0;
+		virtual bool mouse3Down() const = 0;
+
         virtual glm::vec3 getLookChange() const = 0;
         virtual void tryToggleLookLock() = 0;
 

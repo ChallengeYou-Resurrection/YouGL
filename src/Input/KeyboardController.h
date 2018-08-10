@@ -17,6 +17,10 @@ class KeyboardController : public Controller
         bool downPressed() const;
         bool firePressed() const;
 
+		bool mouse1Down() const;
+		bool mouse2Down() const;
+		bool mouse3Down() const;
+
         void tryToggleLookLock();
 
         glm::vec3 getLookChange() const;
