@@ -15,6 +15,7 @@
 #include "../Util/MouseRay.h"
 #include "../Renderer/Model.h"
 #include "../Editor/EditorView.h"
+#include "../Editor/Grid.h"
 
 #include "../GUI/EditorGUI.h"
 #include "../GUI/DebugLogGUI.h"
@@ -56,6 +57,7 @@ class CYGameLevel
         void renderFloors(Renderer& renderer);
 		void partiallyRenderFloors(Renderer & renderer);
 		void renderGUIs(Renderer& renderer);
+		void renderGeneric(Renderer& renderer);
 		
 		// Misc ?
 		bool cameraCollision(Camera& camera);
@@ -98,5 +100,5 @@ class CYGameLevel
 		sf::Vector2i m_mousePosition;
 
 		Model sphere;
-		Model grid;
+		Grid m_levelGrid;
 };

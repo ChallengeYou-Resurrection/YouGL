@@ -20,7 +20,7 @@ void EditorView::update(float dt, u8 floor)
 void EditorView::updateGridview(float dt, u8 floor)
 {
 	glm::vec3 pos = m_transform.position;
-	m_transform.position = Maths::lerp(pos, glm::vec3(pos.x, ((float)floor + 2.5f) * WORLD_HEIGHT / WORLD_SIZE, pos.z), 0.4f);
+	m_transform.position = Maths::lerp(pos, glm::vec3(pos.x, ((float)floor + 3.5f) * WORLD_HEIGHT / WORLD_SIZE, pos.z), 0.4f);
 }
 
 void EditorView::inputFreeroam(const Controller & controller)

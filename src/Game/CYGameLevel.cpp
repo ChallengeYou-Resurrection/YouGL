@@ -209,7 +209,7 @@ void CYGameLevel::renderFloors(Renderer & renderer)
 	for (int f = 0; f < m_header.floorCount; f++)
 		renderer.draw(m_floorModels[f].opaqueMesh);
 
-	m_octree.drawOctree(renderer);
+	this->renderGeneric(renderer);
 }
 
 // Renders floors from 0 to a the current floor
@@ -218,9 +218,16 @@ void CYGameLevel::partiallyRenderFloors(Renderer & renderer)
 	for (int f = 0; f < m_floor; f++)
 		renderer.draw(m_floorModels[f].opaqueMesh);
 
+	this->renderGeneric(renderer);
+}
+
+void CYGameLevel::renderGeneric(Renderer & renderer)
+{
 	renderer.draw(sphere);
 
 	m_octree.drawOctree(renderer);
+	if (m_camera.m_cameraState == CameraType::GRID) 
+		renderer.draw(m_levelGrid.getModel());
 }
 
 // Render the Editor GUIs
@@ -265,6 +272,8 @@ void CYGameLevel::update(float deltaTime)
 
 	// Update camera after applying calculations to get accurate view matrix
 	m_camera.update(deltaTime, m_floor);
+
+	m_levelGrid.update(m_floor);
 }
 
 // Deprecated Function, to be replaced with MUCH better collision detection

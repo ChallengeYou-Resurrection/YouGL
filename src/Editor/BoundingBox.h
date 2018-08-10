@@ -9,7 +9,7 @@
 #include "../Game/WorldConstants.h"
 #include "../Util/MouseRay.h"
 
-const float RENDER_BOUNDING_BOX = true;
+const float RENDER_BOUNDING_BOX = false;
 
 // For AABB collision
 // Used for determining what subdivision an object should go to
