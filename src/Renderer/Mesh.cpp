@@ -27,6 +27,7 @@ void Mesh::combineWith(const Mesh & otherMesh)
     combine(colour,     otherMesh.colour); 
 
 	int i_size = (vertices.size() - 12) / 3;
+
     for (auto i : otherMesh.indices) {
         indices.push_back(i + i_size );
     }

@@ -14,7 +14,7 @@
 #include "../Editor/GeoOctree.h"
 #include "../Util/MouseRay.h"
 #include "../Renderer/Model.h"
-#include "../Renderer/Camera.h"
+#include "../Editor/EditorView.h"
 
 #include "../GUI/EditorGUI.h"
 #include "../GUI/DebugLogGUI.h"
@@ -63,15 +63,19 @@ class CYGameLevel
 
 		// Getter functions
 		Camera& getCamera();
+		u8 getFloor() { return m_floor; }
 
     private:
 		// Editor 
-		Camera m_camera;
+		EditorView m_camera;
 		std::shared_ptr<CYGeneric> m_selectedObject;
 
+		// Level Floors
 		void buildFloor(int floor, bool cacheMesh = false);
 		void rebuildWithoutReMeshing(int floor, bool cacheMesh = false);
 		bool rebuildFromCache(int floor);
+
+		bool selectObjectFromMouse();
 
 		// Level Data
         std::vector<Floor> m_floorModels;
@@ -94,4 +98,5 @@ class CYGameLevel
 		sf::Vector2i m_mousePosition;
 
 		Model sphere;
+		Model grid;
 };
