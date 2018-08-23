@@ -19,6 +19,9 @@ class Controller
 		virtual bool mouse2Down() const = 0;
 		virtual bool mouse3Down() const = 0;
 
+		virtual bool scrollForward() const = 0;
+		virtual bool scrollBackward() const = 0;
+
         virtual glm::vec3 getLookChange() const = 0;
         virtual void tryToggleLookLock() = 0;
 

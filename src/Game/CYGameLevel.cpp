@@ -271,7 +271,7 @@ void CYGameLevel::update(float deltaTime)
 		m_camera.applyVelocity();
 
 	// Update camera after applying calculations to get accurate view matrix
-	m_camera.update(deltaTime, m_floor);
+	m_camera.update(deltaTime, m_debug, m_floor, m_octree);
 
 	m_levelGrid.update(m_floor);
 }
@@ -376,7 +376,7 @@ bool CYGameLevel::selectObjectFromMouse()
 		objCount += node.second->getObjectSize();
 
 		// Get closest object that intersects with the mouse 
-		obj = node.second->getObjectClosestToRay(mRay);
+		obj = node.second->getObjectClosestToRay(mRay, m_floor);
 		if (obj != std::nullopt)
 		{
 			// If the object exists, make sure it's not the same as the one chosen

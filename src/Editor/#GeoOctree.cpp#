@@ -44,7 +44,7 @@ bool GeoOctree::subdivide()
 	m_subdivisionBB.emplace_back(glm::vec3(size / 2, 0, size / 2) + m_origin,
 		glm::vec3(size, size / 2, size) + m_origin);
 
-	// Top Nodes
+
 	m_subdivisionBB.emplace_back(glm::vec3(0, size / 2, 0) + m_origin,
 		glm::vec3(size / 2, size, size / 2) + m_origin);
 	m_subdivisionBB.emplace_back(glm::vec3(size / 2, size / 2, 0) + m_origin,
@@ -151,18 +151,19 @@ int GeoOctree::getTotalObjectSize() const
 	}
 }
 
-std::vector<std::shared_ptr<CYGeneric>> GeoOctree::getCollisionMeshAtPoint(const glm::vec3& point)
+std::vector<std::shared_ptr<Wall>> GeoOctree::getWallVectorNearPoint(const glm::vec3& point)
 {
-	if (!subdivided)
-		return m_objects;
+	/*if (!subdivided)
+		return m_walls;
 
 	for (auto& node : m_nodes)
 		if (node->checkPointInOctree(point))
-			return node->getCollisionMeshAtPoint(point);
+			return node->getWallVectorNearPoint(point);
 
 	// fail safe (Caused by point outside of the octree)
 	//std::cout << "Warning: Point is outside the octree\n";
-	return std::vector<std::shared_ptr<CYGeneric>>();
+	return std::vector<std::shared_ptr<Wall>>();*/
+	return {};
 }
 
 bool GeoOctree::checkIfRayIntersectsOctree(const MouseRay::Ray & mRay)

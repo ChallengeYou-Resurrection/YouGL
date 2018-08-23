@@ -56,7 +56,7 @@ class GeoOctree
 		bool checkPointNearOctree(const glm::vec3& point, float margin) const;
 		bool checkIfTwoPointsInSameOctree(const glm::vec3& p1, const glm::vec3& p2) const;
 		//bool checkForCollision(const glm::vec3& start, const glm::vec3& end);
-		std::vector<std::shared_ptr<Wall>> getWallVectorNearPoint(const glm::vec3& point);
+		std::vector<std::shared_ptr<CYGeneric>> getCollisionMeshAtPoint(const glm::vec3& point);
 
 		// Ray Casting
 		bool checkIfRayIntersectsOctree(const MouseRay::Ray& mRay);
@@ -66,7 +66,7 @@ class GeoOctree
 		typedef std::pair<float, GeoOctree*> NodeDistance;
 		std::vector<NodeDistance> getNodesIntersectingRayOrdered(const MouseRay::Ray& mRay);
 
-		std::optional<std::shared_ptr<CYGeneric>> getObjectClosestToRay(const MouseRay::Ray& mRay);
+		std::optional<std::shared_ptr<CYGeneric>> getObjectClosestToRay(const MouseRay::Ray& mRay, u8 maxFloor = 127);
 
     protected:
 

@@ -71,7 +71,17 @@ bool KeyboardController::mouse3Down() const
 	return sf::Mouse::isButtonPressed(sf::Mouse::Button::Middle);
 }
 
+bool KeyboardController::scrollForward() const
+{
+	//return sf::Mouse::isButtonPressed(sf::Mouse::VerticalWheel);
+	return false;
+}
 
+bool KeyboardController::scrollBackward() const
+{
+	//return sf::Mouse::isButtonPressed(sf::Mouse::VerticalWheel);
+	return false;
+}
 
 
 void KeyboardController::tryToggleLookLock()
