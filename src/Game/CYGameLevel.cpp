@@ -256,7 +256,7 @@ void CYGameLevel::update(float deltaTime)
 	int n = m_octree.nodesIntersectingRay(mRay);
 	m_debug.addMessage("You are looking at " + std::to_string(n) + " nodes");
 
-	this->selectObjectFromMouse();
+	//this->selectObjectFromMouse();
 
 	// GUI Update
 	m_editorGui.update(deltaTime);

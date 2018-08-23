@@ -24,7 +24,7 @@ struct CPolygon {
 	CPolygon(std::vector<glm::vec3>&& v)
 	{
 		vertex[0] = v.at(0); vertex[1] = v.at(1); vertex[2] = v.at(2);
-		normal = glm::cross(v[1] - v[0], v[2] - v[0]);
+		normal = glm::normalize(glm::cross(v[1] - v[0], v[2] - v[0]));
 	}
 };
 

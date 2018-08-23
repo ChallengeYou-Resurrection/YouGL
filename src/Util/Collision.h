@@ -1,16 +1,22 @@
 #pragma once
 
 #include "../Maths/GlmCommon.h"
+#include "../Game/WorldConstants.h"
+
+typedef unsigned int uint32;
+#define collision_in(a) ((uint32&) a)
 
 namespace Collision
 {
-	// Functions that work in the Epsilloid Space as described by Kasper Fauerby
-	// Reference used: http://www.peroxide.dk/papers/collision/collision.pdf
 	namespace eSpace
 	{
-		// Takes in a ray and a plane in epsilloid space and returns the distance to the plane
-		// If no intersection takes place, it return -1.0
-		double intersectRayPlane(const glm::vec3& rayOrigin, const glm::vec3& rayDirection,
-			const glm::vec3& planeOrigin, const glm::vec3& planeNormal);
+		// Given coordinates, check if they are inside of the triangle
+		// Code written by Keidy from Mr-Gamemaker,
+		// it is included on Kasper Fauerby's collision detection paper
+
+		bool checkPointInTriangle(const glm::vec3& point, const glm::vec3& pa,
+			const glm::vec3& pb, const glm::vec3& pc);
+
+		glm::vec3 covertToESpace(const glm::vec3& vec);
 	}
 }

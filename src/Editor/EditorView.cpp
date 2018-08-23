@@ -193,41 +193,98 @@ void EditorView::updatePlayer(float dt, DebugLogGUI& d_gui, GeoOctree& octr)
 
 	// Initialize vectors 
 	glm::vec3 p1, p2, p3;
-	glm::vec3 pSize = glm::vec3(5, 7, 5);
+	glm::vec3 pSize = glm::vec3(1, 1, 1);
 
-	glm::vec3 planeIntersection;
+	glm::vec3 e_velocity	= Collision::eSpace::covertToESpace(m_velocity);
+	glm::vec3 e_origin		= Collision::eSpace::covertToESpace(m_startPosition);
+	glm::vec3 e_velocityN	= glm::normalize(e_velocity);
 
 	for (auto & obj : wall_list)
 	{
 		for (auto & c_tri : obj->getCollisionMesh())
 		{
 			// Convert to Epsilon Space
-			p1.x = c_tri.vertex[0].x / pSize.x;
-			p1.y = c_tri.vertex[0].y / pSize.y;
-			p1.z = c_tri.vertex[0].z / pSize.z;
+			p1 = Collision::eSpace::covertToESpace(Coordinate::WorldToLevel(c_tri.vertex[0]));
+			p2 = Collision::eSpace::covertToESpace(Coordinate::WorldToLevel(c_tri.vertex[1]));
+			p3 = Collision::eSpace::covertToESpace(Coordinate::WorldToLevel(c_tri.vertex[2]));
 
-			p2.x = c_tri.vertex[1].x / pSize.x;
-			p2.y = c_tri.vertex[1].y / pSize.y;
-			p2.z = c_tri.vertex[1].z / pSize.z;
-
-			p3.x = c_tri.vertex[2].x / pSize.x;
-			p3.y = c_tri.vertex[2].y / pSize.y;
-			p3.z = c_tri.vertex[2].z / pSize.z;
-
-			// Get plane intersection point
-			planeIntersection = m_startPosition - c_tri.normal;
-
-			// Work out if the plane is 
-			glm::vec3 direction = p1 - planeIntersection;
-			double d = glm::dot(direction, c_tri.normal);
-
-			if (d > 0.0001f)
+			// Check if the velocity vector is facing the front of the triangle
+			if (glm::dot(c_tri.normal, e_velocityN) >= 0)
 			{
-				// The plane is behind of the initial position
-				
-			}
-			else {
-				// The plane is infront of initial position
+				double t0, t1;
+				bool embeddedInPlane = false;
+
+				// Get the +ve distance from the origin of the camera to the triangle's plane
+				double eq = -(c_tri.normal.x*p1.x + c_tri.normal.y*p1.y+ c_tri.normal.z*p1.z);;
+				double distanceToPlane = glm::dot(e_origin, c_tri.normal) + eq;
+
+				float normalDotVelocity = glm::dot(c_tri.normal, e_velocity);
+
+				// Check if the player is travelling parallel to the plane
+				if (normalDotVelocity == 0.f)
+				{
+					// Check if the plane is not embedded
+					if (fabs(distanceToPlane) >= 1.0f)
+					{
+						// No collision possible, we can skip checking
+						continue;
+					}
+					else {
+						// The plane is actually embedded despite being parallel
+						// Maybe stuck?
+						embeddedInPlane = true;
+						t0 = 0.0f; t1 = 1.0f;
+					}
+				}
+				else {
+					t0 = (-1.0f - distanceToPlane) / normalDotVelocity;
+					t1 = ( 1.0f - distanceToPlane) / normalDotVelocity;
+
+					// Assure that t0 is below t1
+					if (t0 > t1)
+					{
+						// Swap
+						double temp = t1;
+						t1 = t0;
+						t0 = t1;
+					}
+
+					// Make sure that at least one result lies between 0 and 1
+					// If not then there is no possibility of collision
+					if (t0 > 1.0f || t1 < 0.0f)
+						continue;
+
+					// Clamp values to 0-1
+					if (t0 < 0.f) t0 = 0.f;
+					if (t0 > 1.f) t0 = 1.f;
+					if (t1 < 0.f) t1 = 0.f;
+					if (t1 > 1.f) t1 = 1.f;
+				}
+
+				// With t0 and t1 calculated, for any collision to occur, they must be between
+				// these two time values
+				glm::vec3 pointOfCollision;
+				bool collided = false;
+				float t = 1.0f;
+
+				// First collision check - Collision inside the triangle
+				// This must occur at t0 as that's when it rests on the front of the triangle
+				if (!embeddedInPlane)
+				{
+					//std::cout << "Checking " << distanceToPlane << "\n";
+					glm::vec3 planeIntersectionPoint = (e_origin - c_tri.normal)
+						+ ((float)t0 * e_velocity);
+
+					// Check if this point exists within the triangle
+ 					if (Collision::eSpace::checkPointInTriangle(planeIntersectionPoint, p1, p2, p3))
+					{
+  						std::cout << "Collision detected " << planeIntersectionPoint.x << "\n";
+
+						collided = true;
+						t = (float)t0;
+						pointOfCollision = planeIntersectionPoint;
+					}
+				}
 			}
 		}
 	}
