@@ -19,6 +19,71 @@ bool Collision::eSpace::checkPointInTriangle(const glm::vec3 & point, const glm:
 	return ((collision_in(z)& ~(collision_in(x) | collision_in(y))) & 0x80000000);
 }
 
+glm::vec3 Collision::eSpace::collideWithWorld(const std::vector<std::shared_ptr<CYGeneric>>& obj_list,
+	P_CollisionPacket* pkg, const glm::vec3 & pos, const glm::vec3 & vel, int depth)
+{
+	// ???
+	float unitScale = unitsPerMeter / 100.0f;
+	float veryCloseDistance = 0.005f * unitScale;
+
+	// Avoid recursing too deep
+	if (depth > 5)
+		return pos;
+
+	// Set the packet data
+	pkg->e_velocity		 = vel;
+	pkg->e_velocityN	 = glm::normalize(vel);
+	pkg->e_origin		 = pos;
+	pkg->foundCollision  = false;
+	pkg->nearestDistance = INFINITY;
+
+	// Iterate through every collision mesh 
+	for (auto & obj : obj_list)
+		for (auto & c_tri : obj->getCollisionMesh())
+			Collision::eSpace::checkCollision(pkg, c_tri);
+
+	// If there's no collision
+	if (!pkg->foundCollision)
+	{
+		//std::cout << "No collision at " << Collision::eSpace::collisionRecursionDepth << "\n";
+		return glm::vec3(pos + vel);
+	}
+
+	// If there is a collision detected
+	glm::vec3 destination = pos + vel;
+	glm::vec3 newPoint = pos;
+
+	if (pkg->nearestDistance >= veryCloseDistance)
+	{
+		glm::vec3 newV = (float)(pkg->nearestDistance - veryCloseDistance) * pkg->e_velocityN;
+		newPoint = pkg->e_origin + newV;
+
+		newV = glm::normalize(newV);
+		pkg->collisionPoint -= veryCloseDistance * newV;
+	}
+
+	// Determine the sliding plane
+	glm::vec3 slidePlaneOrigin = pkg->collisionPoint;
+	glm::vec3 slidePlaneNormal = newPoint - pkg->collisionPoint;
+	slidePlaneNormal = glm::normalize(slidePlaneNormal);
+
+	double eq = -(slidePlaneNormal.x*slidePlaneOrigin.x
+		+ slidePlaneNormal.y*slidePlaneOrigin.y
+		+ slidePlaneNormal.z*slidePlaneOrigin.z);
+	double distanceFromDestinationToPlane = glm::dot(destination, slidePlaneNormal) + eq;
+
+	glm::vec3 newDestination = destination - ((float)distanceFromDestinationToPlane * slidePlaneNormal);
+
+	glm::vec3 newVelocityVector = newDestination - pkg->collisionPoint;
+
+	// Recursion
+	if (glm::length(newVelocityVector) < veryCloseDistance) {
+		return newPoint;
+	}
+
+	return collideWithWorld(obj_list, pkg, newPoint, newVelocityVector, depth + 1);
+}
+
 glm::vec3 Collision::eSpace::covertToESpace(const glm::vec3 & vec, const glm::vec3& pRadius)
 {
 	return glm::vec3(vec.x / pRadius.x, vec.y / pRadius.y, vec.z / pRadius.z);

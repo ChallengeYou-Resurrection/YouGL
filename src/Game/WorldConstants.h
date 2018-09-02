@@ -14,4 +14,10 @@ namespace Coordinate
 		return glm::vec3(coord.x * WORLD_SIZE, coord.y * WORLD_SIZE,
 			coord.z * WORLD_SIZE);
 	}
+
+	static constexpr glm::vec3 LevelToWorld(const glm::vec3& coord)
+	{
+		return glm::vec3(coord.x / WORLD_SIZE, coord.y / WORLD_SIZE,
+			coord.z / WORLD_SIZE);
+	}
 }

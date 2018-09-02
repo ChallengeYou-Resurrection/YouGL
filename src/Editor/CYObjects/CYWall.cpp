@@ -94,13 +94,13 @@ void CYWall::createMesh(const WorldTextures& wTex)
 	m_collisionMesh.clear();
 	CPolygon c_front1({ fVertices[0], fVertices[1], fVertices[3] });
 	CPolygon c_front2({ fVertices[1], fVertices[2], fVertices[3] });
-	CPolygon c_front3({ fVertices[3], fVertices[1], fVertices[0] });
-	CPolygon c_front4({ fVertices[3], fVertices[2], fVertices[1] });
+	//CPolygon c_front3({ fVertices[3], fVertices[1], fVertices[0] });
+	//CPolygon c_front4({ fVertices[3], fVertices[2], fVertices[1] });
 
 	m_collisionMesh.push_back(std::move(c_front1));
 	m_collisionMesh.push_back(std::move(c_front2));
-	m_collisionMesh.push_back(std::move(c_front3));
-	m_collisionMesh.push_back(std::move(c_front4));
+	//m_collisionMesh.push_back(std::move(c_front3));
+	//m_collisionMesh.push_back(std::move(c_front4));
 }
 
 Mesh& CYWall::getMesh()

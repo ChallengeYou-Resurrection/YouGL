@@ -182,7 +182,7 @@ void EditorView::updatePlayer(float dt, DebugLogGUI& d_gui, GeoOctree& octr)
 
 	// TODO: Get all node data that intersects with the swept sphere
 	std::vector<std::shared_ptr<CYGeneric>> wall_list = octr.getCollisionMeshAtPoint(m_startPosition);
-
+	
 	// Insert more walls 
 	if (!octr.checkIfTwoPointsInSameOctree(m_startPosition, m_endPosition))
 	{
@@ -196,23 +196,17 @@ void EditorView::updatePlayer(float dt, DebugLogGUI& d_gui, GeoOctree& octr)
 	c_pkg.playerRadius = glm::vec3(0.7f, 2.f, 0.7f);
 
 	c_pkg.R3Position    = m_startPosition;
-	c_pkg.R3Velocity	= m_velocity;
+	c_pkg.R3Velocity	= m_velocity * 15.f;
 
-	c_pkg.e_velocity	= Collision::eSpace::covertToESpace(c_pkg.R3Velocity, c_pkg.playerRadius);
-	c_pkg.e_origin		= Collision::eSpace::covertToESpace(c_pkg.R3Position, c_pkg.playerRadius);
+	glm::vec3 e_velocity	= Collision::eSpace::covertToESpace(c_pkg.R3Velocity, c_pkg.playerRadius);
+	glm::vec3 e_origin		= Collision::eSpace::covertToESpace(c_pkg.R3Position, c_pkg.playerRadius);
 	c_pkg.e_velocityN	= glm::normalize(c_pkg.e_velocity);
 
-	for (auto & obj : wall_list)
-	{
-		for (auto & c_tri : obj->getCollisionMesh())
-		{
-			Collision::eSpace::checkCollision(&c_pkg, c_tri);
-		}
-	}
+	glm::vec3 finalPos = Collision::eSpace::collideWithWorld(wall_list, &c_pkg, e_origin, e_velocity, 0);
+	d_gui.add3DVector("final pos", Coordinate::LevelToWorld(c_pkg.playerRadius * finalPos));
+	d_gui.add3DVector("supposed", Coordinate::LevelToWorld(c_pkg.playerRadius * (m_endPosition)));
 
-	if (c_pkg.foundCollision)
-	{
-		// TODO: Proper collision response
-		m_velocity = -m_velocity;
-	}
+	// TODO: Proper collision response
+	m_velocity = glm::vec3(0, 0, 0);
+	this->m_transform.position = Coordinate::LevelToWorld(c_pkg.playerRadius * finalPos);
 }
