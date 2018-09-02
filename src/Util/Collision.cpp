@@ -21,5 +21,47 @@ bool Collision::eSpace::checkPointInTriangle(const glm::vec3 & point, const glm:
 
 glm::vec3 Collision::eSpace::covertToESpace(const glm::vec3 & vec)
 {
-	return glm::vec3(vec.x / 1.f, vec.y / 1.f, vec.z / 1.f);
+	return glm::vec3(vec.x / 1.f, vec.y / 4.f, vec.z / 1.f);
+}
+
+bool Collision::eSpace::getLowestRoot(float a, float b, float c, float maxR, float* newT)
+{
+	float determinant = b * b - 4 * a*c;
+
+	// Check for any roots
+	if (determinant < 0)
+		return false;
+
+	// If the determinant is 0, then there's only 1 root
+	if (fabs(determinant) < 0.0001f)
+	{
+		float x = -b / (2 * a);
+		if (x > 0 && x < maxR)
+		{
+			*newT = x;
+			return true;
+		}
+	}
+
+	float sDeterminant = sqrt(determinant);
+
+	// Determine whether A is positive so we don't need to swap the values
+	int aPositive = (0 < a) - (a < 0);
+	float x1 = (-b + -aPositive * sDeterminant) / (2 * a);
+
+	if (x1 > 0 && x1 < maxR)
+	{
+		*newT = x1;
+		return true;
+	}
+
+	// If x1 is less than 0, then we'll take the larger root
+	float x2 = (-b + aPositive * sDeterminant) / (2 * a);
+	if (x2 > 0 && x2 < maxR)
+	{
+		*newT = x2;
+		return true;
+	}
+
+	return false;
 }

@@ -18,7 +18,7 @@ StatePlaying::StatePlaying(Game& game, Renderer& renderer)
 :   StateBase   (game)
 ,	m_level(renderer.getWindow().getSize())
 {
-    m_level.loadFromOldFormat(Benchmark::XMasCabin);
+    m_level.loadFromOldFormat(76037);
     //m_level.load("tmr.bcy");
 
 	// Setup GUI Context

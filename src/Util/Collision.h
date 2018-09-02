@@ -1,7 +1,11 @@
 #pragma once
 
 #include "../Maths/GlmCommon.h"
+#include "glm/gtx/norm.hpp"
+
 #include "../Game/WorldConstants.h"
+
+#include <iostream>
 
 typedef unsigned int uint32;
 #define collision_in(a) ((uint32&) a)
@@ -18,5 +22,7 @@ namespace Collision
 			const glm::vec3& pb, const glm::vec3& pc);
 
 		glm::vec3 covertToESpace(const glm::vec3& vec);
+
+		bool getLowestRoot(float a, float b, float c, float maxR, float* newT);
 	}
 }

@@ -166,6 +166,10 @@ void EditorView::inputPlayer(const Controller & controller)
 	p_velocity.y *= 0.90f;
 	p_velocity.z *= 0.85f;
 
+	if (fabs(p_velocity.x) < 0.0001f) p_velocity.x = 0.f;
+	if (fabs(p_velocity.y) < 0.0001f) p_velocity.y = 0.f;
+	if (fabs(p_velocity.z) < 0.0001f) p_velocity.z = 0.f;
+
 	m_transform.rotation += controller.getLookChange();
 }
 
@@ -185,11 +189,6 @@ void EditorView::updatePlayer(float dt, DebugLogGUI& d_gui, GeoOctree& octr)
 		std::vector<std::shared_ptr<CYGeneric>> extended_wall_list = octr.getCollisionMeshAtPoint(m_endPosition);
 		wall_list.insert(wall_list.end(), extended_wall_list.begin(), extended_wall_list.end());
 	}
-
-	//d_gui.add3DVector("velocity", velocity);
-	d_gui.addMessage("vec size: " + std::to_string(wall_list.size()));
-
-
 
 	// Initialize vectors 
 	glm::vec3 p1, p2, p3;
@@ -215,7 +214,7 @@ void EditorView::updatePlayer(float dt, DebugLogGUI& d_gui, GeoOctree& octr)
 				bool embeddedInPlane = false;
 
 				// Get the +ve distance from the origin of the camera to the triangle's plane
-				double eq = -(c_tri.normal.x*p1.x + c_tri.normal.y*p1.y+ c_tri.normal.z*p1.z);;
+				double eq = -(c_tri.normal.x*p1.x + c_tri.normal.y*p1.y+ c_tri.normal.z*p1.z);
 				double distanceToPlane = glm::dot(e_origin, c_tri.normal) + eq;
 
 				float normalDotVelocity = glm::dot(c_tri.normal, e_velocity);
@@ -239,6 +238,7 @@ void EditorView::updatePlayer(float dt, DebugLogGUI& d_gui, GeoOctree& octr)
 				else {
 					t0 = (-1.0f - distanceToPlane) / normalDotVelocity;
 					t1 = ( 1.0f - distanceToPlane) / normalDotVelocity;
+					//d_gui.addMessage("ndv: " + std::to_string(normalDotVelocity));
 
 					// Assure that t0 is below t1
 					if (t0 > t1)
@@ -253,6 +253,9 @@ void EditorView::updatePlayer(float dt, DebugLogGUI& d_gui, GeoOctree& octr)
 					// If not then there is no possibility of collision
 					if (t0 > 1.0f || t1 < 0.0f)
 						continue;
+
+					d_gui.addMessage("t0: " + std::to_string(t0));
+					d_gui.addMessage("t1: " + std::to_string(t1));
 
 					// Clamp values to 0-1
 					if (t0 < 0.f) t0 = 0.f;
@@ -278,12 +281,92 @@ void EditorView::updatePlayer(float dt, DebugLogGUI& d_gui, GeoOctree& octr)
 					// Check if this point exists within the triangle
  					if (Collision::eSpace::checkPointInTriangle(planeIntersectionPoint, p1, p2, p3))
 					{
-  						std::cout << "Collision detected " << planeIntersectionPoint.x << "\n";
+  						std::cout << "Collision detected " << distanceToPlane << "\n";
 
 						collided = true;
 						t = (float)t0;
 						pointOfCollision = planeIntersectionPoint;
 					}
+				}
+
+				// If no collision has been found yet, a swept sphere is checked against
+				// every point and line of the triangle
+				if (collided == false)
+				{
+					float velocityLengthSquared = glm::length2(e_velocity);
+					float a, b, c;
+					float newT;
+
+					// Check every point
+					a = velocityLengthSquared;
+
+					auto checkPoint = [&](const glm::vec3& p)
+					{
+						b = 2.f * (glm::dot(e_velocityN, e_origin - p));
+						c = glm::length2(p - e_origin) - 1.f;
+
+						//std::cout << "a: " << a << ", b: " << b << ", c: " << c << "\n";
+						if (Collision::eSpace::getLowestRoot(a, b, c, t, &newT))
+						{
+							t = newT;
+         					collided = true;
+							pointOfCollision = p;
+						}
+					};
+
+					// Point 1
+					checkPoint(p1);
+					checkPoint(p2);
+					checkPoint(p3);
+
+					// Check edges/lines of the triangle 
+					glm::vec3 edge, baseToVertex;
+					float edgeSquaredLength, edgeDotVelocity, edgeDotOriginToVertex;
+
+					// p_1 -> p_2
+					auto checkEdge = [&](const glm::vec3& p_1, const glm::vec3& p_2)
+					{
+						edge			= p_2 - p_1;
+						baseToVertex	= p_1 - e_origin;
+						edgeSquaredLength		= glm::length2(edge);
+						edgeDotVelocity			= glm::dot(edge, e_velocityN);
+						edgeDotOriginToVertex	= glm::dot(edge, baseToVertex);
+
+						// Quadratic parameters
+						// A = ||edge||^2 * -||vel||^2 + (edge . vel)^2
+						a = (edgeSquaredLength * -velocityLengthSquared) +
+							(edgeDotVelocity * edgeDotVelocity);
+						// B = ||edge||^2 * 2(vel . baseToVertex) - 2((edge . vel)(edge . baseToVertex)
+						b = (edgeSquaredLength * (2.f * glm::dot(e_velocityN, baseToVertex))) -
+							(2.f * edgeDotVelocity * edgeDotOriginToVertex);
+						// C = ||edge||^2 * (1 - ||baseToVertex||^2) + (edge . baseToVertex)^2
+						c = (edgeSquaredLength * (1.f - glm::length2(baseToVertex))) +
+							(edgeDotOriginToVertex * edgeDotOriginToVertex);
+
+						// Check if the sweep sphere collides with the infinite line created
+						if (Collision::eSpace::getLowestRoot(a, b, c, t, &newT))
+						{
+							float f = (edgeDotVelocity * newT - edgeDotOriginToVertex) / edgeSquaredLength;
+							if (f >= 0.f && f <= 1.f)
+							{
+								// New intersection
+								t = newT;
+								collided = true;
+								pointOfCollision = p_1 + f * edge;
+							}
+						}
+						else {
+							//std::cout << "a: " << a << ", b: " << b << ", c: " << c << "\n";
+						}
+					};
+
+					checkEdge(p1, p2);
+					checkEdge(p2, p3);
+					checkEdge(p3, p1);
+
+					if (collided)
+						std::cout << "Welcome\n";
+
 				}
 			}
 		}
