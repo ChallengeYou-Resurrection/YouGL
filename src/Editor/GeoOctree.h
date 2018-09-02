@@ -7,7 +7,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <glm/gtx/intersect.hpp>
-#include "glm/vec3.hpp"
+#include <glm/vec3.hpp>
 
 //#include "EditorObject.h"
 #include "BoundingBox.h"

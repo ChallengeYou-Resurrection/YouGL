@@ -2,7 +2,7 @@
 
 namespace Primitives
 {
-	Model Primitives::createCube(glm::vec3 min, glm::vec3 max, GLenum mode)
+	Model createCube(glm::vec3 min, glm::vec3 max, GLenum mode)
 	{
 		Mesh cubeMesh;
 		Model modelBox;

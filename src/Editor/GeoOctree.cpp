@@ -262,7 +262,7 @@ std::optional<std::shared_ptr<CYGeneric>> GeoOctree::getObjectClosestToRay(const
 	if (subdivided)
 		return std::nullopt;
 
-	float distToClosestObject = INFINITE;
+	float distToClosestObject = INFINITY;
 	std::shared_ptr<CYGeneric> closestObject;
 	for (auto& obj : m_objects)
 	{
