@@ -1,28 +1,15 @@
 #include "Collision.h"
 
-// Code written by Keidy from Mr-Gamemaker
-bool Collision::eSpace::checkPointInTriangle(const glm::vec3 & point, const glm::vec3 & pa, 
-	const glm::vec3 & pb, const glm::vec3 & pc)
-{
-	glm::vec3 e10 = pb - pa;
-	glm::vec3 e20 = pc - pa;
-	float a = glm::dot(e10, e10);
-	float b = glm::dot(e10, e20);
-	float c = glm::dot(e20, e20);
-	float ac_bb = (a*c) - (b*b);
-	glm::vec3 vp(point.x - pa.x, point.y - pa.y, point.z - pa.z);
-	float d = glm::dot(vp, e10);
-	float e = glm::dot(vp, e20);
-	float x = (d*c) - (e*b);
-	float y = (e*a) - (d*b);
-	float z = x + y - ac_bb;
-	return ((collision_in(z)& ~(collision_in(x) | collision_in(y))) & 0x80000000);
-}
+// Note: Most of this code comes from Kasper Fauerby's tutorial on collision detection
+// It's very well written and I highly recommend it 
+// Link: http://www.peroxide.dk/papers/collision/collision.pdf
+
+// I've modified the code so it works with glm & the game's environment
 
 glm::vec3 Collision::eSpace::collideWithWorld(const std::vector<std::shared_ptr<CYGeneric>>& obj_list,
 	P_CollisionPacket* pkg, const glm::vec3 & pos, const glm::vec3 & vel, int depth)
 {
-	// ???
+	// Determine how close we want to get to a polygon
 	float unitScale = unitsPerMeter / 100.0f;
 	float veryCloseDistance = 0.005f * unitScale;
 
@@ -140,17 +127,27 @@ void Collision::eSpace::checkCollision(P_CollisionPacket* pkg, const CPolygon& c
 	p2 = Collision::eSpace::covertToESpace(Coordinate::WorldToLevel(c_tri.vertex[1]), pkg->playerRadius);
 	p3 = Collision::eSpace::covertToESpace(Coordinate::WorldToLevel(c_tri.vertex[2]), pkg->playerRadius);
 
-	// Check if the velocity vector is facing the front of the triangle
+	// Check if the velocity vector is facing the front of the triangle 
 	if (glm::dot(c_tri.normal, pkg->e_velocityN) >= 0)
 	{
 		double t0, t1;
 		bool embeddedInPlane = false;
 
-		// Get the +ve distance from the origin of the camera to the triangle's plane
-		double eq = -(c_tri.normal.x*p1.x + c_tri.normal.y*p1.y + c_tri.normal.z*p1.z);
-		double distanceToPlane = glm::dot(pkg->e_origin, c_tri.normal) + eq;
+		glm::vec3 planeNormal = c_tri.normal;
+		//if ((pkg->R3Position.x * c_tri.normal.x + pkg->R3Position.y * c_tri.normal.y + pkg->R3Position.z * c_tri.normal.z + c_tri.d) < 0)
+		//if (glm::dot(c_tri.normal, pkg->e_velocityN) < 0)
+		//{
+		//	planeNormal = -c_tri.normal;
+		//}
 
-		float normalDotVelocity = glm::dot(c_tri.normal,pkg->e_velocity);
+		//if ((pkg->R3Position.x * c_tri.normal.x + pkg->R3Position.y * c_tri.normal.y + pkg->R3Position.z * c_tri.normal.z + c_tri.d) > 0)
+		//		return;
+
+		// Get the +ve distance from the origin of the camera to the triangle's plane
+		double eq = -(planeNormal.x*p1.x + planeNormal.y*p1.y + planeNormal.z*p1.z);
+		double distanceToPlane = glm::dot(pkg->e_origin, planeNormal) + eq;
+
+		float normalDotVelocity = glm::dot(planeNormal,pkg->e_velocityN);
 
 		// Check if the player is travelling parallel to the plane
 		if (normalDotVelocity == 0.f)
@@ -205,7 +202,7 @@ void Collision::eSpace::checkCollision(P_CollisionPacket* pkg, const CPolygon& c
 		if (!embeddedInPlane)
 		{
 			//std::cout << "Checking " << distanceToPlane << "\n";
-			glm::vec3 planeIntersectionPoint = (pkg->e_origin - c_tri.normal)
+			glm::vec3 planeIntersectionPoint = (pkg->e_origin - planeNormal)
 				+ ((float)t0 * pkg->e_velocity);
 
 			// Check if this point exists within the triangle
@@ -306,4 +303,23 @@ void Collision::eSpace::checkCollision(P_CollisionPacket* pkg, const CPolygon& c
 			}
 		}
 	}
+}
+
+// Code written by Keidy from Mr-Gamemaker
+bool Collision::eSpace::checkPointInTriangle(const glm::vec3 & point, const glm::vec3 & pa,
+	const glm::vec3 & pb, const glm::vec3 & pc)
+{
+	glm::vec3 e10 = pb - pa;
+	glm::vec3 e20 = pc - pa;
+	float a = glm::dot(e10, e10);
+	float b = glm::dot(e10, e20);
+	float c = glm::dot(e20, e20);
+	float ac_bb = (a*c) - (b*b);
+	glm::vec3 vp(point.x - pa.x, point.y - pa.y, point.z - pa.z);
+	float d = glm::dot(vp, e10);
+	float e = glm::dot(vp, e20);
+	float x = (d*c) - (e*b);
+	float y = (e*a) - (d*b);
+	float z = x + y - ac_bb;
+	return ((collision_in(z)& ~(collision_in(x) | collision_in(y))) & 0x80000000);
 }

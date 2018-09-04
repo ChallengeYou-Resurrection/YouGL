@@ -193,20 +193,23 @@ void EditorView::updatePlayer(float dt, DebugLogGUI& d_gui, GeoOctree& octr)
 	// Initialize vectors 
 	Collision::eSpace::P_CollisionPacket c_pkg;
 
-	c_pkg.playerRadius = glm::vec3(0.7f, 2.f, 0.7f);
+	c_pkg.playerRadius = glm::vec3(1.f, 2.f, 1.f);
 
 	c_pkg.R3Position    = m_startPosition;
-	c_pkg.R3Velocity	= m_velocity * 15.f;
+	c_pkg.R3Velocity	= m_velocity;
 
-	glm::vec3 e_velocity	= Collision::eSpace::covertToESpace(c_pkg.R3Velocity, c_pkg.playerRadius);
-	glm::vec3 e_origin		= Collision::eSpace::covertToESpace(c_pkg.R3Position, c_pkg.playerRadius);
-	c_pkg.e_velocityN	= glm::normalize(c_pkg.e_velocity);
+	glm::vec3 e_velocity = Collision::eSpace::covertToESpace(c_pkg.R3Velocity, c_pkg.playerRadius);
+	glm::vec3 e_origin	 = Collision::eSpace::covertToESpace(c_pkg.R3Position, c_pkg.playerRadius);
+	c_pkg.e_velocityN	 = glm::normalize(c_pkg.e_velocity);
 
 	glm::vec3 finalPos = Collision::eSpace::collideWithWorld(wall_list, &c_pkg, e_origin, e_velocity, 0);
 	d_gui.add3DVector("final pos", Coordinate::LevelToWorld(c_pkg.playerRadius * finalPos));
-	d_gui.add3DVector("supposed", Coordinate::LevelToWorld(c_pkg.playerRadius * (m_endPosition)));
+	d_gui.add3DVector("egg", Coordinate::LevelToWorld(c_pkg.playerRadius * (e_origin)));
+	d_gui.add3DVector("supposed", Coordinate::LevelToWorld(m_endPosition));
 
 	// TODO: Proper collision response
-	m_velocity = glm::vec3(0, 0, 0);
-	this->m_transform.position = Coordinate::LevelToWorld(c_pkg.playerRadius * finalPos);
+	glm::vec3 r3final = c_pkg.playerRadius * finalPos;
+	m_velocity = r3final - m_startPosition;
+	//this->m_transform.position = Coordinate::LevelToWorld(c_pkg.playerRadius * finalPos);
+	//this->m_transform.position = Coordinate::LevelToWorld(c_pkg.playerRadius * (e_origin + e_velocity));
 }
