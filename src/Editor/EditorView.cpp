@@ -177,8 +177,9 @@ void EditorView::updatePlayer(float dt, DebugLogGUI& d_gui, GeoOctree& octr)
 {
 	m_velocity = dt * p_velocity;
 
-	glm::vec3 m_startPosition = Coordinate::WorldToLevel(this->m_transform.position);
-	glm::vec3 m_endPosition   = Coordinate::WorldToLevel(this->m_transform.position + m_velocity);
+	glm::vec3 playerCentre	  = this->m_transform.position - glm::vec3(0, 0.1f, 0);
+	glm::vec3 m_startPosition = Coordinate::WorldToLevel(playerCentre);
+	glm::vec3 m_endPosition   = Coordinate::WorldToLevel(playerCentre + m_velocity);
 
 	// TODO: Get all node data that intersects with the swept sphere
 	std::vector<std::shared_ptr<CYGeneric>> wall_list = octr.getCollisionMeshAtPoint(m_startPosition);
@@ -193,7 +194,7 @@ void EditorView::updatePlayer(float dt, DebugLogGUI& d_gui, GeoOctree& octr)
 	// Initialize vectors 
 	Collision::eSpace::P_CollisionPacket c_pkg;
 
-	c_pkg.playerRadius = glm::vec3(1.f, 2.f, 1.f);
+	c_pkg.playerRadius = glm::vec3(1.f, 3.f, 1.f);
 
 	c_pkg.R3Position    = m_startPosition;
 	c_pkg.R3Velocity	= m_velocity;
@@ -207,8 +208,19 @@ void EditorView::updatePlayer(float dt, DebugLogGUI& d_gui, GeoOctree& octr)
 	d_gui.add3DVector("egg", Coordinate::LevelToWorld(c_pkg.playerRadius * (e_origin)));
 	d_gui.add3DVector("supposed", Coordinate::LevelToWorld(m_endPosition));
 
-	// TODO: Proper collision response
+	// New player position
 	glm::vec3 r3final = c_pkg.playerRadius * finalPos;
+
+	// Gravity pull
+	c_pkg.R3Position = r3final;
+	c_pkg.R3Velocity = glm::vec3(0, -0.981*dt, 0);
+
+	e_velocity = Collision::eSpace::covertToESpace(c_pkg.R3Velocity, c_pkg.playerRadius);
+	e_origin = Collision::eSpace::covertToESpace(c_pkg.R3Position, c_pkg.playerRadius);
+	c_pkg.e_velocityN = glm::normalize(c_pkg.e_velocity);
+	finalPos = Collision::eSpace::collideWithWorld(wall_list, &c_pkg, e_origin, e_velocity, 0);
+	r3final = c_pkg.playerRadius * finalPos;
+	
 	m_velocity = r3final - m_startPosition;
 	//this->m_transform.position = Coordinate::LevelToWorld(c_pkg.playerRadius * finalPos);
 	//this->m_transform.position = Coordinate::LevelToWorld(c_pkg.playerRadius * (e_origin + e_velocity));
