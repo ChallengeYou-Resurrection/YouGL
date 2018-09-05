@@ -43,5 +43,7 @@ private:
 	// Player Collsiion
 	glm::vec3 p_acceleration;
 	glm::vec3 p_velocity;
+
+	bool playerOnGround = false;
 };
 

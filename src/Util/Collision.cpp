@@ -32,7 +32,9 @@ glm::vec3 Collision::eSpace::collideWithWorld(const std::vector<std::shared_ptr<
 	// If there's no collision
 	if (!pkg->foundCollision)
 	{
-		//std::cout << "No collision at " << Collision::eSpace::collisionRecursionDepth << "\n";
+		if (depth > 2)
+			pkg->foundCollision = true;
+
 		return glm::vec3(pos + vel);
 	}
 

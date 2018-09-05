@@ -155,7 +155,9 @@ void EditorView::inputPlayer(const Controller & controller)
 		p_acceleration.z += glm::sin(glm::radians(m_transform.rotation.y)) * speed;
 	}
 	if (controller.jumpPressed()) {
-		p_acceleration.y += speed;
+		//p_acceleration.y += speed * 3.f;
+		if (playerOnGround && p_acceleration.y < 0.1f)
+			p_acceleration.y = 1.f;
 	}
 	if (controller.downPressed()) {
 		p_acceleration.y -= speed;
@@ -163,7 +165,7 @@ void EditorView::inputPlayer(const Controller & controller)
 
 	p_velocity += p_acceleration;
 	p_velocity.x *= 0.85f;
-	p_velocity.y *= 0.90f;
+	p_velocity.y *= 0.97f;
 	p_velocity.z *= 0.85f;
 
 	if (fabs(p_velocity.x) < 0.0001f) p_velocity.x = 0.f;
@@ -194,7 +196,7 @@ void EditorView::updatePlayer(float dt, DebugLogGUI& d_gui, GeoOctree& octr)
 	// Initialize vectors 
 	Collision::eSpace::P_CollisionPacket c_pkg;
 
-	c_pkg.playerRadius = glm::vec3(1.f, 3.f, 1.f);
+	c_pkg.playerRadius = glm::vec3(1.f, 2.f, 1.f);
 
 	c_pkg.R3Position    = m_startPosition;
 	c_pkg.R3Velocity	= m_velocity;
@@ -204,12 +206,10 @@ void EditorView::updatePlayer(float dt, DebugLogGUI& d_gui, GeoOctree& octr)
 	c_pkg.e_velocityN	 = glm::normalize(c_pkg.e_velocity);
 
 	glm::vec3 finalPos = Collision::eSpace::collideWithWorld(wall_list, &c_pkg, e_origin, e_velocity, 0);
-	d_gui.add3DVector("final pos", Coordinate::LevelToWorld(c_pkg.playerRadius * finalPos));
-	d_gui.add3DVector("egg", Coordinate::LevelToWorld(c_pkg.playerRadius * (e_origin)));
-	d_gui.add3DVector("supposed", Coordinate::LevelToWorld(m_endPosition));
 
 	// New player position
 	glm::vec3 r3final = c_pkg.playerRadius * finalPos;
+	//glm::vec3 r3final_backup = r3final;
 
 	// Gravity pull
 	c_pkg.R3Position = r3final;
@@ -220,7 +220,16 @@ void EditorView::updatePlayer(float dt, DebugLogGUI& d_gui, GeoOctree& octr)
 	c_pkg.e_velocityN = glm::normalize(c_pkg.e_velocity);
 	finalPos = Collision::eSpace::collideWithWorld(wall_list, &c_pkg, e_origin, e_velocity, 0);
 	r3final = c_pkg.playerRadius * finalPos;
-	
+
+	if (c_pkg.foundCollision && (m_velocity.y > -0.981*dt)) {
+		playerOnGround = true;
+		d_gui.addMessage("On the ground");
+	}
+	else {
+		playerOnGround = false;
+		d_gui.addMessage("Airbourne");
+	}
+
 	m_velocity = r3final - m_startPosition;
 	//this->m_transform.position = Coordinate::LevelToWorld(c_pkg.playerRadius * finalPos);
 	//this->m_transform.position = Coordinate::LevelToWorld(c_pkg.playerRadius * (e_origin + e_velocity));
