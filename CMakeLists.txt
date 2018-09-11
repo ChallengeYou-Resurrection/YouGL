@@ -69,6 +69,3 @@ target_link_libraries(${PROJECT_NAME} "glad" "${CMAKE_DL_LIBS}")
 
 
 target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
-
-SET(LIBS nfd)
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${LIBS})

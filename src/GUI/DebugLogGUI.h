@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glm/common.hpp>
+#include "../Maths/GlmCommon.h"
 
 #include "BaseGUI.h"
 #include <list>

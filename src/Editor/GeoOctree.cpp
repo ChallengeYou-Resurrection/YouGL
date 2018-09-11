@@ -1,5 +1,7 @@
 #include "GeoOctree.h"
 
+#include "../Maths/GlmCommon.h"
+
 GeoOctree::GeoOctree(int octreeSize)
 	: size(octreeSize)
 	, m_origin({0,0,0})
@@ -276,25 +278,25 @@ std::optional<std::shared_ptr<CYGeneric>> GeoOctree::getObjectClosestToRay(const
 		{
 			for (auto& c_poly : c_mesh)
 			{
-				glm::vec3 b_pos;
-
+				glm::vec2 b_pos;
+				float dist;
 				// Use built-in GLM's Ray vs Triangle detection
 				if (glm::intersectRayTriangle(mRay.origin, mRay.direction, c_poly.vertex[0],
-					c_poly.vertex[1], c_poly.vertex[2], b_pos))
+					c_poly.vertex[1], c_poly.vertex[2], b_pos, dist))
 				{
 					// Get point of intersection, b_pos.z is the distance from the origin of the ray
 					//glm::vec3 c_pos = glm::vec3(3,3,3);
 
-					if (obj->getLevel() <= maxFloor && b_pos.z < distToClosestObject)
+					if (obj->getLevel() <= maxFloor && dist < distToClosestObject)
 					{
 						// Due to the nature of the octree, there needs to be a check
 						// that the point of intersection is inside the node or else it may 
 						// ignore closer items in a later octree (due to overlapping elements)
-						glm::vec3 poi = (mRay.origin + mRay.direction * b_pos.z) * WORLD_SIZE;
+						glm::vec3 poi = (mRay.origin + mRay.direction * dist) * WORLD_SIZE;
 
 						if (this->checkPointNearOctree(poi, 0.1f))
 						{
-							distToClosestObject = b_pos.z;
+							distToClosestObject = dist;
 							closestObject = obj;
 						}
 					}

@@ -74,6 +74,7 @@ namespace OldFormat
 
 	std::optional<std::string> loadFromFilesystem()
 	{
+        /*
 		// Open prompt
 		nfdchar_t *outPath = nullptr;
 		std::string curPath = fs::current_path().append("cy_files").string();
@@ -88,7 +89,11 @@ namespace OldFormat
 			content.assign(std::istreambuf_iterator<char>(ifs), std::istreambuf_iterator<char>());
 
 			return content;
-		}
+		}*/
+        std::ifstream ifs("cy_files/Downtown Tale.cy");
+        std::string content;
+        content.assign(std::istreambuf_iterator<char>(ifs), std::istreambuf_iterator<char>());
+        return content;
 
 		return {};
 	}

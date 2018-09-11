@@ -2,7 +2,7 @@
 
 #include "../Renderer/Camera.h"
 
-#include <glm/common.hpp>
+#include "../Maths/GlmCommon.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 

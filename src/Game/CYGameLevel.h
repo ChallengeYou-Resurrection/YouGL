@@ -2,7 +2,7 @@
 
 #define _USE_MATH_DEFINES
 #include <vector>
-#include <glm/gtx/intersect.hpp>
+#include "../Maths/GlmCommon.h"
 #include <math.h>
 #include <cereal/archives/binary.hpp>
 #include <cereal/types/vector.hpp>
