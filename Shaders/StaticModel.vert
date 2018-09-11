@@ -23,8 +23,10 @@ void main()
 	gl_Position = projMatrix * viewMatrix * world_position;
 
 	vec3 diffuse;
+	
+	mat4 normalMatrix = transpose(inverse(modelMatrix)); 
 
-	vec3 surfaceNormal   = (modelMatrix * vec4(inNormal, 0.0)).xyz;
+	vec3 surfaceNormal   = (normalMatrix * vec4(inNormal, 0.0)).xyz;
 	vec3 unitNormal      = normalize(surfaceNormal);
 
 	vec3 toCameraVector  = (inverse(viewMatrix) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - world_position.xyz;
