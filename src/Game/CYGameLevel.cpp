@@ -39,7 +39,7 @@ void CYGameLevel::loadFromOldFormat(int gameNumber)
 	// Use a clock to determine the speed it takes to load a level
 	sf::Clock timer;
 
-    auto gameCode = OldFormat::loadFromLocalhost(gameNumber);
+    auto gameCode = OldFormat::loadFromFilesystem();
     if (!gameCode) {
         std::cout << "Unable to load level " << gameNumber << '\n';
         std::cin.ignore();

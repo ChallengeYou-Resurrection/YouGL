@@ -154,7 +154,7 @@ void EditorView::inputPlayer(const Controller & controller)
 		p_acceleration.x += glm::cos(glm::radians(m_transform.rotation.y)) * speed;
 		p_acceleration.z += glm::sin(glm::radians(m_transform.rotation.y)) * speed;
 	}
-	if (controller.jumpPressed()) {
+	if (controller.jumpPressed() && p_timeOnGround.getElapsedTime().asMilliseconds() > 450) {
 		//p_acceleration.y += speed * 3.f;
 		if (playerOnGround && p_acceleration.y < 0.1f)
 			p_acceleration.y = 1.f;
@@ -226,6 +226,8 @@ void EditorView::updatePlayer(float dt, DebugLogGUI& d_gui, GeoOctree& octr)
 		d_gui.addMessage("On the ground");
 	}
 	else {
+		if (playerOnGround) p_timeOnGround.restart();
+
 		playerOnGround = false;
 		d_gui.addMessage("Airbourne");
 	}

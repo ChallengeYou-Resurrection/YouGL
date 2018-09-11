@@ -14,8 +14,8 @@ KeyboardController::KeyboardController(sf::RenderWindow& window)
     m_keyMap.emplace(Controller::Input::Jump, sf::Keyboard::Key::Space);
     m_keyMap.emplace(Controller::Input::Down, sf::Keyboard::Key::LShift);
 
-    m_pWindow->setMouseCursorGrabbed(true);
-    m_pWindow->setMouseCursorVisible(false);
+    //m_pWindow->setMouseCursorGrabbed(true);
+    //m_pWindow->setMouseCursorVisible(false);
 }
 
 bool KeyboardController::forwardPressed() const

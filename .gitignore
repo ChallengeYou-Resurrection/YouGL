@@ -25,7 +25,6 @@ src/Dependencies/
 .vcxproj
 
 #Project Ignore
-*.cy
 *.bcy
 
 /cy_files/binary

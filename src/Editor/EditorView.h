@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SFML/System.hpp>
+
 #include <iostream>
 #include "..\Renderer\Camera.h"
 #include "..\Input\Controller.h"
@@ -45,5 +47,6 @@ private:
 	glm::vec3 p_velocity;
 
 	bool playerOnGround = false;
+	sf::Clock p_timeOnGround;
 };
 

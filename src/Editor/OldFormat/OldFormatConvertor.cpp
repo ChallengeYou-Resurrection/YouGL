@@ -1,15 +1,13 @@
 #include "OldFormatUtil.h"
 
 #include <iostream>
-#include <filesystem>
+#include "../Util/fs.h"
 #include <fstream>
 #include <cereal/cereal.hpp>
 #include <cereal/archives/binary.hpp>
 #include <cereal/types/vector.hpp>
 
 #include "../Util/FileUtil.h"
-
-namespace fs = std::experimental::filesystem;
 
 namespace OldFormat {
     namespace {
