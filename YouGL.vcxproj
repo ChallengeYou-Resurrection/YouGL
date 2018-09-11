@@ -126,16 +126,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Editor\CYObjects\CYPlat.cpp" />
+    <ClCompile Include="src\Editor\CYObjects\CYWall.cpp" />
     <ClCompile Include="src\Editor\BoundingBox.cpp" />
     <ClCompile Include="src\Dependencies\glad.c" />
+    <ClCompile Include="src\Editor\EditorView.cpp" />
     <ClCompile Include="src\Editor\GeoOctree.cpp" />
+    <ClCompile Include="src\Editor\CYObjects\MeshBuilder.cpp" />
+    <ClCompile Include="src\Editor\Grid.cpp" />
+    <ClCompile Include="src\Editor\OldFormat\OldFormatConvertor.cpp" />
+    <ClCompile Include="src\Editor\OldFormat\OldFormatExtractor.cpp" />
+    <ClCompile Include="src\Editor\OldFormat\OldFormatUtil.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\Game\CYGameLevel.cpp" />
-    <ClCompile Include="src\Game\MeshBuilder.cpp" />
-    <ClCompile Include="src\Game\OldFormatExtractor.cpp" />
-    <ClCompile Include="src\Game\OldFormatUtil.cpp" />
     <ClCompile Include="src\Game\WorldTextures.cpp" />
+    <ClCompile Include="src\GUI\DebugLogGUI.cpp" />
+    <ClCompile Include="src\GUI\EditorGUI.cpp" />
+    <ClCompile Include="src\GUI\nuklear.cpp" />
     <ClCompile Include="src\Input\KeyboardController.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Maths\Matrix.cpp" />
@@ -143,52 +151,61 @@
     <ClCompile Include="src\Renderer\Mesh.cpp" />
     <ClCompile Include="src\Renderer\Model.cpp" />
     <ClCompile Include="src\Renderer\OpenGLErrorCheck.cpp" />
+    <ClCompile Include="src\Renderer\Primitives.cpp" />
     <ClCompile Include="src\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Renderer\Shader\Shader.cpp" />
     <ClCompile Include="src\Renderer\Shader\ShaderLoader.cpp" />
     <ClCompile Include="src\ResourceManager\ResourceHolder.cpp" />
     <ClCompile Include="src\States\StatePlaying.cpp" />
+    <ClCompile Include="src\Util\Collision.cpp" />
     <ClCompile Include="src\Util\FileUtil.cpp" />
     <ClCompile Include="src\Util\FPSCounter.cpp" />
     <ClCompile Include="src\Util\Maths.cpp" />
+    <ClCompile Include="src\Util\MouseRay.cpp" />
     <ClCompile Include="src\Util\ToggleKey.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gitattributes" />
     <None Include="openal32.dll" />
-    <None Include="sfml-audio-2.dll" />
-    <None Include="sfml-audio-d-2.dll" />
-    <None Include="sfml-graphics-2.dll" />
-    <None Include="sfml-graphics-d-2.dll" />
-    <None Include="sfml-network-2.dll" />
-    <None Include="sfml-network-d-2.dll" />
-    <None Include="sfml-system-2.dll" />
-    <None Include="sfml-system-d-2.dll" />
-    <None Include="sfml-window-2.dll" />
-    <None Include="sfml-window-d-2.dll" />
     <None Include="Shaders\StaticModel.frag" />
     <None Include="Shaders\StaticModel.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Editor\CYObjects\CYPlat.h" />
+    <ClInclude Include="src\Editor\CYObjects\CYWall.h" />
+    <ClInclude Include="src\Editor\CYObjects\CYGeneric.h" />
+    <ClInclude Include="src\Dependencies\glad.h" />
+    <ClInclude Include="src\Dependencies\json.hpp" />
     <ClInclude Include="src\Editor\BoundingBox.h" />
-    <ClInclude Include="src\Editor\EditorObject.h" />
+    <ClInclude Include="src\Editor\CYObjects\CYObjectProperties.h" />
+    <ClInclude Include="src\Editor\CYObjects\CYMiscObjects.h" />
+    <ClInclude Include="src\Editor\EditorView.h" />
     <ClInclude Include="src\Editor\GeoOctree.h" />
+    <ClInclude Include="src\Editor\CYObjects\MeshBuilder.h" />
+    <ClInclude Include="src\Editor\Grid.h" />
+    <ClInclude Include="src\Editor\OldFormat\OldFormatExtractor.h" />
+    <ClInclude Include="src\Editor\OldFormat\OldFormatUtil.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\GameObject.h" />
     <ClInclude Include="src\Game\CYGameLevel.h" />
-    <ClInclude Include="src\Game\CYObjectProperties.h" />
-    <ClInclude Include="src\Game\CYObjects.h" />
-    <ClInclude Include="src\Game\MeshBuilder.h" />
-    <ClInclude Include="src\Game\OldFormatUtil.h" />
     <ClInclude Include="src\Game\WorldConstants.h" />
     <ClInclude Include="src\Game\WorldTextures.h" />
+    <ClInclude Include="src\GUI\BaseGUI.h" />
+    <ClInclude Include="src\GUI\DebugLogGUI.h" />
+    <ClInclude Include="src\GUI\EditorGUI.h" />
+    <ClInclude Include="src\GUI\nuklear.h" />
+    <ClInclude Include="src\GUI\NuklearContext.h" />
+    <ClInclude Include="src\GUI\nuklear_sfml_gl3.h" />
     <ClInclude Include="src\Input\Controller.h" />
     <ClInclude Include="src\Input\KeyboardController.h" />
+    <ClInclude Include="src\Maths\BasicMathFunctions.h" />
     <ClInclude Include="src\Maths\GlmCommon.h" />
     <ClInclude Include="src\Maths\Matrix.h" />
     <ClInclude Include="src\Renderer\Camera.h" />
     <ClInclude Include="src\Renderer\Mesh.h" />
     <ClInclude Include="src\Renderer\Model.h" />
     <ClInclude Include="src\Renderer\OpenGLErrorCheck.h" />
+    <ClInclude Include="src\Renderer\Primitives.h" />
     <ClInclude Include="src\Renderer\RenderData.h" />
     <ClInclude Include="src\Renderer\Renderer.h" />
     <ClInclude Include="src\Renderer\Shader\Shader.h" />
@@ -198,13 +215,21 @@
     <ClInclude Include="src\ResourceManager\ResourceManager.h" />
     <ClInclude Include="src\States\StateBase.h" />
     <ClInclude Include="src\States\StatePlaying.h" />
+    <ClInclude Include="src\Util\Collision.h" />
     <ClInclude Include="src\Util\FileUtil.h" />
     <ClInclude Include="src\Util\FPSCounter.h" />
     <ClInclude Include="src\Util\Maths.h" />
+    <ClInclude Include="src\Util\MouseRay.h" />
     <ClInclude Include="src\Util\NonCopyable.h" />
     <ClInclude Include="src\Util\NonMoveable.h" />
     <ClInclude Include="src\Util\Random.h" />
+    <ClInclude Include="src\Util\Serializable.h" />
     <ClInclude Include="src\Util\ToggleKey.h" />
+    <ClInclude Include="src\Util\Types.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="123.txt" />
+    <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include "../Maths/Matrix.h"
 #include "../Maths/GlmCommon.h"
+#include "../Maths/BasicMathFunctions.h"
+#include "../Util/Types.h"
 #include "Transform.h"
 
 class Controller;
@@ -12,8 +14,8 @@ class Camera
     public:
         Camera();
 
-        void input(const Controller& controller);
-        void update(float dt);
+        virtual void input(const Controller& controller);
+        virtual void update(float dt);
 
         const glm::vec3& getPositon() const;
         const glm::vec3& getRotation() const;
@@ -24,7 +26,7 @@ class Camera
 		void applyVelocity();
 		void setVelocity(const glm::vec3& vel);
 
-    private:
+    protected:
         Transform m_transform;
 		glm::vec3 m_velocity;
 

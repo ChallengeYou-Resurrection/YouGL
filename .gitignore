@@ -25,7 +25,6 @@ src/Dependencies/
 .vcxproj
 
 #Project Ignore
-*.cy
 *.bcy
 
 /cy_files/binary
@@ -45,3 +44,5 @@ CTestTestfile.cmake
 libglad.a
 YouGL
 .vscode/
+
+fname.py

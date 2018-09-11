@@ -72,6 +72,27 @@ namespace OldFormat
 		return response.getBody();
 	}
 
+	std::optional<std::string> loadFromFilesystem()
+	{
+		// Open prompt
+		nfdchar_t *outPath = nullptr;
+		std::string curPath = fs::current_path().append("cy_files").string();
+		std::string filter = "cy";
+
+		nfdresult_t result = NFD_OpenDialog(filter.c_str(), curPath.c_str(), &outPath);
+
+		if (result == NFD_OKAY)
+		{
+			std::ifstream ifs(outPath);
+			std::string content;
+			content.assign(std::istreambuf_iterator<char>(ifs), std::istreambuf_iterator<char>());
+
+			return content;
+		}
+
+		return {};
+	}
+
     std::unordered_map<std::string, std::string> getObjectTable(const std::string & levelCode)
     {
         std::unordered_map<std::string, std::string> cyTable;

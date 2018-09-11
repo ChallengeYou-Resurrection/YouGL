@@ -1,15 +1,13 @@
 #include "OldFormatUtil.h"
-/*
+
 #include <iostream>
-#include <filesystem>
+#include "../Util/fs.h"
 #include <fstream>
 #include <cereal/cereal.hpp>
 #include <cereal/archives/binary.hpp>
 #include <cereal/types/vector.hpp>
 
 #include "../Util/FileUtil.h"
-
-namespace fs = std::filesystem;
 
 namespace OldFormat {
     namespace {
@@ -53,10 +51,9 @@ namespace OldFormat {
             archive(version);
             archive(header, walls);
             std::cout << "AFTER: " << header.gameAuthor << " " << header.gameName << " " << header.floorCount << "\n";
-            * /
+            */
         }
         std::cout << "\n Please press enter to continue\n";
         std::cin.ignore();
     }
 }
-*/

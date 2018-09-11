@@ -22,7 +22,7 @@ const bool BoundingBox::checkAABB(const glm::vec3& obj_minv3, const glm::vec3& o
 		this->m_vecMin.z < obj_maxv3.z);
 }
 
-const bool BoundingBox::checkAABB(const glm::vec3 & point)
+const bool BoundingBox::checkPoint(const glm::vec3 & point)
 {
 	return (point.x > m_vecMin.x &&
 		point.x < m_vecMax.x &&
@@ -30,6 +30,16 @@ const bool BoundingBox::checkAABB(const glm::vec3 & point)
 		point.y < m_vecMax.y &&
 		point.z > m_vecMin.z &&
 		point.z < m_vecMax.z);
+}
+
+const bool BoundingBox::checkIfPointNear(const glm::vec3 & point, float leniency)
+{
+	return ((point.x + leniency) > m_vecMin.x &&
+		(point.x - leniency) < m_vecMax.x &&
+		(point.y + leniency) > m_vecMin.y &&
+		(point.y - leniency) < m_vecMax.y &&
+		(point.z + leniency) > m_vecMin.z &&
+		(point.z - leniency) < m_vecMax.z);
 }
 
 const std::optional<float> BoundingBox::checkRayCast(const MouseRay::Ray & ray, float t0, float t1)

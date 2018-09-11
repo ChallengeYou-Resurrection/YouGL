@@ -14,8 +14,8 @@ KeyboardController::KeyboardController(sf::RenderWindow& window)
     m_keyMap.emplace(Controller::Input::Jump, sf::Keyboard::Key::Space);
     m_keyMap.emplace(Controller::Input::Down, sf::Keyboard::Key::LShift);
 
-    m_pWindow->setMouseCursorGrabbed(true);
-    m_pWindow->setMouseCursorVisible(false);
+    //m_pWindow->setMouseCursorGrabbed(true);
+    //m_pWindow->setMouseCursorVisible(false);
 }
 
 bool KeyboardController::forwardPressed() const
@@ -52,6 +52,37 @@ bool KeyboardController::firePressed() const
 {
     return isPressed(Controller::Input::Fire);
 }
+
+// Left Mouse Button
+bool KeyboardController::mouse1Down() const
+{
+	return sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
+}
+
+// Right Mouse Button
+bool KeyboardController::mouse2Down() const
+{
+	return sf::Mouse::isButtonPressed(sf::Mouse::Button::Right);
+}
+
+// Scroll Wheel
+bool KeyboardController::mouse3Down() const
+{
+	return sf::Mouse::isButtonPressed(sf::Mouse::Button::Middle);
+}
+
+bool KeyboardController::scrollForward() const
+{
+	//return sf::Mouse::isButtonPressed(sf::Mouse::VerticalWheel);
+	return false;
+}
+
+bool KeyboardController::scrollBackward() const
+{
+	//return sf::Mouse::isButtonPressed(sf::Mouse::VerticalWheel);
+	return false;
+}
+
 
 void KeyboardController::tryToggleLookLock()
 {

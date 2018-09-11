@@ -1,7 +1,8 @@
 #include "EditorGUI.h"
 
-EditorGUI::EditorGUI(u8* cFloor)
+EditorGUI::EditorGUI(u8* cFloor, CameraType* cType)
 	: m_currentFloor(cFloor)
+	, m_cameraType(cType)
 {
 	bg.r = 1.0f, bg.g = 1.f, bg.b = 1.f, bg.a = 1.0f;
 }
@@ -26,9 +27,11 @@ void EditorGUI::update(float deltaTime)
 
 		nk_layout_row_dynamic(ctx, 20, 1);
 		nk_label(ctx, "Colour", NK_TEXT_LEFT);
+
 		nk_layout_row_dynamic(ctx, 25, 1);
+		nk_style_push_style_item(ctx, &ctx->style.scrollv.active, nk_style_item_hide());
 		if (nk_combo_begin_color(ctx, nk_rgb_cf(bg), nk_vec2(nk_widget_width(ctx), 400))) {
-			nk_layout_row_dynamic(ctx, 140, 1);
+			nk_layout_row_dynamic(ctx, 120, 1);
 			bg = nk_color_picker(ctx, bg, NK_RGB);
 			nk_layout_row_dynamic(ctx, 25, 1);
 			bg.r = nk_propertyf(ctx, "#R:", 0, bg.r, 1.0f, 0.01f, 0.005f);
@@ -36,6 +39,7 @@ void EditorGUI::update(float deltaTime)
 			bg.b = nk_propertyf(ctx, "#B:", 0, bg.b, 1.0f, 0.01f, 0.005f);
 			nk_combo_end(ctx);
 		}
+		nk_style_pop_style_item(ctx);
 
 		nk_layout_space_begin(ctx, NK_STATIC, 90, INT32_MAX);
 		nk_layout_space_push(ctx, nk_rect(30,60,150,20));
@@ -63,6 +67,35 @@ void EditorGUI::update(float deltaTime)
 		nk_layout_row_push(ctx, 25);
 		if (nk_button_symbol(ctx, NK_SYMBOL_TRIANGLE_DOWN))
 			(*m_currentFloor)--;
+
+		nk_layout_row_end(ctx);
+	}
+	nk_end(ctx);
+
+	// Editor View
+	if (nk_begin(ctx, "View", nk_rect(30, 720-37-30, 120*3 + 25, 37),
+		NK_WINDOW_BORDER | NK_WINDOW_NO_SCROLLBAR))
+	{
+		CameraType currentType = *m_cameraType;
+
+		nk_layout_row_begin(ctx, NK_STATIC,25,3);
+
+		auto createButton = [&](CameraType cType, const std::string& buttonLabel) {
+			nk_layout_row_push(ctx, 120);
+
+			if (currentType == cType)
+				nk_style_push_color(ctx, &ctx->style.button.border_color, nk_rgb(255, 255, 255));
+			
+			if (nk_button_label(ctx, buttonLabel.c_str())) {
+				*m_cameraType = cType;
+			}
+
+			if (currentType == cType) nk_style_pop_color(ctx);
+		};
+
+		createButton(CameraType::GRID, "Grid View");
+		createButton(CameraType::FREEROAM, "Freeroam");
+		createButton(CameraType::PLAYER, "Player Mode");
 
 		nk_layout_row_end(ctx);
 	}

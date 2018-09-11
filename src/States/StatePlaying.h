@@ -31,6 +31,7 @@ class StatePlaying : public StateBase
 {
 public:
     StatePlaying(Game& game, Renderer& renderer);
+	~StatePlaying();
 
     void handleEvent(sf::Event& e) override;
     void handleInput(Controller& controller) override;

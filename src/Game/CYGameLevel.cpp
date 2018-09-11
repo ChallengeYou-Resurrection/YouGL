@@ -15,7 +15,7 @@
 // Constructor / Init Objects
 CYGameLevel::CYGameLevel(sf::Vector2u screenResolution)
 	: m_octree(512)
-	, m_editorGui(&m_floor)
+	, m_editorGui(&m_floor, &m_camera.m_cameraState)
 	, m_screenRes(screenResolution)
 {
 	// Test the sphere primitive (TEMP)
@@ -39,7 +39,7 @@ void CYGameLevel::loadFromOldFormat(int gameNumber)
 	// Use a clock to determine the speed it takes to load a level
 	sf::Clock timer;
 
-    auto gameCode = OldFormat::loadFromLocalhost(gameNumber);
+    auto gameCode = OldFormat::loadFromFilesystem();
     if (!gameCode) {
         std::cout << "Unable to load level " << gameNumber << '\n';
         std::cin.ignore();
@@ -137,7 +137,7 @@ void CYGameLevel::createModels()
     
 }
 
-void CYGameLevel::buildFloor(int floor)
+void CYGameLevel::buildFloor(int floor, bool cacheMesh)
 {
 	// Keep opaque & transparent meshes apart
 	Mesh oFloorMesh;
@@ -155,8 +155,52 @@ void CYGameLevel::buildFloor(int floor)
 		}
 	}
 
+	if (cacheMesh)
+		cached_FloorMesh = oFloorMesh;
+
 	m_floorModels[floor].opaqueMesh.destroyModel();
 	m_floorModels[floor].opaqueMesh.create(oFloorMesh, m_textures.getTexID());
+}
+
+void CYGameLevel::rebuildWithoutReMeshing(int floor, bool cacheMesh)
+{
+	// Keep opaque & transparent meshes apart
+	Mesh oFloorMesh;
+	Mesh tFloorMesh;
+
+	for (auto& obj : m_geometry) {
+		if (obj->getLevel() == (floor + 1) && obj != m_selectedObject)
+		{
+			// Combine (don't create them)
+			auto mesh = obj->getMesh();
+			oFloorMesh.combineWith(mesh);
+		}
+	}
+
+	if (cacheMesh)
+		cached_FloorMesh = oFloorMesh;
+
+	m_floorModels[floor].opaqueMesh.destroyModel();
+	m_floorModels[floor].opaqueMesh.create(oFloorMesh, m_textures.getTexID());
+}
+
+bool CYGameLevel::rebuildFromCache(int floor)
+{
+	// Make sure the mesh exists
+	if (cached_FloorMesh.indices.size() == 0)
+		return false; 
+
+	// This function appends the selected items into the cached mesh for much faster mesh gen
+	m_selectedObject->createMesh(m_textures);
+	cached_FloorMesh.combineWith(m_selectedObject->getMesh());
+
+	m_floorModels[floor].opaqueMesh.destroyModel();
+	m_floorModels[floor].opaqueMesh.create(cached_FloorMesh, m_textures.getTexID());
+
+	// Not needed anymore, clear for later use
+	cached_FloorMesh.clearData();
+
+	return true;
 }
 
 // Render all floors
@@ -165,7 +209,7 @@ void CYGameLevel::renderFloors(Renderer & renderer)
 	for (int f = 0; f < m_header.floorCount; f++)
 		renderer.draw(m_floorModels[f].opaqueMesh);
 
-	m_octree.drawOctree(renderer);
+	this->renderGeneric(renderer);
 }
 
 // Renders floors from 0 to a the current floor
@@ -174,9 +218,16 @@ void CYGameLevel::partiallyRenderFloors(Renderer & renderer)
 	for (int f = 0; f < m_floor; f++)
 		renderer.draw(m_floorModels[f].opaqueMesh);
 
+	this->renderGeneric(renderer);
+}
+
+void CYGameLevel::renderGeneric(Renderer & renderer)
+{
 	renderer.draw(sphere);
 
 	m_octree.drawOctree(renderer);
+	if (m_camera.m_cameraState == CameraType::GRID) 
+		renderer.draw(m_levelGrid.getModel());
 }
 
 // Render the Editor GUIs
@@ -205,44 +256,7 @@ void CYGameLevel::update(float deltaTime)
 	int n = m_octree.nodesIntersectingRay(mRay);
 	m_debug.addMessage("You are looking at " + std::to_string(n) + " nodes");
 
-	std::vector<GeoOctree::NodeDistance> rayNodes = m_octree.getNodesIntersectingRayOrdered(mRay);
-	
-	// TODO: Put in separate function?
-	int objCount = 0;
-	for (auto& node : rayNodes)
-	{
-		objCount += node.second->getObjectSize();
-
-		std::optional<std::shared_ptr<CYGeneric>> obj = node.second->getObjectClosestToRay(mRay);
-		if (obj != std::nullopt)
-		{
-			// If the new object is on another floor, rebuild the previous floor 
-			if (m_selectedObject != nullptr && 
-				obj.value()->getLevel() != m_selectedObject->getLevel())
-			{
-				int lvl = m_selectedObject->getLevel();
-				m_selectedObject = nullptr;
-				this->buildFloor(lvl - 1);
-			}
-
-			m_selectedObject = obj.value();
-			m_debug.addMessage("Selected object is in the " + std::to_string(m_selectedObject->getLevel()) + " floor.");
-			
-			this->buildFloor(m_selectedObject->getLevel()-1);
-			
-			break;
-		}
-		else {
-			if (m_selectedObject != nullptr)
-			{
-				int lvl = m_selectedObject->getLevel();
-				m_selectedObject = nullptr;
-				this->buildFloor(lvl - 1);
-			}
-		}
-	}
-
-	//m_debug.addMessage(std::to_string(objCount) + " objects out of " + std::to_string(m_octree.getTotalObjectSize()) + " checked.");
+	//this->selectObjectFromMouse();
 
 	// GUI Update
 	m_editorGui.update(deltaTime);
@@ -257,7 +271,9 @@ void CYGameLevel::update(float deltaTime)
 		m_camera.applyVelocity();
 
 	// Update camera after applying calculations to get accurate view matrix
-	m_camera.update(deltaTime);
+	m_camera.update(deltaTime, m_debug, m_floor, m_octree);
+
+	m_levelGrid.update(m_floor);
 }
 
 // Deprecated Function, to be replaced with MUCH better collision detection
@@ -342,6 +358,87 @@ bool CYGameLevel::cameraCollision(Camera & camera)
 		}
 
 	}*/
+
+	return false;
+}
+
+bool CYGameLevel::selectObjectFromMouse()
+{
+	// Create ray cast
+	MouseRay::Ray mRay = MouseRay::calculateMouseRay(m_mousePosition, m_screenRes, m_camera);
+	std::vector<GeoOctree::NodeDistance> rayNodes = m_octree.getNodesIntersectingRayOrdered(mRay);
+
+	// TODO: Put in separate function?
+	int objCount = 0;
+	std::optional<std::shared_ptr<CYGeneric>> obj;
+	for (auto& node : rayNodes)
+	{
+		objCount += node.second->getObjectSize();
+
+		// Get closest object that intersects with the mouse 
+		obj = node.second->getObjectClosestToRay(mRay, m_floor);
+		if (obj != std::nullopt)
+		{
+			// If the object exists, make sure it's not the same as the one chosen
+			if (obj.value() != m_selectedObject)
+			{
+				// If there was a previous chosen object, remesh it for later use
+				if (m_selectedObject != nullptr)
+					m_selectedObject->createMesh(m_textures);
+
+				// If the new object is on another floor, rebuild the previous floor 
+				if (m_selectedObject != nullptr &&
+					obj.value()->getLevel() != m_selectedObject->getLevel())
+				{
+					// Use cache to avoid creating a whole new mesh
+					int lvl = m_selectedObject->getLevel();
+					if (rebuildFromCache(lvl - 1))
+					{
+						m_selectedObject = nullptr;
+					}
+					else {
+						// If building from the cache doesn't work, start from the beginning
+						m_selectedObject = nullptr;
+						this->buildFloor(lvl - 1);
+					}
+				}
+
+				// Set selection to object chosen
+				m_selectedObject = obj.value();
+
+				//this->buildFloor(m_selectedObject->getLevel() - 1, true);
+				this->rebuildWithoutReMeshing(m_selectedObject->getLevel() - 1, true);
+			}
+
+			break;
+		}
+		else {
+			// Check if it's the last node
+			if (&node == &rayNodes.back())
+			{
+				// If no object was selected then set it to null and rebuild 
+				if (m_selectedObject != nullptr)
+				{
+					// Use cache to avoid creating a whole new mesh
+					int lvl = m_selectedObject->getLevel();
+					if (rebuildFromCache(lvl - 1))
+					{
+						m_selectedObject = nullptr;
+					}
+					else {
+						// If building from the cache doesn't work, start from the beginning
+						m_selectedObject = nullptr;
+						this->buildFloor(lvl - 1);
+					}
+				}
+			}
+		}
+	}
+
+	/*if (m_selectedObject != nullptr)
+		m_debug.addMessage("Selected object is in the " + std::to_string(m_selectedObject->getLevel()) + " floor.");
+
+	m_debug.addMessage(std::to_string(objCount) + " objects out of " + std::to_string(m_octree.getTotalObjectSize()) + " checked.");*/
 
 	return false;
 }

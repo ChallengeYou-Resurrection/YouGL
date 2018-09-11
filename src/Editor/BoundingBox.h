@@ -5,7 +5,7 @@
 #include "../Renderer/Renderer.h"
 #include "../Renderer/Primitives.h"
 
-#include <glm/vec3.hpp>
+#include "../Maths/GlmCommon.h"
 #include "../Game/WorldConstants.h"
 #include "../Util/MouseRay.h"
 
@@ -33,7 +33,8 @@ public :
 
 	const bool checkAABB(const BoundingBox& obj);
 	const bool checkAABB(const glm::vec3& obj_minv3, const glm::vec3& obj_maxv3);
-	const bool checkAABB(const glm::vec3& point);
+	const bool checkPoint(const glm::vec3& point);
+	const bool checkIfPointNear(const glm::vec3 & point, float leniency);
 
 	const std::optional<float> checkRayCast(const MouseRay::Ray& ray, float t0, float t1);
 
