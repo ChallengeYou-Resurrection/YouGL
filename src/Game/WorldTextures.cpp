@@ -52,26 +52,36 @@ WorldTextures::WorldTextures()
 	int image_size = 4 * TEXTURE_HEIGHT * TEXTURE_WIDTH;
 	int total_size = worldTexturesMap.size() * image_size;
 
-	sf::Uint8* data = (sf::Uint8*)malloc(total_size);
-
+	// Get number of textures needed
 	int textureCount = worldTexturesMap.size();
+
+	// Generate the texture array with no data
+	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA, TEXTURE_WIDTH, TEXTURE_HEIGHT, textureCount,
+		0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+	// Load each texture one by one into the array
 	for (int tex = 0; tex < textureCount; tex++)
 	{
 		if (auto texture = this->loadTexture(worldTexturesMap.at(static_cast<TextureID>(tex)).fileName))
 		{
 			std::cout << "Loaded texture: " << worldTexturesMap.at(static_cast<TextureID>(tex)).fileName << "\n";
-			std::memcpy(data + (tex * image_size), texture->getPixelsPtr(), image_size);
+			// Implement the texture into the array
+			glTexSubImage3D(GL_TEXTURE_2D_ARRAY,
+				0,
+				0, 0, tex,
+				TEXTURE_WIDTH, TEXTURE_HEIGHT, 1,
+				GL_RGBA,
+				GL_UNSIGNED_BYTE,
+				texture->getPixelsPtr());
 		}
 		else {
 			std::cout << "Could not load texture\n";
 		}
 	}
 
-	// Generate the texture array
-	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA, TEXTURE_WIDTH, TEXTURE_HEIGHT, textureCount,
-		0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-
+	// Generate Mipmap
 	glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
+
 	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameterf(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_LOD_BIAS, -1);
 
