@@ -7219,9 +7219,11 @@ nk_file_load(const char* path, nk_size* siz, struct nk_allocator *alloc)
     NK_ASSERT(alloc);
     if (!path || !siz || !alloc)
         return 0;
-
-    //fd = fopen(path, "rb");
+#ifdef _MSC_VER
 	fopen_s(&fd, path, "rb");
+#else 
+    fd = fopen(path, "rb");
+#endif
     if (!fd) return 0;
     fseek(fd, 0, SEEK_END);
     ret = ftell(fd);

@@ -6,8 +6,7 @@
 #include <array>
 
 #include <SFML/Graphics.hpp>
-#include <glm/gtx/intersect.hpp>
-#include "glm/vec3.hpp"
+#include "../Maths/GlmCommon.h"
 
 //#include "EditorObject.h"
 #include "BoundingBox.h"

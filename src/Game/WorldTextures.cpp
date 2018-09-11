@@ -1,5 +1,7 @@
 #include "WorldTextures.h"
 
+#include <cstring>
+
 namespace
 {
     struct WorldTexure

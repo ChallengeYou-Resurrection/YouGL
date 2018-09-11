@@ -28,3 +28,21 @@ src/Dependencies/
 *.bcy
 
 /cy_files/binary
+
+#Cmake
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+
+#bin
+libglad.a
+YouGL
+.vscode/
+
+fname.py
