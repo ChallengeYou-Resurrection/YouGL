@@ -41,7 +41,7 @@ void EditorGUI::update(float deltaTime)
 		}
 		nk_style_pop_style_item(ctx);
 
-		nk_layout_space_begin(ctx, NK_STATIC, 90, INT_MAX);
+		nk_layout_space_begin(ctx, NK_STATIC, 90, INT32_MAX);
 		nk_layout_space_push(ctx, nk_rect(30,60,150,20));
 		if (nk_button_label(ctx, "Set as Default"))
 			fprintf(stdout, "button pressed\n");

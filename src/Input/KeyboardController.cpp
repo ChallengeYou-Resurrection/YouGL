@@ -129,6 +129,7 @@ glm::vec3 KeyboardController::getLookChange() const
         lastPosition = pos;
     }
 
+
     return
     {
         // Convert to float for that smooth movement

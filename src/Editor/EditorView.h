@@ -3,14 +3,14 @@
 #include <SFML/System.hpp>
 
 #include <iostream>
-#include "..\Renderer\Camera.h"
-#include "..\Input\Controller.h"
-#include "..\Game\WorldConstants.h"
-#include "..\Util\MouseRay.h"
-#include "..\Editor\GeoOctree.h"
-#include "..\GUI\DebugLogGUI.h"
+#include "../Renderer/Camera.h"
+#include "../Input/Controller.h"
+#include "../Game/WorldConstants.h"
+#include "../Util/MouseRay.h"
+#include "../Editor/GeoOctree.h"
+#include "../GUI/DebugLogGUI.h"
 
-#include "..\Util\Collision.h"
+#include "../Util/Collision.h"
 
 enum class CameraType { FREEROAM, GRID, PLAYER };
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cereal/types/string.hpp>
-#include <glm/vec3.hpp>
+#include "../Maths/GlmCommon.h"
 #include <vector>
 #include <regex>
 
