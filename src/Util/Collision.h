@@ -44,7 +44,7 @@ namespace Collision
 
 		void checkCollision(P_CollisionPacket* pkg, const CPolygon& c_tri);
 
-		static const float unitsPerMeter	= 100.0f;
+		static const float unitsPerMeter	= 2.0f;
 		glm::vec3 collideWithWorld(const std::vector<std::shared_ptr<CYGeneric>>& obj_list,
 			P_CollisionPacket* pkg, const glm::vec3& pos, const glm::vec3& vel, int depth);
 

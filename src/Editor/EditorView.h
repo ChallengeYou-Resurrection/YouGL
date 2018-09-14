@@ -10,7 +10,7 @@
 #include "../Editor/GeoOctree.h"
 #include "../GUI/DebugLogGUI.h"
 
-#include "../Util/Collision.h"
+#include "../Game/PlayerMovement.h"
 
 enum class CameraType { FREEROAM, GRID, PLAYER };
 
@@ -42,11 +42,7 @@ private:
 	//MouseRay::Ray m_grid_startRay;
 	glm::vec3 m_grid_origin;
 
-	// Player Collsiion
-	glm::vec3 p_acceleration;
-	glm::vec3 p_velocity;
-
-	bool playerOnGround = false;
-	sf::Clock p_timeOnGround;
+	// Player Movement
+	PlayerMovement playerCollider;
 };
 

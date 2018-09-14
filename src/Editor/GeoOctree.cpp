@@ -284,9 +284,6 @@ std::optional<std::shared_ptr<CYGeneric>> GeoOctree::getObjectClosestToRay(const
 				if (glm::intersectRayTriangle(mRay.origin, mRay.direction, c_poly.vertex[0],
 					c_poly.vertex[1], c_poly.vertex[2], b_pos, dist))
 				{
-					// Get point of intersection, b_pos.z is the distance from the origin of the ray
-					//glm::vec3 c_pos = glm::vec3(3,3,3);
-
 					if (obj->getLevel() <= maxFloor && dist < distToClosestObject)
 					{
 						// Due to the nature of the octree, there needs to be a check
