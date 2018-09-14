@@ -17,6 +17,7 @@ set(SOURCES
     src/GameObject.cpp
     src/Game/WorldTextures.cpp
     src/Game/CYGameLevel.cpp
+    src/Game/PlayerMovement.cpp
     src/Maths/Matrix.cpp
     src/Util/MouseRay.cpp
     src/Util/FileUtil.cpp
